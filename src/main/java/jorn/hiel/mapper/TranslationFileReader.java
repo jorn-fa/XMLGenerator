@@ -33,6 +33,7 @@ public class TranslationFileReader {
     @Autowired
     private TranslationsRepo repo;
 
+    @SuppressWarnings("unchecked")
     public void process() throws FileNotFoundException,ParseException {
         log.info("reading file with name -> " + file);
         File sourceFile=new File(file);
@@ -43,11 +44,12 @@ public class TranslationFileReader {
                 //Read JSON file
                 Object obj = parser.parse(reader);
                 JSONArray translations = (JSONArray) obj;
-                //iterate over each enty and parse it
+                //iterate over each entry and parse it
                 translations.forEach( a -> parseTranslationObject((JSONObject) a)) ;
 
 
             } catch (IOException e) {
+
                 e.printStackTrace();
             }
         }
@@ -55,6 +57,7 @@ public class TranslationFileReader {
 
     }
 
+    @SuppressWarnings("unchecked")
     private void parseTranslationObject(JSONObject jsonObject){
         JSONObject object = (JSONObject) jsonObject.get("translation");
 
@@ -63,7 +66,7 @@ public class TranslationFileReader {
         JSONArray jsonArray = (JSONArray) object.get("searchFor");
         jsonArray.forEach(x -> translation.addTranslation((String) x));
 
-        log.info("created translation of -> "  + translation.toString() );
+        log.info("created translation of -> "  + translation);
         repo.add(translation);
     }
 
