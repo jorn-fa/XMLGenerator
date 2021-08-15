@@ -5,7 +5,7 @@ import java.util.List;
 public interface RepositoryInterface<T>{
 
     void clearRepo();
-    void add(T t);
+    boolean add(T t);
     List<T> getItems();
     void printList();
 

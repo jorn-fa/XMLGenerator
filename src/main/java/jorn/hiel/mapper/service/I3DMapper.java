@@ -1,6 +1,8 @@
 package jorn.hiel.mapper.service;
 
 import jorn.hiel.mapper.pojo.I3dMap;
+import jorn.hiel.mapper.pojo.MappedItem;
+import jorn.hiel.mapper.service.repo.EntryRepo;
 import jorn.hiel.mapper.service.repo.I3dMapRepo;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -27,11 +30,21 @@ public class I3DMapper {
     @Autowired
     private DocBuildFactory dbFactory;
 
+    @Autowired
+    private EntryRepo entryRepo;
+
     private File inputFile;
 
 
+    /**
+     * Resets internal repositories.<br>
+     * Repo's reset are =<br>
+     * I3DMap <br>
+     * Entry
+     */
     public void clearRepo() {
         repo.clearRepo();
+        entryRepo.clearRepo();
     }
 
     public void setFile(String file) {
@@ -109,4 +122,12 @@ public class I3DMapper {
     }
 
 
+    public void addEntry(MappedItem mappedItem) {
+        entryRepo.add(mappedItem);
+
+    }
+
+    public List<MappedItem> getMappedItems() {
+        return entryRepo.getItems();
+    }
 }

@@ -1,12 +1,12 @@
 package jorn.hiel.mapper.service.repo;
-import java.util.ArrayList;
-import java.util.List;
-
 
 import jorn.hiel.mapper.pojo.I3dMap;
 import jorn.hiel.mapper.service.interfaces.RepositoryInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Repository
@@ -23,8 +23,8 @@ public class I3dMapRepo implements RepositoryInterface<I3dMap> {
     }
 
     @Override
-    public void add(I3dMap i3dMap) {
-        i3dMapList.add(verify(i3dMap));
+    public boolean add(I3dMap i3dMap) {
+        return i3dMapList.add(verify(i3dMap));
     }
 
     @Override

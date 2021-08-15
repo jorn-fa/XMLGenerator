@@ -5,7 +5,6 @@ import jorn.hiel.mapper.service.interfaces.RepositoryInterface;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,14 +24,14 @@ public class TranslationsRepo implements RepositoryInterface<TranslationItem> {
     }
 
     @Override
-    public void add(TranslationItem translationItem) {
+    public boolean add(TranslationItem translationItem) {
         if (itemList==null){clearRepo();}
 
         if (!itemList.contains(translationItem)){
-            itemList.add((translationItem));
             log.info("adding " + translationItem.toString() + " to repo");
+            return itemList.add((translationItem));
         }
-
+        return false;
     }
 
     @Override
