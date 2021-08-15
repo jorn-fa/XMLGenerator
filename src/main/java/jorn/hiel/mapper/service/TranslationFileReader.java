@@ -1,4 +1,4 @@
-package jorn.hiel.mapper;
+package jorn.hiel.mapper.service;
 
 import jorn.hiel.mapper.pojo.TranslationItem;
 import jorn.hiel.mapper.service.repo.TranslationsRepo;

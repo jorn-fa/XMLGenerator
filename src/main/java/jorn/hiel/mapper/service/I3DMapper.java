@@ -2,8 +2,8 @@ package jorn.hiel.mapper.service;
 
 import jorn.hiel.mapper.pojo.I3dMap;
 import jorn.hiel.mapper.pojo.MappedItem;
-import jorn.hiel.mapper.service.repo.EntryRepo;
 import jorn.hiel.mapper.service.repo.I3dMapRepo;
+import jorn.hiel.mapper.service.repo.implementations.EntryRepo;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -34,6 +34,7 @@ public class I3DMapper {
     private EntryRepo entryRepo;
 
     private File inputFile;
+
 
 
     /**
@@ -78,9 +79,9 @@ public class I3DMapper {
         int counter = 0;
         for (int a = 0; a < temp.getLength(); a++) {
             if (temp.item(a).getNodeName().equals("Shape")) {
-                mapChildren(temp.item(a).getChildNodes(), String.valueOf(counter + ">"));
+                mapChildren(temp.item(a).getChildNodes(), counter + ">");
 
-                String id = String.valueOf(counter + ">");
+                String id = counter + ">";
                 String name = temp.item(a).getAttributes().getNamedItem("name").getNodeValue();
 
                 I3dMap i3dMap = new I3dMap().setNode(name).setId(id);
@@ -96,7 +97,7 @@ public class I3DMapper {
         for (int a = 0; a < nodeList.getLength(); a++) {
             if (nodeList.item(a).hasAttributes()) {
 
-                String id = index + String.valueOf(counter);
+                String id = index + counter;
                 String name = nodeList.item(a).getAttributes().getNamedItem("name").getNodeValue();
 
                 I3dMap i3dMap = new I3dMap().setNode(name).setId(id);
@@ -127,7 +128,11 @@ public class I3DMapper {
 
     }
 
-    public List<MappedItem> getMappedItems() {
+    public Map<String, String> getMappedItems() {
         return entryRepo.getItems();
+    }
+
+    public MappedItem getMappedItem(String key) {
+        return new MappedItem().setKey(key).setValue("");
     }
 }
