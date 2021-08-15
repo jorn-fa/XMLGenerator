@@ -1,19 +1,19 @@
 package jorn.hiel.mapper;
 
+import jorn.hiel.mapper.ObsoleteFiles.ModDescWriter;
 import jorn.hiel.mapper.pojo.MappedItem;
 import jorn.hiel.mapper.pojo.TranslationItem;
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.I3DMapper;
 import jorn.hiel.mapper.service.TranslationFileReader;
-import jorn.hiel.mapper.service.writers.ModDescWriter;
+import jorn.hiel.mapper.service.writers.ModDescWriterDom;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
-import java.io.FileNotFoundException;
+import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -29,6 +29,9 @@ public class Tester {
 
     @Autowired
     ModDescWriter modDescWriter;
+
+    @Autowired
+    ModDescWriterDom modDescWriterDom;
 
     @Autowired
     ConfigFileReader configFileReader;
@@ -101,15 +104,23 @@ public class Tester {
 
 
         try {
-            modDescWriter.setFileLocation("e:/temp/moddesc.xml");
-            modDescWriter.writeModdesc();
-        } catch (XMLStreamException | FileNotFoundException e) {
+            //modDescWriter.setFileLocation("e:/temp/moddesc.xml");
+            //modDescWriter.writeModdesc();
+            modDescWriterDom.setFileLocation("e:/temp/moddesc.xml");
+            modDescWriterDom.writeModdesc();
+        } catch ( ParserConfigurationException | TransformerException e) {
             e.printStackTrace();
         }
 
 
 
+
+
+
     }
+
+
+
 
 
 }

@@ -88,7 +88,7 @@ public class ConfigFileReader {
         String value = repo.getItems().get(key);
 
         if (value==null){
-            repo.getItems().get("UnknownEntry");
+            value=repo.getItems().get("UnknownEntry");
         }
 
         return new MappedItem().setKey(key).setValue(value);

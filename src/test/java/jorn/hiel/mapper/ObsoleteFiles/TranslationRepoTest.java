@@ -1,13 +1,12 @@
-package jorn.hiel.mapper.repoTests;
+package jorn.hiel.mapper.ObsoleteFiles;
 
 import jorn.hiel.mapper.pojo.TranslationItem;
 import jorn.hiel.mapper.service.repo.TranslationsRepo;
-import org.junit.Before;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 
 public class TranslationRepoTest {
