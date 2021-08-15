@@ -15,9 +15,9 @@ is used <br> in farming simulator. The file structure itself is xml based.</p>
 <br>Vehicle.xml
 </p>
 
-##Inner workings
+#Inner workings
 <p>
-The program crossreferences entries via configurable json file and outputs xml
+The program cross references entries via configurable json file and outputs xml
 <br>based on a predefined xml layout
 </p>
 
