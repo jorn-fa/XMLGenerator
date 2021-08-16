@@ -107,7 +107,7 @@ public class Tester {
             //modDescWriter.setFileLocation("e:/temp/moddesc.xml");
             //modDescWriter.writeModdesc();
             modDescWriterDom.setFileLocation("e:/temp/moddesc.xml");
-            modDescWriterDom.writeModdesc();
+            modDescWriterDom.writeModDesc();
         } catch ( ParserConfigurationException | TransformerException e) {
             e.printStackTrace();
         }
