@@ -12,17 +12,10 @@ import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -36,25 +29,27 @@ public class ModDescWriterDom implements SingleXmlItem, SingleXmlItemWithAttribu
     @Autowired
     ConfigFileReader configFileReader;
 
+    @Autowired
+    XmlFileWriter xmlFileWriter;
+
     private boolean canWrite;
     private Document doc;
-    private String fileLocation;
 
 
-    public void setFileLocation(String fileLocation) throws ParserConfigurationException {
-        
-        this.fileLocation = fileLocation;
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-        doc = docBuilder.newDocument();
-
+    public void setFileLocation(String fileLocation){
+        xmlFileWriter.setFileLocation(fileLocation);
         this.canWrite=true;
 
     }
 
-    public void writeModDesc() throws TransformerException {
+    public void writeModDesc() throws TransformerException , ParserConfigurationException {
 
         if(canWrite) {
+
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            doc = docBuilder.newDocument();
+
             MappedItem mappedItem;
             Element rootElement = doc.createElement("modDesc");
             doc.appendChild(rootElement);
@@ -81,7 +76,7 @@ public class ModDescWriterDom implements SingleXmlItem, SingleXmlItemWithAttribu
 
             rootElement.appendChild(storeItems);
 
-            writeXml(doc);
+            xmlFileWriter.writeXml(doc);
 
         }
 
@@ -126,7 +121,6 @@ public class ModDescWriterDom implements SingleXmlItem, SingleXmlItemWithAttribu
             Element descriptionElement = doc.createElement(a);
             descriptionElement.appendChild(doc.createCDATASection(configFileReader.getMappedItem("randomString").getValue()));
             description.appendChild(descriptionElement);
-
         });
 
 
@@ -136,30 +130,7 @@ public class ModDescWriterDom implements SingleXmlItem, SingleXmlItemWithAttribu
 
     }
 
-    // write doc to output stream
-    private void writeXml(Document document)
-            throws TransformerException {
 
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
-
-        Transformer transformer = transformerFactory.newTransformer();
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "5");
-
-        DOMSource domSource = new DOMSource(document);
-        if(!this.fileLocation.isEmpty()) {
-            StreamResult streamResult = new StreamResult(new File(this.fileLocation));
-            transformer.transform(domSource, streamResult);
-        }
-        else {log.error("Trying to save to empty location");}
-
-
-
-
-    }
 
 
 

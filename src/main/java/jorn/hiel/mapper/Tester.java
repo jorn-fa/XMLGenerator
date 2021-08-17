@@ -1,11 +1,11 @@
 package jorn.hiel.mapper;
 
-import jorn.hiel.mapper.ObsoleteFiles.ModDescWriter;
 import jorn.hiel.mapper.pojo.MappedItem;
 import jorn.hiel.mapper.pojo.TranslationItem;
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.I3DMapper;
 import jorn.hiel.mapper.service.TranslationFileReader;
+import jorn.hiel.mapper.service.helpers.UnknownStringCounter;
 import jorn.hiel.mapper.service.writers.ModDescWriterDom;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class Tester {
     TranslationFileReader translation;
 
     @Autowired
-    ModDescWriter modDescWriter;
+    UnknownStringCounter unknownCounter;
 
     @Autowired
     ModDescWriterDom modDescWriterDom;
@@ -104,22 +104,22 @@ public class Tester {
 
 
         try {
-            //modDescWriter.setFileLocation("e:/temp/moddesc.xml");
-            //modDescWriter.writeModdesc();
+
             modDescWriterDom.setFileLocation("e:/temp/moddesc.xml");
             modDescWriterDom.writeModDesc();
-        } catch ( ParserConfigurationException | TransformerException e) {
+
+            System.out.println("*********");
+
+
+            System.out.println("unknown found = " + unknownCounter.countEntries(Path.of("e:/temp/moddesc.xml")));
+
+
+
+        } catch ( ParserConfigurationException | TransformerException|IOException e) {
             e.printStackTrace();
         }
 
-
-
-
-
-
     }
-
-
 
 
 
