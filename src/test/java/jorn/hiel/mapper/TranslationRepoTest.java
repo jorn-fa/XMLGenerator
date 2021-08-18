@@ -1,4 +1,4 @@
-package jorn.hiel.mapper.ObsoleteFiles;
+package jorn.hiel.mapper;
 
 import jorn.hiel.mapper.pojo.TranslationItem;
 import jorn.hiel.mapper.service.repo.TranslationsRepo;

@@ -5,6 +5,7 @@ import jorn.hiel.mapper.pojo.TranslationItem;
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.I3DMapper;
 import jorn.hiel.mapper.service.TranslationFileReader;
+import jorn.hiel.mapper.service.VehicleBuilder;
 import jorn.hiel.mapper.service.helpers.UnknownStringCounter;
 import jorn.hiel.mapper.service.writers.ModDescWriterDom;
 import org.json.simple.parser.ParseException;
@@ -35,6 +36,9 @@ public class Tester {
 
     @Autowired
     ConfigFileReader configFileReader;
+
+    @Autowired
+    VehicleBuilder vehicleBuilder;
 
 
     private final String source = "e:/temp/translations.json";
@@ -105,13 +109,21 @@ public class Tester {
 
         try {
 
-            modDescWriterDom.setFileLocation("e:/temp/moddesc.xml");
+            String moddescName="e:/temp/moddesc.xml";
+
+
+            modDescWriterDom.setFileLocation(moddescName);
             modDescWriterDom.writeModDesc();
+
+            String vehicleName=  configFileReader.getMappedItem("vehicleFileName").getValue();
+            vehicleBuilder.setFileLocation("e:/temp/"+vehicleName);
+            vehicleBuilder.writeVehicle();
 
             System.out.println("*********");
 
 
-            System.out.println("unknown found = " + unknownCounter.countEntries(Path.of("e:/temp/moddesc.xml")));
+            System.out.println("unknown found in moddesc= " + unknownCounter.countEntries(Path.of(moddescName)));
+            System.out.println("unknown found in vehicle= " + unknownCounter.countEntries(Path.of("e:/temp/"+vehicleName)));
 
 
 
