@@ -3,6 +3,7 @@ package jorn.hiel.mapper.service;
 import jorn.hiel.mapper.pojo.I3dMap;
 import jorn.hiel.mapper.pojo.MappedItem;
 import jorn.hiel.mapper.service.repo.I3dMapRepo;
+import jorn.hiel.mapper.service.repo.implementations.ConfigRepo;
 import jorn.hiel.mapper.service.repo.implementations.EntryRepo;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,11 @@ public class I3DMapper {
 
     @Autowired
     private EntryRepo entryRepo;
+
+    @Autowired
+    ConfigRepo configRepo;
+
+
 
     private File inputFile;
 
@@ -63,7 +69,7 @@ public class I3DMapper {
      * @throws SAXException
      * @throws IOException
      */
-    public void process() throws ParserConfigurationException, SAXException, IOException {
+    public void process() throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException {
 
         DocumentBuilder builder = dbFactory.getSecureDbf().newDocumentBuilder();
 
@@ -75,6 +81,10 @@ public class I3DMapper {
         document.getDocumentElement().normalize();
         NodeList nList = document.getElementsByTagName("Scene");
         NodeList temp = nList.item(0).getChildNodes();
+        //counter for non binairy save
+        if (nList.getLength()==2){temp = nList.item(1).getChildNodes();}
+
+        System.out.println( nList.getLength());
 
         int counter = 0;
         for (int a = 0; a < temp.getLength(); a++) {
@@ -84,7 +94,12 @@ public class I3DMapper {
                 String id = counter + ">";
                 String name = temp.item(a).getAttributes().getNamedItem("name").getNodeValue();
 
+                //if(name.startsWith("StoreDa"))
+
                 I3dMap i3dMap = new I3dMap().setNode(name).setId(id);
+
+                System.out.println("**--**--**");
+                System.out.println(i3dMap);
 
                 repo.add(i3dMap);
                 counter++;
@@ -100,8 +115,15 @@ public class I3DMapper {
                 String id = index + counter;
                 String name = nodeList.item(a).getAttributes().getNamedItem("name").getNodeValue();
 
-                I3dMap i3dMap = new I3dMap().setNode(name).setId(id);
-                repo.add(i3dMap);
+                //todo might need to alter to accept multiple entries
+                if(name.startsWith("StoreData")){
+                    processName(name);
+                }
+
+                else {
+                    I3dMap i3dMap = new I3dMap().setNode(name).setId(id);
+                    repo.add(i3dMap);
+                }
 
                 if (nodeList.item(a).hasChildNodes()) {
                     mapChildren(nodeList.item(a).getChildNodes(), index + counter + "|");
@@ -111,6 +133,21 @@ public class I3DMapper {
             }
 
         }
+
+    }
+
+
+    /**
+     * Splices a given string in to multiple entries and adds it to the correct repo
+     * @param name  A string containing 3 entries
+     *              <br>  example =   StoreData:Speed:50
+     *
+     */
+    private void processName(String name) {
+
+        String[] splice = name.split(":");
+
+        entryRepo.add(new MappedItem().setKey(splice[1]).setValue(splice[2]));
 
     }
 
@@ -133,6 +170,12 @@ public class I3DMapper {
     }
 
     public MappedItem getMappedItem(String key) {
-        return new MappedItem().setKey(key).setValue("");
+        if (entryRepo.getItems().get(key)==null){
+            return new MappedItem().setKey(key).setValue(configRepo.getItems().get("UnknownEntry"));
+        }
+
+        return new MappedItem().setKey(key).setValue(entryRepo.getItems().get(key));
+
     }
+
 }

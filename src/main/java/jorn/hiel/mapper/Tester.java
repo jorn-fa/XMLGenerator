@@ -47,11 +47,7 @@ public class Tester {
     public void runMe() {
 
         String file="c:/temp/climber10.i3d";
-
-
-
-
-
+        file="c:/temp/storedata/untitled.i3d";
 
 
         mapper.setFile(file);
@@ -61,7 +57,7 @@ public class Tester {
 
         try {
             mapper.process();
-            mapper.printList();
+
             translation.process();
             configFileReader.process();
 
@@ -79,11 +75,7 @@ public class Tester {
 
             mapper.addEntry(new MappedItem().setKey("fileName").setValue(Path.of(file).getFileName().toString()));
 
-            System.out.println("results:");
-            System.out.println(mapper.getMappedItems().size() + " Items");
 
-
-            mapper.getMappedItems().forEach((k,v) -> System.out.println("key " + k + "  //  value = " +v));
 
 
             System.out.println();
@@ -95,6 +87,8 @@ public class Tester {
         } catch (ParseException h) {
             System.out.println("problem with json : " + h);
 
+        } catch (NoSuchFieldException e) {
+            System.out.println("wrong item as first item in I3d");
         }
 
         translation.getTranslations().forEach(a -> System.out.println(a));
@@ -127,9 +121,18 @@ public class Tester {
 
 
 
+
+
         } catch ( ParserConfigurationException | TransformerException|IOException e) {
             e.printStackTrace();
         }
+
+
+        System.out.println("-*-*--*-");
+        System.out.println("results:");
+        System.out.println(mapper.getMappedItems().size() + " Items");
+        mapper.getMappedItems().forEach((k,v) -> System.out.println("key " + k + "  //  value = " +v));
+
 
     }
 

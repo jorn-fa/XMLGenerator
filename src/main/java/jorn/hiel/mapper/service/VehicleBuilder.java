@@ -1,6 +1,7 @@
 package jorn.hiel.mapper.service;
 
 import jorn.hiel.mapper.service.interfaces.SingleXmlItem;
+import jorn.hiel.mapper.service.writers.StoredataWriter;
 import jorn.hiel.mapper.service.writers.XmlFileWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class VehicleBuilder implements SingleXmlItem {
     @Autowired
     ConfigFileReader configFileReader;
 
+    @Autowired
+    StoredataWriter storedataWriter;
+
     private Document doc;
 
 
@@ -47,8 +51,12 @@ public class VehicleBuilder implements SingleXmlItem {
             Element rootElement = doc.createElement("Vehicle");
             doc.appendChild(rootElement);
 
-            rootElement.setAttribute("type",configFileReader.getMappedItem("VehicleType").getValue());
+            rootElement.setAttribute("type",configFileReader.getMappedItem("vehicleType").getValue());
             addSingleXmlItem(doc,rootElement,configFileReader.getMappedItem("annotationVehicle"));
+
+
+
+            storedataWriter.write(doc);
 
 
             xmlFileWriter.writeXml(doc);
