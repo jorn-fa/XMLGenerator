@@ -1,7 +1,6 @@
 package jorn.hiel.mapper.service.writers;
 
 
-import jorn.hiel.mapper.pojo.MappedItem;
 import jorn.hiel.mapper.service.I3DMapper;
 import jorn.hiel.mapper.service.interfaces.SingleXmlItem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +24,16 @@ public class StoreDataWriter implements SingleXmlItem {
 
         Node rootElement = doc.getElementsByTagName("Vehicle").item(0);
 
-        List<String> names = List.of("canBeSold", "showInStore","lifetime", "image", "price","lifetime","rotation","brand",
+        List<String> names = List.of("name","canBeSold", "showInStore","lifetime", "image", "price","lifetime","rotation","brand",
         "category","shopTranslationOffset","shopRotationOffset");
 
-        List<String> specNames = Arrays.asList("power","maxSpeed");
+        List<String> specNames = Arrays.asList("power","maxSpeed","neededPower","workingWidth");
 
         List<String> functionNames = List.of("function");
 
 
 
         Element storeData = doc.createElement("storeData");
-        addSingleXmlItem(doc,storeData,new MappedItem().setKey("name").setValue(mapper.getFileName()));
         names.forEach(a-> addSingleXmlItem(doc, storeData,mapper.getMappedItem(a)));
 
         Element specs = doc.createElement("spec");

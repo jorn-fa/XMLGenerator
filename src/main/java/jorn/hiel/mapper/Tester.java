@@ -91,13 +91,13 @@ public class Tester {
             System.out.println("wrong item as first item in I3d");
         }
 
-        translation.getTranslations().forEach(a -> System.out.println(a));
+        //translation.getTranslations().forEach(a -> System.out.println(a));
 
 
-        System.out.println("-----------------");
+        /*System.out.println("-----------------");
 
         System.out.println("config found items ->");
-        configFileReader.getMappedItems().forEach((k,v) -> System.out.println("key " + k + "  //  value = " +v));
+        configFileReader.getMappedItems().forEach((k,v) -> System.out.println("key " + k + "  //  value = " +v));*/
 
 
 

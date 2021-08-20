@@ -120,7 +120,7 @@ public class I3DMapper {
                 String name = nodeList.item(a).getAttributes().getNamedItem("name").getNodeValue();
 
                 //todo might need to alter to accept multiple entries
-                if(name.startsWith("StoreData")){
+                if(name.startsWith("XMLData")){
                     processName(name);
                 }
 
