@@ -5,6 +5,7 @@ import jorn.hiel.mapper.pojo.MappedItem;
 import jorn.hiel.mapper.service.repo.I3dMapRepo;
 import jorn.hiel.mapper.service.repo.implementations.ConfigRepo;
 import jorn.hiel.mapper.service.repo.implementations.EntryRepo;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 
 @Slf4j
@@ -37,6 +39,8 @@ public class I3DMapper {
     @Autowired
     ConfigRepo configRepo;
 
+    @Getter
+    String fileName;
 
 
     private File inputFile;
@@ -59,6 +63,8 @@ public class I3DMapper {
         File test = new File(file);
         log.debug(test.getAbsolutePath());
         this.inputFile = test;
+        log.info("setting file with name ->" + file);
+        this.fileName=test.getName();
 
     }
 
@@ -93,8 +99,6 @@ public class I3DMapper {
 
                 String id = counter + ">";
                 String name = temp.item(a).getAttributes().getNamedItem("name").getNodeValue();
-
-                //if(name.startsWith("StoreDa"))
 
                 I3dMap i3dMap = new I3dMap().setNode(name).setId(id);
 
@@ -146,7 +150,8 @@ public class I3DMapper {
     private void processName(String name) {
 
         String[] splice = name.split(":");
-
+        //QOL ->  brand to uppercase
+        if(splice[1].equals("brand")){splice[2]=splice[2].toUpperCase(Locale.ROOT);}
         entryRepo.add(new MappedItem().setKey(splice[1]).setValue(splice[2]));
 
     }
@@ -161,6 +166,7 @@ public class I3DMapper {
 
 
     public void addEntry(MappedItem mappedItem) {
+
         entryRepo.add(mappedItem);
 
     }

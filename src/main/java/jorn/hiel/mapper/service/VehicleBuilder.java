@@ -1,7 +1,7 @@
 package jorn.hiel.mapper.service;
 
 import jorn.hiel.mapper.service.interfaces.SingleXmlItem;
-import jorn.hiel.mapper.service.writers.StoredataWriter;
+import jorn.hiel.mapper.service.writers.StoreDataWriter;
 import jorn.hiel.mapper.service.writers.XmlFileWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class VehicleBuilder implements SingleXmlItem {
     ConfigFileReader configFileReader;
 
     @Autowired
-    StoredataWriter storedataWriter;
+    StoreDataWriter storedataWriter;
 
     private Document doc;
 
