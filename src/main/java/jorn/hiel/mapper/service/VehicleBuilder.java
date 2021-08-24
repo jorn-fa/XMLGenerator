@@ -1,10 +1,7 @@
 package jorn.hiel.mapper.service;
 
 import jorn.hiel.mapper.service.interfaces.SingleXmlItem;
-import jorn.hiel.mapper.service.writers.BaseWriter;
-import jorn.hiel.mapper.service.writers.StoreDataWriter;
-import jorn.hiel.mapper.service.writers.WearAndWashWriter;
-import jorn.hiel.mapper.service.writers.XmlFileWriter;
+import jorn.hiel.mapper.service.writers.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +27,9 @@ public class VehicleBuilder implements SingleXmlItem {
 
     @Autowired
     StoreDataWriter storedataWriter;
+
+    @Autowired
+    WiperWriter wiperWriter;
 
     @Autowired
     BaseWriter baseWriter;
@@ -67,6 +67,7 @@ public class VehicleBuilder implements SingleXmlItem {
             storedataWriter.write(doc);
             baseWriter.write(doc);
             wearAndWashWriter.write(doc);
+            wiperWriter.write(doc);
 
 
             xmlFileWriter.writeXml(doc);

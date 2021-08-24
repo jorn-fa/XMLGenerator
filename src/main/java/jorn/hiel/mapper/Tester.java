@@ -44,6 +44,7 @@ public class Tester {
     private final String source = "e:/temp/translations.json";
     private final String configFile = "e:/temp/config.json";
 
+
     public void runMe() {
 
         String file="c:/temp/climber10.i3d";
@@ -134,7 +135,13 @@ public class Tester {
         mapper.getMappedItems().forEach((k,v) -> System.out.println("key " + k + "  //  value = " +v));
 
 
+
+
+
+
     }
+
+
 
 
 
