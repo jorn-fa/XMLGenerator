@@ -8,6 +8,7 @@ import jorn.hiel.mapper.service.TranslationFileReader;
 import jorn.hiel.mapper.service.VehicleBuilder;
 import jorn.hiel.mapper.service.helpers.UnknownStringCounter;
 import jorn.hiel.mapper.service.writers.ModDescWriterDom;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 @Service
+@Slf4j
 public class Tester {
 
     @Autowired
@@ -43,6 +48,14 @@ public class Tester {
 
     private final String source = "e:/temp/translations.json";
     private final String configFile = "e:/temp/config.json";
+    private List<String> args = new ArrayList<>();
+
+
+    public void setRuntimeArgs(String[] runTimeArgs){
+        Collections.addAll(args,runTimeArgs);
+
+
+    }
 
 
     public void runMe() {
@@ -56,11 +69,22 @@ public class Tester {
         translation.setFile(source);
         configFileReader.setFile(configFile);
 
+
+
+
         try {
             mapper.process();
 
             translation.process();
             configFileReader.process();
+
+            if(args.size()!=0 && args.contains("-FullWrite:true")){
+                log.info("FULL WRITE ACTIVE");
+
+                configFileReader.getMappedItems().put("writeAll","true");
+            }
+
+
 
             mapper.repo.getItems().forEach(a -> {
                 for (TranslationItem item : translation.getTranslations()) {
