@@ -1,5 +1,6 @@
 package jorn.hiel.mapper.service;
 
+import jorn.hiel.mapper.service.interfaces.DocWriter;
 import jorn.hiel.mapper.service.interfaces.SingleXmlItem;
 import jorn.hiel.mapper.service.writers.*;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -36,6 +38,9 @@ public class VehicleBuilder implements SingleXmlItem {
 
     @Autowired
     WearAndWashWriter wearAndWashWriter;
+
+    @Autowired
+    EnterableWriter enterableWriter;
 
     private Document doc;
 
@@ -62,12 +67,10 @@ public class VehicleBuilder implements SingleXmlItem {
             rootElement.setAttribute("type",configFileReader.getMappedItem("vehicleType").getValue());
             addSingleXmlItem(doc,rootElement,configFileReader.getMappedItem("annotationVehicle"));
 
+            List<DocWriter> writers = List.of(storedataWriter,baseWriter,wearAndWashWriter, wiperWriter,enterableWriter);
+            writers.forEach(a-> a.write(doc));
 
 
-            storedataWriter.write(doc);
-            baseWriter.write(doc);
-            wearAndWashWriter.write(doc);
-            wiperWriter.write(doc);
 
 
             xmlFileWriter.writeXml(doc);

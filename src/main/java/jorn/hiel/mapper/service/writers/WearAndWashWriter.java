@@ -1,6 +1,7 @@
 package jorn.hiel.mapper.service.writers;
 
 import jorn.hiel.mapper.service.I3DMapper;
+import jorn.hiel.mapper.service.interfaces.DocWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -10,7 +11,7 @@ import org.w3c.dom.Node;
 import java.util.List;
 
 @Service
-public class WearAndWashWriter  {
+public class WearAndWashWriter implements DocWriter {
     @Autowired
     I3DMapper mapper;
 

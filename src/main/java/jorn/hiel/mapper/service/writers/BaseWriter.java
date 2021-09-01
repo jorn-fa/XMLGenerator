@@ -2,6 +2,7 @@ package jorn.hiel.mapper.service.writers;
 
 import jorn.hiel.mapper.pojo.MappedItem;
 import jorn.hiel.mapper.service.I3DMapper;
+import jorn.hiel.mapper.service.interfaces.DocWriter;
 import jorn.hiel.mapper.service.interfaces.SingleXmlItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import java.util.List;
 
 
 @Service
-public class BaseWriter implements SingleXmlItem {
+public class BaseWriter implements SingleXmlItem, DocWriter {
 
     @Autowired
     I3DMapper mapper;
