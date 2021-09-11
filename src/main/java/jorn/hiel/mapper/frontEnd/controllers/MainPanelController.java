@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -29,10 +30,11 @@ public class MainPanelController implements PropertyChangeListener {
     }
 
     private void init() {
-        log.info("creating ******************");
         clearFields();
         //panel.getProcessButton().addActionListener(a -> manager.startWorking(new MainPanelDto().setDirectory(panel.getDirectoryField().getText().trim())));
         panel.getDirectorySelector().addActionListener(a -> chooseDirectory());
+        panel.getFileSelector().addActionListener(a -> chooseFile());
+
 
     }
 
@@ -60,14 +62,18 @@ public class MainPanelController implements PropertyChangeListener {
 
     private void chooseDirectory(){
         chooseFileOrDirectory(JFileChooser.DIRECTORIES_ONLY,"Select folder");
-        panel.getResultPane().setText("Directory set = " + manager.getDirectory());
-        panel.getDirectoryField().setText(manager.getDirectory().toString());
+        if (manager.getDirectory()!=null) {
+            panel.getResultPane().setText("Directory set = " + manager.getDirectory());
+            panel.getDirectoryField().setText(manager.getDirectory().toString());
+        }
     }
 
     private void chooseFile(){
-        chooseFileOrDirectory(JFileChooser.DIRECTORIES_ONLY,"Select folder");
+
+        chooseFileOrDirectory(JFileChooser.FILES_ONLY,"Select file");
+        if (manager.getFileName()!=null){
         panel.getResultPane().setText("source set = " + manager.getFileName().getName());
-        panel.getFileNameField().setText(manager.getDirectory().toString());
+        panel.getFileNameField().setText(manager.getFileName().toString());}
     }
 
     private void chooseFileOrDirectory(int option, String title) {
@@ -88,7 +94,19 @@ public class MainPanelController implements PropertyChangeListener {
         };
 
         fileChooser.setFileSelectionMode(option);
+        if (option==JFileChooser.FILES_ONLY) {
+            //FileFilter filter = new FileNameExtensionFilter("i3d");
+
+            FileNameExtensionFilter i3dFilter = new FileNameExtensionFilter("i3d files", "i3d");
+            fileChooser.addChoosableFileFilter(i3dFilter);
+            fileChooser.setFileFilter(i3dFilter);
+
+        }
+
         fileChooser.setDialogTitle(title);
+
+
+
 
         int verify = fileChooser.showOpenDialog(panel);
 

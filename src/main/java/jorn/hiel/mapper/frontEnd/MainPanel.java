@@ -25,7 +25,7 @@ public class MainPanel extends JPanel implements ReadOptimal{
         int margin=5;
         setLayout(null);
 
-        JLabel directoryLabel = new JLabel("Directory :");
+        JLabel directoryLabel = new JLabel("To directory :");
         JLabel fileLabel = new JLabel("File :");
 
         int fileHeight=38;
