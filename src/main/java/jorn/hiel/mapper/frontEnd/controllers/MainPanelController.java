@@ -165,7 +165,7 @@ public class MainPanelController implements PropertyChangeListener {
                 if(option==JFileChooser.DIRECTORIES_ONLY){
                 manager.setDirectory(fileChooser.getSelectedFile());}
                 else{
-                    if(!fileChooser.getSelectedFile().getName().endsWith("i3d"))throw new UnsupportedOperationException();
+                    if(!fileChooser.getSelectedFile().getName().toLowerCase().endsWith("i3d"))throw new UnsupportedOperationException();
 
                     manager.setFileName(fileChooser.getSelectedFile());
                 }

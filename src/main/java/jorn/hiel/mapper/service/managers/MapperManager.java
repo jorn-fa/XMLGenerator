@@ -125,8 +125,9 @@ public class MapperManager extends BasicManager {
             vehicleBuilder.setFileLocation("e:/temp/" + vehicleName);
             vehicleBuilder.writeVehicle();
 
-            results.add("unknown found in moddesc = " +unknownCounter.countEntries(Path.of(moddescName)));
-            results.add("unknown found in vehicle = " + unknownCounter.countEntries(Path.of("e:/temp/" + vehicleName)));
+            results.add("i3dmapped items = " + mapper.repo.getItems().size());
+            results.add("unknown items found in moddesc = " +unknownCounter.countEntries(Path.of(moddescName)));
+            results.add("unknown items found in vehicle = " + unknownCounter.countEntries(Path.of("e:/temp/" + vehicleName)));
 
 
         } catch (ParserConfigurationException | TransformerException | IOException e) {
