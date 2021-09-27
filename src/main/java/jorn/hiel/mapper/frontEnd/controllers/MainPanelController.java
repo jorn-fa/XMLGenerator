@@ -11,29 +11,35 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.Serial;
 
 
 @Service
 @Slf4j
 public class MainPanelController implements PropertyChangeListener {
+
     private final MainPanel panel;
+
+
     private final MapperManager manager;
 
-    private final String starter = "No results known yet.";
+
 
     public MainPanelController(MainPanel panel, MapperManager manager) {
 
         this.panel = panel;
         this.manager = manager;
-        manager.getPcs().addPropertyChangeListener(this);
         init();
     }
 
     private void init() {
+
         clearFields();
-        //panel.getProcessButton().addActionListener(a -> manager.startWorking(new MainPanelDto().setDirectory(panel.getDirectoryField().getText().trim())));
+        panel.getProcessButton().addActionListener(a-> process());
         panel.getDirectorySelector().addActionListener(a -> chooseDirectory());
         panel.getFileSelector().addActionListener(a -> chooseFile());
+        panel.getFileNameField().setEditable(false);
+        panel.getDirectoryField().setEditable(false);
 
 
     }
@@ -42,43 +48,97 @@ public class MainPanelController implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
 
-        MainPanelUpdate recieving = MainPanelUpdate.valueOf(evt.getPropertyName());
-        switch (recieving) {
+        System.out.println("333333333333333333333");
+        System.out.println(evt);
+        System.out.println("333333333333333333333");
+
+        MainPanelUpdate receiving = MainPanelUpdate.valueOf(evt.getPropertyName());
+        switch (receiving) {
             //case DIRECTORY -> setDirectory(manager.getDirectory());
             case CLEAR -> clearFields();
-            //case RESULT -> panel.getResultPane().setText(manager.getResults());
-            default -> throw new IllegalArgumentException("Unexpected value: " + recieving);
+            case RESULT -> getFinalResult();
+            default -> throw new IllegalArgumentException("Unexpected value: " + receiving);
 
         }
 
     }
 
     public void clearFields() {
+        String starter = "No results known yet.";
         panel.getDirectoryField().setText("- None Selected -");
         panel.getResultPane().setText(starter);
 
     }
 
 
+
+
+    void process(){
+        manager.runMe();
+        getFinalResult();
+
+    }
+
+    /**
+     *
+     * @param result
+     *
+     * appends result to the output of the resultpane's text
+     */
+    private void addResult(String result){
+        log.info(result);
+        panel.getResultPane().setText(panel.getResultPane().getText()+"\n"+result);
+    }
+
+
     private void chooseDirectory(){
         chooseFileOrDirectory(JFileChooser.DIRECTORIES_ONLY,"Select folder");
         if (manager.getDirectory()!=null) {
-            panel.getResultPane().setText("Directory set = " + manager.getDirectory());
+            addResult("Directory set = " + manager.getDirectory());
             panel.getDirectoryField().setText(manager.getDirectory().toString());
         }
     }
 
     private void chooseFile(){
+        try {
+            chooseFileOrDirectory(JFileChooser.FILES_ONLY, "Select file");
+        } catch (UnsupportedOperationException e) {
+            addResult("wrong file format specified");
+        }
 
-        chooseFileOrDirectory(JFileChooser.FILES_ONLY,"Select file");
-        if (manager.getFileName()!=null){
-        panel.getResultPane().setText("source set = " + manager.getFileName().getName());
-        panel.getFileNameField().setText(manager.getFileName().toString());}
+            System.out.println(manager.getFileName());
+
+            if (manager.getFileName() != null)  {
+                addResult("source set = " + manager.getFileName().getName());
+                panel.getFileNameField().setText(manager.getFileName().toString());
+            }
+
     }
 
+    /**
+     * logs+adds results to result list
+     */
+
+    private void getFinalResult(){
+
+        for(String result: manager.getResults()){
+            addResult(result);
+            log.info(result);
+        }
+
+
+    }
+
+    /**
+     *
+     * @param option sets chooser to directory or file
+     * @param title window title
+     * @throws UnsupportedOperationException when filetype is not valid
+     */
     private void chooseFileOrDirectory(int option, String title) {
         JFileChooser fileChooser = new JFileChooser() {
 
+            @Serial
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -90,40 +150,27 @@ public class MainPanelController implements PropertyChangeListener {
                     super.approveSelection();
                 }
             }
-
         };
 
         fileChooser.setFileSelectionMode(option);
         if (option==JFileChooser.FILES_ONLY) {
-            //FileFilter filter = new FileNameExtensionFilter("i3d");
-
             FileNameExtensionFilter i3dFilter = new FileNameExtensionFilter("i3d files", "i3d");
             fileChooser.addChoosableFileFilter(i3dFilter);
             fileChooser.setFileFilter(i3dFilter);
-
         }
 
         fileChooser.setDialogTitle(title);
-
-
-
-
         int verify = fileChooser.showOpenDialog(panel);
-
-
-
             if (verify == JFileChooser.APPROVE_OPTION) {
                 if(option==JFileChooser.DIRECTORIES_ONLY){
                 manager.setDirectory(fileChooser.getSelectedFile());}
                 else{
+                    if(!fileChooser.getSelectedFile().getName().endsWith("i3d"))throw new UnsupportedOperationException();
+
                     manager.setFileName(fileChooser.getSelectedFile());
                 }
-
             } else {
                 log.info("cancel button was pressed");
-
-
-
         }
     }
 }

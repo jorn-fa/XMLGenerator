@@ -26,6 +26,7 @@ public class BasicManager implements PropertyChangeWithEnum {
     }
 
 
+
     protected void requestUpdate(Object o) {
         //o.getClass();
         // lazy, method signature to single line + getClass does nothing in this case,
