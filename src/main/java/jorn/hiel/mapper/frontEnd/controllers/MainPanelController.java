@@ -1,22 +1,20 @@
 package jorn.hiel.mapper.frontEnd.controllers;
 
 import jorn.hiel.mapper.frontEnd.MainPanel;
-import jorn.hiel.mapper.frontEnd.MainPanelUpdate;
 import jorn.hiel.mapper.service.managers.MapperManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.Serial;
+import java.util.Locale;
 
 
 @Service
 @Slf4j
-public class MainPanelController implements PropertyChangeListener {
+public class MainPanelController  {
 
     private final MainPanel panel;
 
@@ -45,23 +43,7 @@ public class MainPanelController implements PropertyChangeListener {
     }
 
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
 
-        System.out.println("333333333333333333333");
-        System.out.println(evt);
-        System.out.println("333333333333333333333");
-
-        MainPanelUpdate receiving = MainPanelUpdate.valueOf(evt.getPropertyName());
-        switch (receiving) {
-            //case DIRECTORY -> setDirectory(manager.getDirectory());
-            case CLEAR -> clearFields();
-            case RESULT -> getFinalResult();
-            default -> throw new IllegalArgumentException("Unexpected value: " + receiving);
-
-        }
-
-    }
 
     public void clearFields() {
         String starter = "No results known yet.";
@@ -73,7 +55,17 @@ public class MainPanelController implements PropertyChangeListener {
 
 
 
-    void process(){
+    private void process(){
+        if (manager.getFileName()==null || !manager.getFileName().getName().toLowerCase(Locale.ROOT).contains(".i3d")){
+            addResult("File not set.");
+            return;
+        }
+
+        if (manager.getDirectory()==null){
+            addResult("Output directory not set.");
+            return;
+        }
+
         manager.runMe();
         getFinalResult();
 
@@ -165,6 +157,7 @@ public class MainPanelController implements PropertyChangeListener {
                 if(option==JFileChooser.DIRECTORIES_ONLY){
                 manager.setDirectory(fileChooser.getSelectedFile());}
                 else{
+                    log.info(fileChooser.getSelectedFile().getName() + "selected");
                     if(!fileChooser.getSelectedFile().getName().toLowerCase().endsWith("i3d"))throw new UnsupportedOperationException();
 
                     manager.setFileName(fileChooser.getSelectedFile());

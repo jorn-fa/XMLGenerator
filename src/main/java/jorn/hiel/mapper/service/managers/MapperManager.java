@@ -64,6 +64,8 @@ public class MapperManager extends BasicManager {
 
     public void runMe() {
 
+        //todo cleanup
+
         results=new ArrayList<>();
 
         mapper.setFile(fileName.getAbsolutePath());
@@ -128,6 +130,9 @@ public class MapperManager extends BasicManager {
             results.add("i3dmapped items = " + mapper.repo.getItems().size());
             results.add("unknown items found in moddesc = " +unknownCounter.countEntries(Path.of(moddescName)));
             results.add("unknown items found in vehicle = " + unknownCounter.countEntries(Path.of("e:/temp/" + vehicleName)));
+            //erase history to stop chain spam process button
+            this.fileName=null;
+            this.directory=null;
 
 
         } catch (ParserConfigurationException | TransformerException | IOException e) {

@@ -42,6 +42,11 @@ public class VehicleBuilder implements SingleXmlItem {
     @Autowired
     EnterableWriter enterableWriter;
 
+    @Autowired
+    i3DMapperWriter i3DMapperWriter;
+
+
+
     private Document doc;
 
 
@@ -67,10 +72,8 @@ public class VehicleBuilder implements SingleXmlItem {
             rootElement.setAttribute("type",configFileReader.getMappedItem("vehicleType").getValue());
             addSingleXmlItem(doc,rootElement,configFileReader.getMappedItem("annotationVehicle"));
 
-            List<DocWriter> writers = List.of(storedataWriter,baseWriter,wearAndWashWriter, wiperWriter,enterableWriter);
+            List<DocWriter> writers = List.of(storedataWriter,baseWriter,wearAndWashWriter, wiperWriter,enterableWriter,i3DMapperWriter);
             writers.forEach(a-> a.write(doc));
-
-
 
 
             xmlFileWriter.writeXml(doc);
