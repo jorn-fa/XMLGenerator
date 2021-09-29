@@ -25,6 +25,7 @@ public class AdvancedI3dMapperApplication {
 		for(String arg : args){
 			System.out.println(arg);
 			//-fullWrite:True
+
 		}
 
 
@@ -32,17 +33,18 @@ public class AdvancedI3dMapperApplication {
 
 		System.setProperty("java.awt.headless", "false"); //Disables headless
 
-
-
 		ApplicationContext app = SpringApplication.run(AdvancedI3dMapperApplication.class, args);//init
 
 		MapperManager manager = app.getBean(MapperManager.class);//get the bean by type
 		manager.setRuntimeArgs(args);
 
-		//MapperManager mapperManager = app.getBean(MapperManager.class);//get the bean by type
+
+
+
+		if(manager.getDirectory()==null && manager.getFileName()==null){
+
+
 		MainPanel panel = app.getBean(MainPanel.class);
-
-
 
 		JFrame frame = new JFrame("Xml Skeletor");
 		frame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -50,11 +52,14 @@ public class AdvancedI3dMapperApplication {
 		frame.setSize(550,400);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		frame.setResizable(false);
+		frame.setResizable(false);}
+		else{
+
+			manager.runMe();}
 
 
 
-		//manager.runMe();
+
 
 
 

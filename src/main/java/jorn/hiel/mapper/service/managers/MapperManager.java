@@ -53,13 +53,12 @@ public class MapperManager extends BasicManager {
     @Autowired
     VehicleBuilder vehicleBuilder;
 
-    private final String source = "e:/temp/translations.json";
-    private final String configFile = "e:/temp/config.json";
     private List<String> args = new ArrayList<>();
 
 
     public void setRuntimeArgs(String[] runTimeArgs){
         Collections.addAll(args,runTimeArgs);
+        checkCommandLine();
     }
 
     public void runMe() {
@@ -70,21 +69,15 @@ public class MapperManager extends BasicManager {
 
         mapper.setFile(fileName.getAbsolutePath());
         mapper.clearRepo();
-        translation.setFile(source);
-        configFileReader.setFile(configFile);
-
 
         try {
+
             mapper.process();
 
             translation.process();
             configFileReader.process();
 
-            if (args.size() != 0 && args.contains("-FullWrite:true")) {
-                log.info("FULL WRITE ACTIVE");
 
-                configFileReader.getMappedItems().put("writeAll", "true");
-            }
 
 
             mapper.repo.getItems().forEach(a -> {
@@ -117,18 +110,18 @@ public class MapperManager extends BasicManager {
 
         try {
 
-            String moddescName = directory.getAbsolutePath()+"/"+"modDesc.xml";
+            String modDescName = directory.getAbsolutePath()+"/"+"modDesc.xml";
 
 
-            modDescWriterDom.setFileLocation( moddescName);
+            modDescWriterDom.setFileLocation( modDescName);
             modDescWriterDom.writeModDesc();
 
             String vehicleName = configFileReader.getMappedItem("vehicleFileName").getValue();
             vehicleBuilder.setFileLocation("e:/temp/" + vehicleName);
             vehicleBuilder.writeVehicle();
 
-            results.add("i3dmapped items = " + mapper.repo.getItems().size());
-            results.add("unknown items found in moddesc = " +unknownCounter.countEntries(Path.of(moddescName)));
+            results.add("i3dMapped items = " + mapper.repo.getItems().size());
+            results.add("unknown items found in modDesc = " +unknownCounter.countEntries(Path.of(modDescName)));
             results.add("unknown items found in vehicle = " + unknownCounter.countEntries(Path.of("e:/temp/" + vehicleName)));
             //erase history to stop chain spam process button
             this.fileName=null;
@@ -139,5 +132,54 @@ public class MapperManager extends BasicManager {
             e.printStackTrace();
         }
 
+    }
+
+    private void checkCommandLine() {
+        //-FullWrite:true -TranslationFile:"e:\temp\translations.json" -ConfigFile:"e:\temp\config.json
+
+        if (args.size() != 0 ) {
+            String logEntry = "COMMANDLINE: ";
+            log.info("command line arguments found");
+
+            if (args.contains("-FullWrite:true")) {
+                log.info(logEntry+"FULL WRITE ACTIVE");
+                configFileReader.getMappedItems().put("writeAll", "true");
+            }
+
+            for(String arg : args) {
+                String checkMe="-TranslationFile:";
+                if (arg.startsWith(checkMe)){
+
+                    String sub = arg.substring(checkMe.length()).replace('\\','/');
+                    log.info(logEntry+"translation file set to "+ sub);
+                    translation.setFile(sub);
+                }
+                checkMe="-ConfigFile:";
+                if (arg.startsWith(checkMe)){
+                    String sub = arg.substring(checkMe.length()).replace('\\','/');
+                    log.info(logEntry+"configuration file set to "+ sub);
+                    configFileReader.setFile(sub);
+
+                }
+                checkMe="-SourceFile:";
+                if (arg.startsWith(checkMe)){
+                    String sub = arg.substring(checkMe.length()).replace('\\','/');
+                    log.info(logEntry+"source file set to "+ sub);
+                    fileName=new File(sub);
+
+                }
+                checkMe="-Destination:";
+                if (arg.startsWith(checkMe)){
+                    String sub = arg.substring(checkMe.length()).replace('\\','/');
+                    log.info(logEntry+"destination set to "+ sub);
+                    this.directory=new File(sub);
+
+
+
+                }
+
+            }
+
+    }
     }
 }
