@@ -150,8 +150,7 @@ public class MapperManager extends BasicManager {
     private void checkCommandLine() {
 
         ApplicationHome home = new ApplicationHome(MapperManager.class);
-        System.out.println(home.getDir());    // returns the folder where the jar is. This is what I wanted.
-        System.out.println(home.getSource()); // returns the jar absolute path.
+
         String separator = System.getProperty("file.separator");
 
         translation.setFile(home.getDir()+ separator + "translations.json");
