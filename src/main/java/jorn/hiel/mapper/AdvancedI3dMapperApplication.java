@@ -22,6 +22,9 @@ public class AdvancedI3dMapperApplication {
 
 
 
+
+
+
 		for(String arg : args){
 			System.out.println(arg);
 			//-fullWrite:True
@@ -55,7 +58,12 @@ public class AdvancedI3dMapperApplication {
 		frame.setResizable(false);}
 		else{
 
-			manager.runMe();}
+
+
+			manager.runMe();
+
+
+		}
 
 
 

@@ -50,7 +50,6 @@ public class MainPanelController  {
         String starter = "No results known yet.";
         panel.getDirectoryField().setText("- None Selected -");
         panel.getResultPane().setText(starter);
-
     }
 
 
@@ -66,6 +65,9 @@ public class MainPanelController  {
             addResult("Output directory not set.");
             return;
         }
+
+
+
 
         manager.runMe();
         getFinalResult();
@@ -114,9 +116,13 @@ public class MainPanelController  {
 
     private void getFinalResult(){
 
-        for(String result: manager.getResults()){
+        if(manager.getResults()!=null)
+        {for(String result: manager.getResults()){
             addResult(result);
             log.info(result);
+        }}
+        else{
+            addResult("Configuration files not set correct");
         }
 
 

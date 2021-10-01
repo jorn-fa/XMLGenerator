@@ -13,6 +13,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
@@ -24,6 +25,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 
 @Service
 @Getter @Setter
@@ -56,130 +58,153 @@ public class MapperManager extends BasicManager {
     private List<String> args = new ArrayList<>();
 
 
-    public void setRuntimeArgs(String[] runTimeArgs){
-        Collections.addAll(args,runTimeArgs);
+    public void setRuntimeArgs(String[] runTimeArgs) {
+        Collections.addAll(args, runTimeArgs);
         checkCommandLine();
     }
 
     public void runMe() {
 
-        //todo cleanup
 
-        results=new ArrayList<>();
+        if (!hasConfig()) {
+            log.info("no config or translation set");
+        } else {
 
-        mapper.setFile(fileName.getAbsolutePath());
-        mapper.clearRepo();
+            results = new ArrayList<>();
 
-        try {
+            mapper.setFile(fileName.getAbsolutePath());
+            mapper.clearRepo();
 
-            mapper.process();
+            try {
 
-            translation.process();
-            configFileReader.process();
+                mapper.process();
+
+                translation.process();
+                configFileReader.process();
 
 
+                mapper.repo.getItems().forEach(a -> {
+                    for (TranslationItem item : translation.getTranslations()) {
+                        if (item.getTranslationItems().contains(a.getNode())) {
+                            mapper.addEntry(new MappedItem().setKey(item.getItem()).setValue(a.getNode()));
 
-
-            mapper.repo.getItems().forEach(a -> {
-                for (TranslationItem item : translation.getTranslations()) {
-                    if (item.getTranslationItems().contains(a.getNode())) {
-                        mapper.addEntry(new MappedItem().setKey(item.getItem()).setValue(a.getNode()));
-
+                        }
                     }
-                }
 
-            });
+                });
 
-            //add filename to mapper
+                //add filename to mapper
 
-            mapper.addEntry(new MappedItem().setKey("fileName").setValue(fileName.getAbsolutePath()));
-
-
-            System.out.println();
+                mapper.addEntry(new MappedItem().setKey("fileName").setValue(fileName.getAbsolutePath()));
 
 
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
-        } catch (ParseException h) {
-            System.out.println("problem with json : " + h);
+            } catch (ParserConfigurationException | SAXException | IOException e) {
+                e.printStackTrace();
+            } catch (ParseException h) {
+                log.info("problem with json : " + h);
 
-        } catch (NoSuchFieldException e) {
-            System.out.println("wrong item as first item in I3d");
-        }
-
-
-        try {
-
-            String modDescName = directory.getAbsolutePath()+"/"+"modDesc.xml";
+            } catch (NoSuchFieldException e) {
+                log.info("wrong item as first item in I3d");
+            }
 
 
-            modDescWriterDom.setFileLocation( modDescName);
-            modDescWriterDom.writeModDesc();
+            try {
 
-            String vehicleName = configFileReader.getMappedItem("vehicleFileName").getValue();
-            vehicleBuilder.setFileLocation("e:/temp/" + vehicleName);
-            vehicleBuilder.writeVehicle();
-
-            results.add("i3dMapped items = " + mapper.repo.getItems().size());
-            results.add("unknown items found in modDesc = " +unknownCounter.countEntries(Path.of(modDescName)));
-            results.add("unknown items found in vehicle = " + unknownCounter.countEntries(Path.of("e:/temp/" + vehicleName)));
-            //erase history to stop chain spam process button
-            this.fileName=null;
-            this.directory=null;
+                String modDescName = directory.getAbsolutePath() + "/" + "modDesc.xml";
 
 
-        } catch (ParserConfigurationException | TransformerException | IOException e) {
-            e.printStackTrace();
+                modDescWriterDom.setFileLocation(modDescName);
+                modDescWriterDom.writeModDesc();
+
+                String vehicleName = configFileReader.getMappedItem("vehicleFileName").getValue();
+                vehicleBuilder.setFileLocation("e:/temp/" + vehicleName);
+                vehicleBuilder.writeVehicle();
+
+                results.add("i3dMapped items = " + mapper.repo.getItems().size());
+                results.add("unknown items found in modDesc = " + unknownCounter.countEntries(Path.of(modDescName)));
+                results.add("unknown items found in vehicle = " + unknownCounter.countEntries(Path.of("e:/temp/" + vehicleName)));
+                //erase history to stop chain spam process button
+                this.fileName = null;
+                this.directory = null;
+
+
+            } catch (ParserConfigurationException | TransformerException | IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
 
-    private void checkCommandLine() {
-        //-FullWrite:true -TranslationFile:"e:\temp\translations.json" -ConfigFile:"e:\temp\config.json
+    private boolean hasConfig() {
+        log.info("checking config files");
 
-        if (args.size() != 0 ) {
+        log.info(translation.getFile());
+        log.info(configFileReader.getFile());
+
+
+        return !translation.getFile().isEmpty() && !configFileReader.getFile().isEmpty();
+
+    }
+
+
+    private void checkCommandLine() {
+
+        ApplicationHome home = new ApplicationHome(MapperManager.class);
+        System.out.println(home.getDir());    // returns the folder where the jar is. This is what I wanted.
+        System.out.println(home.getSource()); // returns the jar absolute path.
+        String separator = System.getProperty("file.separator");
+
+        translation.setFile(home.getDir()+ separator + "translations.json");
+        configFileReader.setFile(home.getDir()+separator+"config.json");
+
+
+        if (args.size() != 0) {
             String logEntry = "COMMANDLINE: ";
             log.info("command line arguments found");
 
             if (args.contains("-FullWrite:true")) {
-                log.info(logEntry+"FULL WRITE ACTIVE");
+                log.info(logEntry + "FULL WRITE ACTIVE");
                 configFileReader.getMappedItems().put("writeAll", "true");
             }
 
-            for(String arg : args) {
-                String checkMe="-TranslationFile:";
-                if (arg.startsWith(checkMe)){
+            for (String arg : args) {
+                String checkMe = "-TranslationFile:";
+                if (arg.startsWith(checkMe)) {
 
-                    String sub = arg.substring(checkMe.length()).replace('\\','/');
-                    log.info(logEntry+"translation file set to "+ sub);
+                    String sub = arg.substring(checkMe.length()).replace('\\', '/');
+                    log.info(logEntry + "translation file set to " + sub);
                     translation.setFile(sub);
                 }
-                checkMe="-ConfigFile:";
-                if (arg.startsWith(checkMe)){
-                    String sub = arg.substring(checkMe.length()).replace('\\','/');
-                    log.info(logEntry+"configuration file set to "+ sub);
+
+
+                checkMe = "-ConfigFile:";
+                if (arg.startsWith(checkMe)) {
+                    String sub = arg.substring(checkMe.length()).replace('\\', '/');
+                    log.info(logEntry + "configuration file set to " + sub);
                     configFileReader.setFile(sub);
 
                 }
-                checkMe="-SourceFile:";
-                if (arg.startsWith(checkMe)){
-                    String sub = arg.substring(checkMe.length()).replace('\\','/');
-                    log.info(logEntry+"source file set to "+ sub);
-                    fileName=new File(sub);
+
+                checkMe = "-SourceFile:";
+                if (arg.startsWith(checkMe)) {
+                    String sub = arg.substring(checkMe.length()).replace('\\', '/');
+                    log.info(logEntry + "source file set to " + sub);
+                    fileName = new File(sub);
 
                 }
-                checkMe="-Destination:";
-                if (arg.startsWith(checkMe)){
-                    String sub = arg.substring(checkMe.length()).replace('\\','/');
-                    log.info(logEntry+"destination set to "+ sub);
-                    this.directory=new File(sub);
-
+                checkMe = "-Destination:";
+                if (arg.startsWith(checkMe)) {
+                    String sub = arg.substring(checkMe.length()).replace('\\', '/');
+                    log.info(logEntry + "destination set to " + sub);
+                    this.directory = new File(sub);
 
 
                 }
 
             }
 
+        }
+
     }
-    }
+
 }

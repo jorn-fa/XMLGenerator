@@ -71,9 +71,9 @@ public class I3DMapper {
     /**
      * Processes the set i3d file:
      *
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @throws IOException
+     * @throws ParserConfigurationException  xml problem
+     * @throws SAXException xml problem
+     * @throws IOException file problem
      */
     public void process() throws ParserConfigurationException, SAXException, IOException, NoSuchFieldException {
 
@@ -90,7 +90,7 @@ public class I3DMapper {
         //counter for non binairy save
         if (nList.getLength()==2){temp = nList.item(1).getChildNodes();}
 
-        System.out.println( nList.getLength());
+
 
         int counter = 0;
         for (int a = 0; a < temp.getLength(); a++) {
@@ -101,9 +101,6 @@ public class I3DMapper {
                 String name = temp.item(a).getAttributes().getNamedItem("name").getNodeValue();
 
                 I3dMap i3dMap = new I3dMap().setNode(name).setId(id);
-
-                System.out.println("**--**--**");
-                System.out.println(i3dMap);
 
                 repo.add(i3dMap);
                 counter++;
