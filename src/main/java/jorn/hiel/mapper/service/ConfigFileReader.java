@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -31,6 +32,10 @@ public class ConfigFileReader {
 
     @Autowired
     private ConfigRepo repo;
+
+    @Getter
+    HashMap<String,String> animations = new HashMap<String, String>();
+
 
     @SuppressWarnings("unchecked")
     public void process() throws FileNotFoundException,ParseException {
@@ -103,5 +108,15 @@ public class ConfigFileReader {
             System.out.println(repo.getItems().keySet().contains(mappedItem.getKey()));
         }
     }
+
+    /**
+     *
+     * @param animName name of the wanted animation
+     * @param itemName the object that needs to be animated
+     */
+    public void addAnimation(String animName, String itemName) {
+        animations.put(animName, itemName);
+    }
+
 
 }

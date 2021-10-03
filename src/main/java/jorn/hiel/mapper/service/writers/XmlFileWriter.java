@@ -39,6 +39,8 @@ public class XmlFileWriter {
         Transformer transformer = transformerFactory.newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "5");
 
         DOMSource domSource = new DOMSource(document);

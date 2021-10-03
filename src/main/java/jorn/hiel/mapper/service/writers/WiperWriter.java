@@ -22,49 +22,32 @@ public class WiperWriter implements DocWriter {
     @Autowired
     NeedToWrite needToWrite;
 
+
+
     public void write(Document doc){
 
         if (needToWrite.needsToWrite("needsWipers")) {
+
+            String animName=configFileReader.getMappedItem("wiperAnimName").getValue();
 
             Node rootElement = doc.getElementsByTagName("Vehicle").item(0);
 
             Element wipers = doc.createElement("wipers");
             Element wiper = doc.createElement("wiper");
-            wiper.setAttribute("animName", configFileReader.getMappedItem("wiperAnimName").getValue());
+            wiper.setAttribute("animName", animName);
             Element stateA = doc.createElement("state");
             Element stateB = doc.createElement("state");
             Element stateC = doc.createElement("state");
             List<Element> states = List.of(stateA, stateB, stateC);
-            states.forEach(a -> a.setAttribute("animSpeed", "1"));
-            states.forEach(a -> a.setAttribute("animPause", "1"));
+            states.forEach(a -> a.setAttribute("animSpeed", "1.0"));
+            states.forEach(a -> a.setAttribute("animPause", "1.0"));
             states.forEach(a -> wiper.appendChild(a));
 
-
-
-
-            Node animations = doc.getElementsByTagName("animations").item(0);
-            //create when not found
-            if (animations==null){animations=doc.createElement("animations");}
-
-            Element animation = doc.createElement("animation");
-            animation.setAttribute("name",configFileReader.getMappedItem("wiperAnimName").getValue());
-
-
-            Element part = doc.createElement("part");
-            part.setAttribute("node",configFileReader.getMappedItem("wiper1").getValue());
-
-            //animition attributes
-            List<String> names = List.of("startTime","endTime","startRot","endRot");
-            names.forEach(a-> part.setAttribute(a, configFileReader.getMappedItem("UnknownEntry").getValue()));
-
-            animation.appendChild(part);
-            animations.appendChild(animation);
-
-
+            configFileReader.addAnimation(animName,"");
 
             wipers.appendChild(wiper);
             rootElement.appendChild(wipers);
-            rootElement.appendChild(animations);
+
 
         }
 

@@ -11,17 +11,23 @@ import org.w3c.dom.Node;
 import java.util.List;
 
 @Service
-public class WearAndWashWriter implements DocWriter {
+public class SmallStuffWriter implements DocWriter {
     @Autowired
     I3DMapper mapper;
 
     public void write(Document doc){
+
+
 
         Node rootElement = doc.getElementsByTagName("Vehicle").item(0);
 
         Element wear = doc.createElement("wearable");
         Element wash = doc.createElement("wash");
         Element bunkerSiloCompacter = doc.createElement("bunkerSiloCompacter");
+        Element honk = doc.createElement("honk");
+        Element foliage = doc.createElement("foliageBending");
+
+
 
         List<String> wearList = List.of("fieldMultiplier","wearDuration","workMultiplier");
         wearList.forEach(a-> wear.setAttribute(a, mapper.getMappedItem(a).getValue()));
@@ -31,10 +37,20 @@ public class WearAndWashWriter implements DocWriter {
 
         bunkerSiloCompacter.setAttribute("compactingScale",mapper.getMappedItem("bunkerSiloCompacter").getValue());
 
+        Element sound = doc.createElement("sound");
+        honk.appendChild(sound);
+        sound.setAttribute("template",mapper.getMappedItem("honk_template").getValue());
+        sound.setAttribute("linkNode",mapper.getMappedItem("honk_linknode").getValue());
 
-        rootElement.appendChild(wear);
-        rootElement.appendChild(wash);
-        rootElement.appendChild(bunkerSiloCompacter);
+        Element bendingNode=doc.createElement("bendingNode");
+        List<String>sizeList = List.of("minX","maxX","minZ","maxZ","yOffset");
+        sizeList.forEach(a-> bendingNode.setAttribute(a, "0.0"));
+        foliage.appendChild(bendingNode);
+
+
+
+        List<Element>elements = List.of(wear,wash,bunkerSiloCompacter,honk,foliage);
+        elements.forEach(a-> rootElement.appendChild(a));
 
 
     }

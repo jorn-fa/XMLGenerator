@@ -141,7 +141,6 @@ public class MapperManager extends BasicManager {
         log.info(translation.getFile());
         log.info(configFileReader.getFile());
 
-
         return !translation.getFile().isEmpty() && !configFileReader.getFile().isEmpty();
 
     }

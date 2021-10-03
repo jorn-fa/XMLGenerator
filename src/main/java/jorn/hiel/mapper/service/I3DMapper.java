@@ -181,4 +181,6 @@ public class I3DMapper {
 
     }
 
+    public void addAnimation(String animName, String s) {
+    }
 }
