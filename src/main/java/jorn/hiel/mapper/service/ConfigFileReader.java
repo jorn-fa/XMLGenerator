@@ -52,6 +52,7 @@ public class ConfigFileReader {
                 configurations.forEach( a -> parseConfiguration((JSONObject) a)) ;
 
 
+
             } catch (IOException e) {
 
                 e.printStackTrace();
@@ -105,7 +106,6 @@ public class ConfigFileReader {
         if (repo.getItems().keySet().contains(mappedItem.getKey())  ){
             repo.getItems().remove(mappedItem.getKey());
             repo.getItems().put(mappedItem.getKey(), mappedItem.getValue());
-            System.out.println(repo.getItems().keySet().contains(mappedItem.getKey()));
         }
     }
 

@@ -28,7 +28,7 @@ public class DashboardWriter implements DocWriter {
 
                 Element dashboard = doc.createElement("dashboard");
                 Element groups = doc.createElement("groups");
-                Element defaultelement = doc.createElement("default");
+                Element defaultElement = doc.createElement("default");
 
                 Element group1 = doc.createElement("group");
                 group1.setAttribute("name","MOTOR_STARTING");
@@ -40,7 +40,7 @@ public class DashboardWriter implements DocWriter {
 
 
                 Element dashboardDef = doc.createElement("dashboard");
-                defaultelement.appendChild(dashboardDef);
+                defaultElement.appendChild(dashboardDef);
 
                 dashboardDef.setAttribute("displayType","EMITTER");
                 dashboardDef.setAttribute("node",configFileReader.getMappedItem("dashboard").getValue());
@@ -53,7 +53,7 @@ public class DashboardWriter implements DocWriter {
 
                 rootElement.appendChild(dashboard);
                 dashboard.appendChild(groups);
-                dashboard.appendChild(defaultelement);
+                dashboard.appendChild(defaultElement);
                 groups.appendChild(group1);
                 groups.appendChild(group2);
 

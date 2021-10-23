@@ -1,5 +1,6 @@
 package jorn.hiel.mapper.service.helpers;
 
+import jorn.hiel.mapper.pojo.MappedItem;
 import jorn.hiel.mapper.service.ConfigFileReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +13,25 @@ public class NeedToWrite {
 
     public boolean needsToWrite(String filter){
 
+
+
         if (configFileReader.getMappedItem("writeAll").getValue().equals("true")){
             return true;
         }
 
+
         return configFileReader.getMappedItem(filter).equals("true");
 
+
+    }
+
+    public void addFillUnit(){
+        MappedItem item = configFileReader.getMappedItem("numberOfFillUnits");
+
+        int howMany=Integer.parseInt(item.getValue());
+        item.setValue(String.valueOf(++howMany));
+
+        configFileReader.update(item);
 
     }
 
