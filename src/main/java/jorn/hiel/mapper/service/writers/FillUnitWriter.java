@@ -36,8 +36,8 @@ public class FillUnitWriter implements DocWriter {
             Element mainFillUnit = doc.createElement("fillUnit");
             Element fillUnitConfigurations = doc.createElement("fillUnitConfigurations");
             Element fillUnitConfiguration = doc.createElement("fillUnitConfiguration");
-            fillUnitConfigurations.setAttribute("name","l10n_configuration_valueDefault");
-            fillUnitConfigurations.setAttribute("price","0");
+            fillUnitConfiguration.setAttribute("name","l10n_configuration_valueDefault");
+            fillUnitConfiguration.setAttribute("price","0");
 
 
 
@@ -56,6 +56,7 @@ public class FillUnitWriter implements DocWriter {
             mainFillUnit.appendChild(fillUnitConfigurations);
             fillUnitConfigurations.appendChild(fillUnitConfiguration);
             fillUnitConfiguration.appendChild(fillUnits);
+
 
 
 

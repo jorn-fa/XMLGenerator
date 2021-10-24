@@ -29,6 +29,10 @@ public class WiperWriter implements DocWriter {
         if (needToWrite.needsToWrite("needsWipers")) {
 
             String animName=configFileReader.getMappedItem("wiperAnimName").getValue();
+            String unknown = configFileReader.getMappedItem("UnknownEntry").getValue();
+
+            if(animName.equals(unknown)){animName="WiperAnim";}
+
 
             Node rootElement = doc.getElementsByTagName("Vehicle").item(0);
 

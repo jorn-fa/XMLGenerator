@@ -1,11 +1,12 @@
 package jorn.hiel.mapper.service.helpers;
 
-import jorn.hiel.mapper.pojo.MappedItem;
 import jorn.hiel.mapper.service.ConfigFileReader;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
  @Service
+ @Slf4j
 public class NeedToWrite {
 
      @Autowired
@@ -16,6 +17,10 @@ public class NeedToWrite {
 
 
         if (configFileReader.getMappedItem("writeAll").getValue().equals("true")){
+            //add a fillunit
+            if(filter.equals("fillUnit")){
+                log.info("Adding fillUnit trough fullWrite");
+                configFileReader.addFillUnit();}
             return true;
         }
 
@@ -25,14 +30,6 @@ public class NeedToWrite {
 
     }
 
-    public void addFillUnit(){
-        MappedItem item = configFileReader.getMappedItem("numberOfFillUnits");
 
-        int howMany=Integer.parseInt(item.getValue());
-        item.setValue(String.valueOf(++howMany));
-
-        configFileReader.update(item);
-
-    }
 
 }

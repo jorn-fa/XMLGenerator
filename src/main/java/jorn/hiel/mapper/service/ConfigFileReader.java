@@ -119,4 +119,15 @@ public class ConfigFileReader {
     }
 
 
+    public void addFillUnit(){
+        MappedItem item = getMappedItem("numberOfFillUnits");
+
+        int howMany=Integer.parseInt(item.getValue());
+        item.setValue(String.valueOf(++howMany));
+
+        update(item);
+
+    }
+
+
 }

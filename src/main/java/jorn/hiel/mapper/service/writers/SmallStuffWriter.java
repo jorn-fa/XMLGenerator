@@ -47,10 +47,16 @@ public class SmallStuffWriter implements DocWriter {
         sizeList.forEach(a-> bendingNode.setAttribute(a, "0.0"));
         foliage.appendChild(bendingNode);
 
-
-
         List<Element>elements = List.of(wear,wash,bunkerSiloCompacter,honk,foliage);
         elements.forEach(a-> rootElement.appendChild(a));
+
+        Element fillFromAir = doc.createElement("allowFillFromAir");
+        fillFromAir.setAttribute("value","true");
+        Element supportsFillTriggers  = doc.createElement("supportsFillTriggers");
+        supportsFillTriggers.setAttribute("value","true");
+
+        rootElement.appendChild(fillFromAir);
+        rootElement.appendChild(supportsFillTriggers);
 
 
     }
