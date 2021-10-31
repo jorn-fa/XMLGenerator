@@ -21,7 +21,15 @@ public class NeedToWrite {
             if(filter.equals("fillUnit")){
                 log.info("Adding fillUnit trough fullWrite");
                 configFileReader.addFillUnit();}
+            if(filter.equals("motorized")){
+                log.info("Adding consumer trough fullWrite");
+                configFileReader.addConsumer();}
+
+
             return true;
+
+
+
         }
 
 

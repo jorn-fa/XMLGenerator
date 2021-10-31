@@ -14,6 +14,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -66,6 +68,9 @@ public class VehicleBuilder implements SingleXmlItem {
     @Autowired
     AiWriter aiWriter;
 
+    @Autowired
+    MotorizedWriter motorizedWriter;
+
 
 
     private Document doc;
@@ -93,8 +98,17 @@ public class VehicleBuilder implements SingleXmlItem {
             rootElement.setAttribute("type",configFileReader.getMappedItem("vehicleType").getValue());
             addSingleXmlItem(doc,rootElement,configFileReader.getMappedItem("annotationVehicle"));
 
-            List<DocWriter> writers = List.of(storedataWriter,baseWriter, smallStuffWriter, wiperWriter,enterableWriter, drivableWriter, dashboardWriter, fillUnitWriter,fillVolumeWriter , foldableWriter, aiWriter, animationWriter, i3DMapperWriter);
-            writers.forEach(a-> a.write(doc));
+            List<DocWriter> eofWriters = List.of(animationWriter, i3DMapperWriter);
+
+            List<DocWriter> writers = List.of(storedataWriter,baseWriter, smallStuffWriter, wiperWriter,enterableWriter, drivableWriter, dashboardWriter, fillUnitWriter,fillVolumeWriter ,
+                    foldableWriter, aiWriter,motorizedWriter);
+
+
+
+            List<DocWriter> combinedList = Stream.of(writers, eofWriters)
+                    .flatMap(x -> x.stream())
+                    .collect(Collectors.toList());
+            combinedList.forEach(a-> a.write(doc));
 
 
             xmlFileWriter.writeXml(doc);

@@ -129,5 +129,15 @@ public class ConfigFileReader {
 
     }
 
+    public void addConsumer(){
+        MappedItem item = getMappedItem("numberOfConsumers");
+
+        int howMany=Integer.parseInt(item.getValue());
+        item.setValue(String.valueOf(++howMany));
+
+        update(item);
+
+    }
+
 
 }
