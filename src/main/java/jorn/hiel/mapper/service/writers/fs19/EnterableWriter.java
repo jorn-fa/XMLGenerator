@@ -1,4 +1,4 @@
-package jorn.hiel.mapper.service.writers;
+package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.I3DMapper;
@@ -29,8 +29,6 @@ public class EnterableWriter implements DocWriter {
     I3DMapper mapper;
 
 
-
-
     List<Element> toAdd;
 
 
@@ -48,16 +46,18 @@ public class EnterableWriter implements DocWriter {
 
             Element enterReferenceNode = doc.createElement("enterReferenceNode");
             toAdd.add(enterReferenceNode);
-            enterReferenceNode.setAttribute("node",mapper.getMappedItem("enterReferenceNode").getValue());
+            enterReferenceNode.setAttribute("node",mapper.getMainNodeName());
 
             Element enterAnimation = doc.createElement("enterAnimation");
 
             String animName=configFileReader.getMappedItem("enterAnimation").getValue();
             String unknown = configFileReader.getMappedItem("UnknownEntry").getValue();
 
-            enterAnimation.setAttribute("name",animName);
+
 
             if(animName.equals(unknown)){animName="enterAnimation";}
+            enterAnimation.setAttribute("name",animName);
+
             configFileReader.addAnimation(animName,"");
 
             toAdd.add(enterAnimation);
@@ -85,7 +85,7 @@ public class EnterableWriter implements DocWriter {
             Element raycastNode3=doc.createElement("raycastNode");
             raycastNode3.setAttribute("node",mapper.getMappedItem("cameraRaycastNode3").getValue());
             List<Element> states = List.of(raycastNode1, raycastNode2, raycastNode3);
-            states.forEach(a-> outdoorCamera.appendChild(a));
+            states.forEach(outdoorCamera::appendChild);
 
             Element indoorCamera = doc.createElement("camera");
             cameras.appendChild(indoorCamera);
@@ -97,9 +97,6 @@ public class EnterableWriter implements DocWriter {
 
             Element mirrors = doc.createElement("mirrors");
             toAdd.add(mirrors);
-
-
-
 
 
             int needed = Integer.valueOf(configFileReader.getMappedItem("numberOfMirrors").getValue());
@@ -117,7 +114,7 @@ public class EnterableWriter implements DocWriter {
 
 
             //add elements to parent
-            toAdd.forEach(a-> enterable.appendChild(a));
+            toAdd.forEach(enterable::appendChild);
             rootElement.appendChild(enterable);
             //add character xml
             characterWriter.write(doc);

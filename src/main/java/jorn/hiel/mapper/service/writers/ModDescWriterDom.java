@@ -6,6 +6,7 @@ import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.enums.LocalLanguage;
 import jorn.hiel.mapper.service.interfaces.SingleXmlItem;
 import jorn.hiel.mapper.service.interfaces.SingleXmlItemWithAttribute;
+import jorn.hiel.mapper.service.writers.fs19.XmlFileWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,23 +1,27 @@
-package jorn.hiel.mapper.service.writers;
+package jorn.hiel.mapper.service.writers.fs19;
 
+import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.I3DMapper;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import java.util.List;
 
-@Service
+@Component
 public class SmallStuffWriter implements DocWriter {
     @Autowired
     I3DMapper mapper;
 
     @Autowired
     NeedToWrite needToWrite;
+
+    @Autowired
+    ConfigFileReader configFileReader;
 
     public void write(Document doc){
         if (needToWrite.needsToWrite("needsWipers")) {
@@ -60,6 +64,23 @@ public class SmallStuffWriter implements DocWriter {
 
             rootElement.appendChild(fillFromAir);
             rootElement.appendChild(supportsFillTriggers);
+
+
+            if (needToWrite.needsToWrite("turnOnVehicle")) {
+
+
+                Element turnOnVehicle = doc.createElement("turnOnVehicle");
+                turnOnVehicle.setAttribute("turnOffIfNotAllowed", configFileReader.getMappedItem("turnOffIfNotAllowed").getValue());
+                Element sounds = doc.createElement("sounds");
+                Element work = doc.createElement("work");
+                work.setAttribute("template", configFileReader.getMappedItem("workTemplate").getValue());
+
+
+                turnOnVehicle.appendChild(sounds);
+                sounds.appendChild(work);
+
+                rootElement.appendChild(turnOnVehicle);
+            }
 
         }
     }

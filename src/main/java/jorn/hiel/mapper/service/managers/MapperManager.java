@@ -121,8 +121,12 @@ public class MapperManager extends BasicManager {
                 vehicleBuilder.writeVehicle();
 
                 results.add("i3dMapped items = " + mapper.repo.getItems().size());
-                results.add("unknown items found in modDesc = " + unknownCounter.countEntries(Path.of(modDescName)));
-                results.add("unknown items found in vehicle = " + unknownCounter.countEntries(Path.of("e:/temp/" + vehicleName)));
+                int howMany = unknownCounter.countEntries(Path.of(modDescName));
+                results.add("unknown items found in modDesc = " + howMany);
+                //todo pathname
+                howMany += unknownCounter.countEntries(Path.of("e:/temp/" + vehicleName));
+                results.add("unknown items found in vehicle = " + howMany);
+                log.info("number of unknown items found :  >"+howMany+"<");
                 //erase history to stop chain spam process button
                 this.fileName = null;
                 this.directory = null;

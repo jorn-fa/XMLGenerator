@@ -1,4 +1,4 @@
-package jorn.hiel.mapper.service.writers;
+package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,7 @@ public class CharacterWriter {
         Element characterNode = doc.createElement("characterNode");
         characterNode.setAttribute("node",configFileReader.getMappedItem("characterNode").getValue());
         characterNode.setAttribute("cameraMinDistance",configFileReader.getMappedItem("cameraMinDistance").getValue());
+        characterNode.setAttribute("filename",configFileReader.getMappedItem("CharacterNodeFileName").getValue());
         characterNode.setAttribute("spineRotation","-90 0 90");
         Element rightFoot = doc.createElement("target");
         rightFoot.setAttribute("ikChain","rightFoot");

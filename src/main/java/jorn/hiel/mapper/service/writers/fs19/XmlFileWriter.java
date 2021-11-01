@@ -1,4 +1,4 @@
-package jorn.hiel.mapper.service.writers;
+package jorn.hiel.mapper.service.writers.fs19;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

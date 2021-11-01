@@ -2,7 +2,7 @@ package jorn.hiel.mapper.service;
 
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import jorn.hiel.mapper.service.interfaces.SingleXmlItem;
-import jorn.hiel.mapper.service.writers.*;
+import jorn.hiel.mapper.service.writers.fs19.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +45,7 @@ public class VehicleBuilder implements SingleXmlItem {
     EnterableWriter enterableWriter;
 
     @Autowired
-    i3DMapperWriter i3DMapperWriter;
+    jorn.hiel.mapper.service.writers.i3DMapperWriter i3DMapperWriter;
 
     @Autowired
     AnimationWriter animationWriter;
@@ -70,6 +70,15 @@ public class VehicleBuilder implements SingleXmlItem {
 
     @Autowired
     MotorizedWriter motorizedWriter;
+
+    @Autowired
+    MaterialWriter materialWriter;
+
+    @Autowired
+    WorkAreaWriter workAreaWriter;
+
+    @Autowired
+    SprayerWriter sprayerWriter;
 
 
 
@@ -98,10 +107,10 @@ public class VehicleBuilder implements SingleXmlItem {
             rootElement.setAttribute("type",configFileReader.getMappedItem("vehicleType").getValue());
             addSingleXmlItem(doc,rootElement,configFileReader.getMappedItem("annotation"));
 
-            List<DocWriter> eofWriters = List.of(animationWriter, i3DMapperWriter);
+            List<DocWriter> eofWriters = List.of(animationWriter,smallStuffWriter,materialWriter, i3DMapperWriter);
 
-            List<DocWriter> writers = List.of(storedataWriter,baseWriter, smallStuffWriter, wiperWriter,enterableWriter, drivableWriter, dashboardWriter, fillUnitWriter,fillVolumeWriter ,
-                    foldableWriter, aiWriter,motorizedWriter);
+            List<DocWriter> writers = List.of(storedataWriter,baseWriter, wiperWriter,enterableWriter, drivableWriter, dashboardWriter, fillUnitWriter,fillVolumeWriter ,
+                    foldableWriter, aiWriter,motorizedWriter,workAreaWriter, sprayerWriter );
 
 
 

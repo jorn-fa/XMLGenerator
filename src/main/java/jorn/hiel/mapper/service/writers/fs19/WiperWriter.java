@@ -1,4 +1,4 @@
-package jorn.hiel.mapper.service.writers;
+package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
@@ -45,7 +45,7 @@ public class WiperWriter implements DocWriter {
             List<Element> states = List.of(stateA, stateB, stateC);
             states.forEach(a -> a.setAttribute("animSpeed", "1.0"));
             states.forEach(a -> a.setAttribute("animPause", "1.0"));
-            states.forEach(a -> wiper.appendChild(a));
+            states.forEach(wiper::appendChild);
 
             configFileReader.addAnimation(animName,"");
 

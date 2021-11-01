@@ -1,4 +1,4 @@
-package jorn.hiel.mapper.service.writers;
+package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.I3DMapper;
@@ -86,6 +86,32 @@ public class MotorizedWriter implements DocWriter {
             transmission.setAttribute("minBackwardGearRatio", configFileReader.getMappedItem("motorMinBackwardGearRatio").getValue());
             transmission.setAttribute("maxBackwardGearRatio", configFileReader.getMappedItem("motorMaxBackwardGearRatio").getValue());
             motorConfiguration.appendChild(transmission);
+
+            //differentials
+            Element differentialConfigurations = doc.createElement("differentialConfigurations");
+            motorized.appendChild(differentialConfigurations);
+            Element differentialConfiguration = doc.createElement("differentialConfiguration");
+            differentialConfigurations.appendChild(differentialConfiguration);
+            Element differentials = doc.createElement("differentials");
+            differentialConfiguration.appendChild(differentials);
+
+
+            needed = Integer.valueOf(configFileReader.getMappedItem("numberOfDifferentials").getValue());
+            for (int x=0;x<needed;x++) {
+                Element differential = doc.createElement("differential");
+                differential.setAttribute("torqueRatio", configFileReader.getMappedItem("DiffTorqueRatio").getValue());
+                differential.setAttribute("maxSpeedRatio", configFileReader.getMappedItem("maxSpeedRatio").getValue());
+                differential.setAttribute("wheelIndex1", configFileReader.getMappedItem("DiffTorqueRatio").getValue());
+                differential.setAttribute("wheelIndex2", configFileReader.getMappedItem("DiffTorqueRatio").getValue());
+                differentials.appendChild(differential);
+            }
+
+
+
+
+            Element motorStartDuration = doc.createElement("motorStartDuration");
+            motorStartDuration.setTextContent(configFileReader.getMappedItem("motorStartDuration").getValue());
+            motorized.appendChild(motorStartDuration);
 
             Element exhaustEffects = doc.createElement("exhaustEffects");
             motorized.appendChild(exhaustEffects);

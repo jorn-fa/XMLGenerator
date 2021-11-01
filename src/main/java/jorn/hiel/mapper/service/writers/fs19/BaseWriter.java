@@ -1,4 +1,4 @@
-package jorn.hiel.mapper.service.writers;
+package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.pojo.MappedItem;
 import jorn.hiel.mapper.service.I3DMapper;

@@ -17,7 +17,7 @@ public class NeedToWrite {
 
 
         if (configFileReader.getMappedItem("writeAll").getValue().equals("true")){
-            //add a fillunit
+            //add items that are calculated or configured as 0 start
             if(filter.equals("fillUnit")){
                 log.info("Adding fillUnit trough fullWrite");
                 configFileReader.addFillUnit();}
@@ -31,8 +31,6 @@ public class NeedToWrite {
                 log.info("Adding mirror trough fullWrite");
                 configFileReader.addMirror();
             }
-
-
 
 
 

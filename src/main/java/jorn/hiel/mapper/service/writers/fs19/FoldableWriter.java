@@ -1,4 +1,4 @@
-package jorn.hiel.mapper.service.writers;
+package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
@@ -30,9 +30,18 @@ public class FoldableWriter implements DocWriter {
                 foldingParts.setAttribute("turnOnFoldMaxLimit","0.5");
                 foldingParts.setAttribute("turnOnFoldDirection","1");
 
+                String animName=configFileReader.getMappedItem("foldableAnimation").getValue();
+                String unknown = configFileReader.getMappedItem("UnknownEntry").getValue();
+
+                if(animName.equals(unknown)){animName="foldableAnimation";}
+
+
                 Element foldingPart = doc.createElement("foldingPart");
-                String foldableAnimation = "foldableAnimation";
-                foldingPart.setAttribute(foldableAnimation,"1");
+
+
+                foldingPart.setAttribute("animationName",animName);
+                foldingPart.setAttribute("speedScale","1");
+
                 configFileReader.addAnimation("foldableAnimation", configFileReader.getMappedItem("foldableAnimation").getValue());
 
                 foldable.appendChild(foldingParts);

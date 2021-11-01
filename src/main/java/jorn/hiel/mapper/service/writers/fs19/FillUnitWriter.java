@@ -1,4 +1,4 @@
-package jorn.hiel.mapper.service.writers;
+package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.I3DMapper;
@@ -14,8 +14,6 @@ import java.util.List;
 
 @Component
 public class FillUnitWriter implements DocWriter {
-
-
 
     @Autowired
     I3DMapper mapper;

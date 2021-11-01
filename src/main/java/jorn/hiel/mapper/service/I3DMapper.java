@@ -180,6 +180,13 @@ public class I3DMapper {
 
     }
 
-//    public void addAnimation(String animName, String s) {
-//    }
+    public String getMainNodeName() {
+
+        I3dMap item = repo.getItems().stream()
+                .filter(a -> a.getId().equals("0>"))
+                .findAny()
+                .orElse(null);
+        return item.getNode();
+
+    }
 }
