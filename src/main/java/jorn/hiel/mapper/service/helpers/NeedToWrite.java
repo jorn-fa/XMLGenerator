@@ -23,7 +23,17 @@ public class NeedToWrite {
                 configFileReader.addFillUnit();}
             if(filter.equals("motorized")){
                 log.info("Adding consumer trough fullWrite");
-                configFileReader.addConsumer();}
+                configFileReader.addConsumer();
+                log.info("Adding exhaust trough fullWrite");
+                configFileReader.addExhaust();
+            }
+            if(filter.equals("enterable")) {
+                log.info("Adding mirror trough fullWrite");
+                configFileReader.addMirror();
+            }
+
+
+
 
 
             return true;

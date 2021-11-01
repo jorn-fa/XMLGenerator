@@ -139,5 +139,25 @@ public class ConfigFileReader {
 
     }
 
+    public void addExhaust(){
+        MappedItem item = getMappedItem("numberOfExhaust");
+
+        int howMany=Integer.parseInt(item.getValue());
+        item.setValue(String.valueOf(++howMany));
+
+        update(item);
+
+    }
+
+    public void addMirror(){
+        MappedItem item = getMappedItem("numberOfMirrors");
+
+        int howMany=Integer.parseInt(item.getValue());
+        item.setValue(String.valueOf(++howMany));
+
+        update(item);
+
+    }
+
 
 }

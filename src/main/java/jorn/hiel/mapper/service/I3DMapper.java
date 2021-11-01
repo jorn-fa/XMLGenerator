@@ -19,7 +19,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -156,21 +155,21 @@ public class I3DMapper {
     /**
      * Generate a logged representation of the mapped content
      */
-    public void printList() {
-        repo.printList();
-
-    }
+//    public void printList() {
+//        repo.printList();
+//
+//    }
 
 
     public void addEntry(MappedItem mappedItem) {
-
+        log.info("Adding entry item" + mappedItem);
         entryRepo.add(mappedItem);
 
     }
 
-    public Map<String, String> getMappedItems() {
-        return entryRepo.getItems();
-    }
+//    public Map<String, String> getMappedItems() {
+//        return entryRepo.getItems();
+//    }
 
     public MappedItem getMappedItem(String key) {
         if (entryRepo.getItems().get(key)==null){
@@ -181,6 +180,6 @@ public class I3DMapper {
 
     }
 
-    public void addAnimation(String animName, String s) {
-    }
+//    public void addAnimation(String animName, String s) {
+//    }
 }

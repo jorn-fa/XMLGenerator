@@ -96,7 +96,7 @@ public class VehicleBuilder implements SingleXmlItem {
             doc.appendChild(rootElement);
 
             rootElement.setAttribute("type",configFileReader.getMappedItem("vehicleType").getValue());
-            addSingleXmlItem(doc,rootElement,configFileReader.getMappedItem("annotationVehicle"));
+            addSingleXmlItem(doc,rootElement,configFileReader.getMappedItem("annotation"));
 
             List<DocWriter> eofWriters = List.of(animationWriter, i3DMapperWriter);
 

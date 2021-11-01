@@ -1,6 +1,7 @@
 package jorn.hiel.mapper.service.writers;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
+import jorn.hiel.mapper.service.I3DMapper;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,11 @@ public class EnterableWriter implements DocWriter {
     @Autowired
     CharacterWriter characterWriter;
 
+    @Autowired
+    I3DMapper mapper;
+
+
+
 
     List<Element> toAdd;
 
@@ -42,47 +48,70 @@ public class EnterableWriter implements DocWriter {
 
             Element enterReferenceNode = doc.createElement("enterReferenceNode");
             toAdd.add(enterReferenceNode);
-            enterReferenceNode.setAttribute("node",configFileReader.getMappedItem("enterReferenceNode").getValue());
+            enterReferenceNode.setAttribute("node",mapper.getMappedItem("enterReferenceNode").getValue());
 
             Element enterAnimation = doc.createElement("enterAnimation");
-            enterAnimation.setAttribute("name",configFileReader.getMappedItem("enterAnimation").getValue());
+
+            String animName=configFileReader.getMappedItem("enterAnimation").getValue();
+            String unknown = configFileReader.getMappedItem("UnknownEntry").getValue();
+
+            enterAnimation.setAttribute("name",animName);
+
+            if(animName.equals(unknown)){animName="enterAnimation";}
+            configFileReader.addAnimation(animName,"");
+
             toAdd.add(enterAnimation);
 
 
 
             Element exitPoint = doc.createElement("exitPoint");
             toAdd.add(exitPoint);
-            exitPoint.setAttribute("node",configFileReader.getMappedItem("exit").getValue());
+            exitPoint.setAttribute("node",mapper.getMappedItem("exit").getValue());
 
             Element cameras = doc.createElement("cameras");
             toAdd.add(cameras);
             Element outdoorCamera = doc.createElement("camera");
             cameras.appendChild(outdoorCamera);
-            outdoorCamera.setAttribute("node",configFileReader.getMappedItem("outdoorCamera").getValue());
-            outdoorCamera.setAttribute("rotatable",configFileReader.getMappedItem("outdoorRotatable").getValue());
-            outdoorCamera.setAttribute("rotateNode",configFileReader.getMappedItem("outdoorRotateNode").getValue());
+            outdoorCamera.setAttribute("node",mapper.getMappedItem("outdoorCamera").getValue());
+            outdoorCamera.setAttribute("rotatable",mapper.getMappedItem("outdoorRotatable").getValue());
+            outdoorCamera.setAttribute("rotateNode",mapper.getMappedItem("outdoorRotateNode").getValue());
 
             List<String> names = List.of("limit","useWorldXZRotation", "rotMinX","rotMaxX","transMin","transMax","translation","rotation");
-            names.forEach(a-> outdoorCamera.setAttribute(a,configFileReader.getMappedItem("UnknownEntry").getValue()));
+            names.forEach(a-> outdoorCamera.setAttribute(a,mapper.getMappedItem("UnknownEntry").getValue()));
             Element raycastNode1=doc.createElement("raycastNode");
-            raycastNode1.setAttribute("node",configFileReader.getMappedItem("cameraRaycastNode1").getValue());
+            raycastNode1.setAttribute("node",mapper.getMappedItem("cameraRaycastNode1").getValue());
             Element raycastNode2=doc.createElement("raycastNode");
-            raycastNode2.setAttribute("node",configFileReader.getMappedItem("cameraRaycastNode2").getValue());
+            raycastNode2.setAttribute("node",mapper.getMappedItem("cameraRaycastNode2").getValue());
             Element raycastNode3=doc.createElement("raycastNode");
-            raycastNode3.setAttribute("node",configFileReader.getMappedItem("cameraRaycastNode3").getValue());
+            raycastNode3.setAttribute("node",mapper.getMappedItem("cameraRaycastNode3").getValue());
             List<Element> states = List.of(raycastNode1, raycastNode2, raycastNode3);
             states.forEach(a-> outdoorCamera.appendChild(a));
 
             Element indoorCamera = doc.createElement("camera");
             cameras.appendChild(indoorCamera);
-            indoorCamera.setAttribute("node",configFileReader.getMappedItem("indoorCamera").getValue());
-            indoorCamera.setAttribute("rotatable",configFileReader.getMappedItem("indoorRotatable").getValue());
+            indoorCamera.setAttribute("node",mapper.getMappedItem("indoorCamera").getValue());
+            indoorCamera.setAttribute("rotatable",mapper.getMappedItem("indoorRotatable").getValue());
             names = List.of("limit","useWorldXZRotation", "rotMinX","rotMaxX","transMin","transMax","isInside");
-            names.forEach(a-> indoorCamera.setAttribute(a,configFileReader.getMappedItem("UnknownEntry").getValue()));
-            indoorCamera.setAttribute("shadowFocusBox",configFileReader.getMappedItem("shadowFocusBox").getValue());
+            names.forEach(a-> indoorCamera.setAttribute(a,mapper.getMappedItem("UnknownEntry").getValue()));
+            indoorCamera.setAttribute("shadowFocusBox",mapper.getMappedItem("shadowFocusBox").getValue());
+
+            Element mirrors = doc.createElement("mirrors");
+            toAdd.add(mirrors);
 
 
 
+
+
+            int needed = Integer.valueOf(configFileReader.getMappedItem("numberOfMirrors").getValue());
+
+            for (int x=0;x<needed;x++) {
+                Element mirror = doc.createElement("mirror");
+                mirror.setAttribute("node", mapper.getMappedItem("mirror"+x).getValue());
+                mirror.setAttribute("prio", mapper.getMappedItem("mirror"+x+"prior").getValue());
+
+
+                mirrors.appendChild(mirror);
+            }
 
 
 
