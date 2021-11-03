@@ -41,7 +41,7 @@ public class FillUnitWriter implements DocWriter {
 
             Element fillUnits = doc.createElement("fillUnits");
 
-            int needed = Integer.valueOf(configFileReader.getMappedItem("numberOfFillUnits").getValue());
+            int needed = Integer.parseInt(configFileReader.getMappedItem("numberOfFillUnits").getValue());
 
             for (int x=0;x<needed;x++) {
                 Element fillUnit = doc.createElement("fillUnit");

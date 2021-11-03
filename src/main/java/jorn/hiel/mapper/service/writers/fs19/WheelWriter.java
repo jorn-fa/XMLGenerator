@@ -1,7 +1,6 @@
 package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
-import jorn.hiel.mapper.service.I3DMapper;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +10,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 @Component
 public class WheelWriter implements DocWriter {
-
-    @Autowired
-    I3DMapper mapper;
 
 
     @Autowired
@@ -35,7 +31,7 @@ public class WheelWriter implements DocWriter {
                 Element wheelConfigurations = doc.createElement("wheelConfigurations");
                 wheels.appendChild(wheelConfigurations);
 
-                int needed = Integer.valueOf(configFileReader.getMappedItem("numberOfWheelConfigurations").getValue());
+                int needed = Integer.parseInt(configFileReader.getMappedItem("numberOfWheelConfigurations").getValue());
 
                 for (int x=0;x<needed;x++) {
                     Element wheelConfiguration = doc.createElement("wheelConfiguration");
@@ -47,7 +43,7 @@ public class WheelWriter implements DocWriter {
                     configWheels.setAttribute("autoRotateBackSpeed", configFileReader.getMappedItem("autoRotateBackSpeed").getValue());
                     wheelConfiguration.appendChild(configWheels);
 
-                    int wheelAmount = Integer.valueOf(configFileReader.getMappedItem("numberOfWheelConfigurations").getValue());
+                    int wheelAmount = Integer.parseInt(configFileReader.getMappedItem("numberOfWheelConfigurations").getValue());
 
                     for (int i = 0; i < wheelAmount; i++) {
                         Element wheel = doc.createElement("wheel");
@@ -75,6 +71,16 @@ public class WheelWriter implements DocWriter {
 
 
                 }
+
+                Element ackermannSteeringConfigurations = doc.createElement("ackermannSteeringConfigurations");
+                wheels.appendChild(ackermannSteeringConfigurations);
+                Element ackermannSteering = doc.createElement("ackermannSteering");
+                ackermannSteeringConfigurations.appendChild(ackermannSteering);
+                ackermannSteering.setAttribute("rotSpeed", configFileReader.getMappedItem("ackerManRotSpeed").getValue());
+                ackermannSteering.setAttribute("rotMax", configFileReader.getMappedItem("ackerManRotMax").getValue());
+                ackermannSteering.setAttribute("rotCenterWheel1", configFileReader.getMappedItem("ackerManCenterWheel1").getValue());
+                ackermannSteering.setAttribute("rotCenterWheel2", configFileReader.getMappedItem("ackerManCenterWheel2").getValue());
+
 
             }
         }
