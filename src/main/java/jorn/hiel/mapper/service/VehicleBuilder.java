@@ -80,6 +80,9 @@ public class VehicleBuilder implements SingleXmlItem {
     @Autowired
     SprayerWriter sprayerWriter;
 
+    @Autowired
+    WheelWriter wheelWriter;
+
 
 
     private Document doc;
@@ -109,7 +112,7 @@ public class VehicleBuilder implements SingleXmlItem {
 
             List<DocWriter> eofWriters = List.of(animationWriter,smallStuffWriter,materialWriter, i3DMapperWriter);
 
-            List<DocWriter> writers = List.of(storedataWriter,baseWriter, wiperWriter,enterableWriter, drivableWriter, dashboardWriter, fillUnitWriter,fillVolumeWriter ,
+            List<DocWriter> writers = List.of(storedataWriter,baseWriter, wheelWriter, wiperWriter,enterableWriter, drivableWriter, dashboardWriter, fillUnitWriter,fillVolumeWriter ,
                     foldableWriter, aiWriter,motorizedWriter,workAreaWriter, sprayerWriter );
 
 

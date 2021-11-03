@@ -15,6 +15,7 @@ public class SprayerWriter implements DocWriter {
     @Autowired
     I3DMapper mapper;
 
+
     @Autowired
     NeedToWrite needToWrite;
 
@@ -39,7 +40,7 @@ public class SprayerWriter implements DocWriter {
 
                 Element effects = doc.createElement("effects");
 
-                int needed = Integer.valueOf(configFileReader.getMappedItem("numberOfSprayerEffects").getValue());
+                int needed = Integer.parseInt(configFileReader.getMappedItem("numberOfSprayerEffects").getValue());
 
                 for (int x=0;x<needed;x++) {
 
@@ -53,28 +54,31 @@ public class SprayerWriter implements DocWriter {
                 }
 
                 Element animationNodes = doc.createElement("animationNodes");
-                needed = Integer.valueOf(configFileReader.getMappedItem("numberOfSprayerAnimationNodes").getValue());
+                needed = Integer.parseInt(configFileReader.getMappedItem("numberOfSprayerAnimationNodes").getValue());
 
                 for (int x=0;x<needed;x++) {
 
                     Element animationNode = doc.createElement("animationNode");
                     animationNode.setAttribute("node", configFileReader.getMappedItem("sprayerAnimationNode"+x).getValue());
-                    animationNode.setAttribute("rotSpeed", configFileReader.getMappedItem("sprayerAnimationRotSpeed").getValue());
-                    animationNode.setAttribute("rotAxis", configFileReader.getMappedItem("sprayerAnimationRotAxis").getValue());
-                    animationNode.setAttribute("turnOnFadeTime", configFileReader.getMappedItem("sprayerAnimationTurnOnFadeTime").getValue());
-                    animationNode.setAttribute("turnOffFadeTime", configFileReader.getMappedItem("sprayerAnimationTurnOffFadeTime").getValue());
+                    animationNode.setAttribute("rotSpeed", configFileReader.getMappedItem("sprayerAnimationRotSpeed"+x).getValue());
+                    animationNode.setAttribute("rotAxis", configFileReader.getMappedItem("sprayerAnimationRotAxis"+x).getValue());
+                    animationNode.setAttribute("turnOnFadeTime", configFileReader.getMappedItem("sprayerAnimationTurnOnFadeTime"+x).getValue());
+                    animationNode.setAttribute("turnOffFadeTime", configFileReader.getMappedItem("sprayerAnimationTurnOffFadeTime"+x).getValue());
 
                     animationNodes.appendChild(animationNode);
                 }
-
-
-
+                Element sounds = doc.createElement("sounds");
+                Element hydraulic = doc.createElement("hydraulic");
+                hydraulic.setAttribute("template",configFileReader.getMappedItem("defaultHydraulic").getValue());
+                hydraulic.setAttribute("linkNode", mapper.getMainNodeName());
 
 
                 rootElement.appendChild(sprayer);
                 sprayer.appendChild(usageScales);
                 sprayer.appendChild(effects);
                 sprayer.appendChild(animationNodes);
+                sprayer.appendChild(sounds);
+                sounds.appendChild(hydraulic);
                 }
         }
     }
