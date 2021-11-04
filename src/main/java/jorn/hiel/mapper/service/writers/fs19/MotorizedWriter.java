@@ -40,7 +40,7 @@ public class MotorizedWriter implements DocWriter {
             Element consumerConfiguration = doc.createElement("consumerConfiguration");
             consumerConfigurations.appendChild(consumerConfiguration);
 
-            int needed = Integer.valueOf(configFileReader.getMappedItem("numberOfConsumers").getValue());
+            int needed = Integer.parseInt(configFileReader.getMappedItem("numberOfConsumers").getValue());
 
             for (int x=0;x<needed;x++) {
                 Element consumer = doc.createElement("consumer");
@@ -70,7 +70,7 @@ public class MotorizedWriter implements DocWriter {
             motor.setAttribute("lowBrakeForceScale", mapper.getMappedItem("motorBrakeForceScale").getValue());
             motor.setAttribute("rotInertia", mapper.getMappedItem("motorRotInertia").getValue());
 
-            needed = Integer.valueOf(configFileReader.getMappedItem("numberOfTorq").getValue());
+            needed = Integer.parseInt(configFileReader.getMappedItem("numberOfTorq").getValue());
 
             for (int x=0;x<needed;x++) {
                 Element torque = doc.createElement("torque");
@@ -96,7 +96,7 @@ public class MotorizedWriter implements DocWriter {
             differentialConfiguration.appendChild(differentials);
 
 
-            needed = Integer.valueOf(configFileReader.getMappedItem("numberOfDifferentials").getValue());
+            needed = Integer.parseInt(configFileReader.getMappedItem("numberOfDifferentials").getValue());
             for (int x=0;x<needed;x++) {
                 Element differential = doc.createElement("differential");
                 differential.setAttribute("torqueRatio", configFileReader.getMappedItem("DiffTorqueRatio").getValue());
@@ -113,10 +113,15 @@ public class MotorizedWriter implements DocWriter {
             motorStartDuration.setTextContent(configFileReader.getMappedItem("motorStartDuration").getValue());
             motorized.appendChild(motorStartDuration);
 
+            Element brakeCompressor = doc.createElement("brakeCompressor");
+            brakeCompressor.setAttribute("capacity", configFileReader.getMappedItem("brakeCompressorCapacity").getValue());
+            brakeCompressor.setAttribute("fillSpeed", configFileReader.getMappedItem("brakeCompressorFillSpeed").getValue());
+            motorized.appendChild(brakeCompressor);
+
             Element exhaustEffects = doc.createElement("exhaustEffects");
             motorized.appendChild(exhaustEffects);
 
-            needed = Integer.valueOf(configFileReader.getMappedItem("numberOfExhaust").getValue());
+            needed = Integer.parseInt(configFileReader.getMappedItem("numberOfExhaust").getValue());
 
             for (int x=0;x<needed;x++) {
                 Element exhaustEffect = doc.createElement("exhaustEffect");

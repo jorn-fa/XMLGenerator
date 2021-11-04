@@ -47,9 +47,9 @@ public class LightWriter implements DocWriter {
                 for (int x=0;x<needed;x++) {
                     Element state = doc.createElement("state");
                     //generate the sequential states ( ie   0 1 2 3 )
-                    String insert = "";
-                    for(int y=0;y<=x;y++){insert = insert +" " + y;}
-                    state.setAttribute("lightTypes", insert.trim());
+                    StringBuilder insert = new StringBuilder();
+                    for(int y=0;y<=x;y++){insert.append(" " + y);}
+                    state.setAttribute("lightTypes", insert.toString().trim());
                     states.appendChild(state);
                 }
                 rootElement.appendChild(lights);
@@ -57,7 +57,7 @@ public class LightWriter implements DocWriter {
 
 
                 Element realLights = doc.createElement("realLights");
-                rootElement.appendChild(realLights);
+                lights.appendChild(realLights);
                 Element low = doc.createElement("low");
                 Element high = doc.createElement("high");
                 realLights.appendChild(low);
@@ -65,7 +65,7 @@ public class LightWriter implements DocWriter {
                 needed = Integer.parseInt(configFileReader.getMappedItem("numberOfLowLights").getValue());
                 for (int x=0;x<needed;x++) {
                     Element light = doc.createElement("light");
-                    String item="sharedLight";
+                    String item="lowLight";
                     light.setAttribute("node", mapper.getMappedItem(item+x+"node").getValue());
                     light.setAttribute("lightTypes", mapper.getMappedItem(item+x+"lightTypes").getValue());
                     light.setAttribute("excludedLightTypes", mapper.getMappedItem(item+x+"excludedLightTypes").getValue());
@@ -77,11 +77,61 @@ public class LightWriter implements DocWriter {
                 needed = Integer.parseInt(configFileReader.getMappedItem("numberOfHighLights").getValue());
                 for (int x=0;x<needed;x++) {
                     Element light = doc.createElement("light");
-                    String item="sharedLight";
+                    String item="highLight";
                     light.setAttribute("node", mapper.getMappedItem(item+x+"node").getValue());
                     light.setAttribute("lightTypes", mapper.getMappedItem(item+x+"lightTypes").getValue());
                     light.setAttribute("excludedLightTypes", mapper.getMappedItem(item+x+"excludedLightTypes").getValue());
                     high.appendChild(light);
+                }
+
+                needed = Integer.parseInt(configFileReader.getMappedItem("numberOfBrakeLights").getValue());
+                for (int x=0;x<needed;x++) {
+                    Element light = doc.createElement("brakeLight");
+                    String item="brakeLight";
+                    light.setAttribute("node", mapper.getMappedItem(item+x+"node").getValue());
+                    high.appendChild(light);
+                }
+
+                needed = Integer.parseInt(configFileReader.getMappedItem("numberOfTurnLightLeft").getValue());
+                for (int x=0;x<needed;x++) {
+                    Element light = doc.createElement("turnLightLeft");
+                    String item="turnLightLeft";
+                    light.setAttribute("node", mapper.getMappedItem(item+x+"node").getValue());
+                    high.appendChild(light);
+                }
+
+                needed = Integer.parseInt(configFileReader.getMappedItem("numberOfTurnLightRight").getValue());
+                for (int x=0;x<needed;x++) {
+                    Element light = doc.createElement("turnLightRight");
+                    String item="turnLightRight";
+                    light.setAttribute("node", mapper.getMappedItem(item+x+"node").getValue());
+                    high.appendChild(light);
+                }
+
+                needed = Integer.parseInt(configFileReader.getMappedItem("numberOfReverseLight").getValue());
+                for (int x=0;x<needed;x++) {
+                    Element light = doc.createElement("reverseLight");
+                    String item="reverseLight";
+                    light.setAttribute("node", mapper.getMappedItem(item+x+"node").getValue());
+                    high.appendChild(light);
+                }
+
+                needed = Integer.parseInt(configFileReader.getMappedItem("numberOfInteriorLight").getValue());
+                for (int x=0;x<needed;x++) {
+                    Element light = doc.createElement("reverseLight");
+                    String item="reverseLight";
+                    light.setAttribute("node", mapper.getMappedItem(item+x+"node").getValue());
+                    high.appendChild(light);
+                }
+                Element beaconLights = doc.createElement("beaconLights");
+                lights.appendChild(beaconLights);
+                needed = Integer.parseInt(configFileReader.getMappedItem("numberOfBeaconLight").getValue());
+                for (int x=0;x<needed;x++) {
+                    String item="beaconLight";
+                    Element light = doc.createElement(item);
+                    light.setAttribute("node", mapper.getMappedItem(item+x+"node").getValue());
+                    light.setAttribute("filename", mapper.getMappedItem(item+x+"fileName").getValue());
+                    beaconLights.appendChild(light);
                 }
 
 

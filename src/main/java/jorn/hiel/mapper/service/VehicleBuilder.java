@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -86,6 +87,12 @@ public class VehicleBuilder implements SingleXmlItem {
     @Autowired
     LightWriter lightWriter;
 
+    @Autowired
+    WoodHarvesterWriter woodHarvesterWriter;
+
+    @Autowired
+    TrailerWriter trailerWriter;
+
 
 
     private Document doc;
@@ -116,12 +123,12 @@ public class VehicleBuilder implements SingleXmlItem {
             List<DocWriter> eofWriters = List.of(animationWriter,smallStuffWriter,materialWriter, i3DMapperWriter);
 
             List<DocWriter> writers = List.of(storedataWriter,baseWriter, wheelWriter, lightWriter, wiperWriter,enterableWriter, drivableWriter, dashboardWriter, fillUnitWriter,fillVolumeWriter ,
-                    foldableWriter, aiWriter,motorizedWriter,workAreaWriter, sprayerWriter );
+                    foldableWriter, aiWriter,motorizedWriter,workAreaWriter, sprayerWriter,woodHarvesterWriter, trailerWriter);
 
 
 
             List<DocWriter> combinedList = Stream.of(writers, eofWriters)
-                    .flatMap(x -> x.stream())
+                    .flatMap(Collection::stream)
                     .collect(Collectors.toList());
             combinedList.forEach(a-> a.write(doc));
 
