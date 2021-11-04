@@ -1,6 +1,7 @@
 package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
+import jorn.hiel.mapper.service.I3DMapper;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.w3c.dom.Node;
 @Component
 public class WheelWriter implements DocWriter {
 
+    @Autowired
+    I3DMapper mapper;
 
     @Autowired
     NeedToWrite needToWrite;
@@ -71,6 +74,32 @@ public class WheelWriter implements DocWriter {
 
 
                 }
+
+                Element hubs = doc.createElement("hubs");
+                wheels.appendChild(hubs);
+                Element color0 = doc.createElement("color0");
+                Element color1 = doc.createElement("color1");
+
+                hubs.appendChild(color0);
+                color0.setTextContent(mapper.getMappedItem("HubColor0").getValue());
+                hubs.appendChild(color1);
+                color1.setTextContent(mapper.getMappedItem("HubColor1").getValue());
+
+                needed = Integer.parseInt(configFileReader.getMappedItem("numberOfHubs").getValue());
+                for (int x=0;x<needed;x++) {
+                    String item="hub";
+                    Element hub = doc.createElement(item);
+                    hubs.appendChild(hub);
+                    hub.setAttribute("linkNode", mapper.getMappedItem(item+x+"LinkNode").getValue());
+                    hub.setAttribute("filename", mapper.getMappedItem(item+x+"FileName").getValue());
+                    hub.setAttribute("isLeft", mapper.getMappedItem(item+x+"isLeft").getValue());
+                    hub.setAttribute("scale", "1 1 1");
+
+
+
+                }
+
+
 
                 Element ackermannSteeringConfigurations = doc.createElement("ackermannSteeringConfigurations");
                 wheels.appendChild(ackermannSteeringConfigurations);

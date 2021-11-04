@@ -103,7 +103,7 @@ public class ConfigFileReader {
     }
 
     public void update(MappedItem mappedItem){
-        if (repo.getItems().keySet().contains(mappedItem.getKey())  ){
+        if (repo.getItems().containsKey(mappedItem.getKey())  ){
             repo.getItems().remove(mappedItem.getKey());
             repo.getItems().put(mappedItem.getKey(), mappedItem.getValue());
         }
