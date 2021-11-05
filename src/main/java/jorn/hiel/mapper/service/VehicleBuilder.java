@@ -111,6 +111,15 @@ public class VehicleBuilder implements SingleXmlItem {
     @Autowired
     ConnectionHoseWriter connectionHoseWriter;
 
+    @Autowired
+    BaleLoaderWriter baleLoaderWriter;
+
+    @Autowired
+    CoverWriter coverWriter;
+
+    @Autowired
+    SuspensionWriter suspensionWriter;
+
 
 
     private Document doc;
@@ -142,7 +151,7 @@ public class VehicleBuilder implements SingleXmlItem {
 
             List<DocWriter> writers = List.of(storedataWriter,baseWriter, dynaLoadPartsWriter, wheelWriter, lightWriter, wiperWriter,enterableWriter, drivableWriter, dashboardWriter, fillUnitWriter,fillVolumeWriter ,
                     foldableWriter, aiWriter,motorizedWriter,workAreaWriter, sprayerWriter,woodHarvesterWriter, trailerWriter,dischargebleWriter,cylindredWriter
-                    ,attachbleWriter,powerTakeOffWriter,connectionHoseWriter);
+                    ,attachbleWriter,powerTakeOffWriter,connectionHoseWriter,baleLoaderWriter, coverWriter,suspensionWriter);
 
 
 

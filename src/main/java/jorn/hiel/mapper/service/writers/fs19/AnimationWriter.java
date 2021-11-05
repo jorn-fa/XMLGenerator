@@ -4,6 +4,7 @@ import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -20,6 +21,8 @@ public class AnimationWriter implements DocWriter {
 
         if (configFileReader.getAnimations().size()>0){
 
+            String commentFilter="AddComment:";
+
             Node rootElement = doc.getElementsByTagName("Vehicle").item(0);
 
             Node animations = doc.getElementsByTagName("animations").item(0);
@@ -35,16 +38,24 @@ public class AnimationWriter implements DocWriter {
             animation.setAttribute("name",name);
 
             Element part = doc.createElement("part");
-            part.setAttribute("node",item.equals("")?configFileReader.getMappedItem("UnknownEntry").getValue():item);
+
 
 
             //animition attributes
-            List<String> names = List.of("startTime","endTime","startRot","endRot");
-            names.forEach(b-> part.setAttribute(b, configFileReader.getMappedItem("UnknownEntry").getValue()));
+                if(item.startsWith(commentFilter)){
+                    Comment comment=doc.createComment(item.substring(commentFilter.length()));
+                    animation.appendChild(comment);
+
+                }else {
+                    part.setAttribute("node",item.equals("")?configFileReader.getMappedItem("UnknownEntry").getValue():item);
+                    List<String> names = List.of("startTime", "endTime", "startRot", "endRot");
+                    names.forEach(b -> part.setAttribute(b, configFileReader.getMappedItem("UnknownEntry").getValue()));
+                }
+
+                animation.appendChild(part);
 
 
 
-            animation.appendChild(part);
             finalAnimations.appendChild(animation);
         }
             );

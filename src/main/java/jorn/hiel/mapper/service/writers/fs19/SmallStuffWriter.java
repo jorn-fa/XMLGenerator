@@ -82,6 +82,18 @@ public class SmallStuffWriter implements DocWriter {
                 rootElement.appendChild(turnOnVehicle);
             }
 
+            if (needToWrite.needsToWrite("powerConsumer")) {
+
+                String item = "powerConsumer";
+                Element powerConsumer = doc.createElement(item);
+                powerConsumer.setAttribute("ptoRpm", configFileReader.getMappedItem("powerConsumerPtoRpm").getValue());
+                powerConsumer.setAttribute("neededMinPtoPower", configFileReader.getMappedItem("powerConsumerNeededMinPtoPower").getValue());
+                powerConsumer.setAttribute("neededMaxPtoPower", configFileReader.getMappedItem("powerConsumerNeededMaxPtoPower").getValue());
+
+
+                rootElement.appendChild(powerConsumer);
+            }
+
         }
     }
 
