@@ -86,7 +86,7 @@ public class I3DMapper {
         document.getDocumentElement().normalize();
         NodeList nList = document.getElementsByTagName("Scene");
         NodeList temp = nList.item(0).getChildNodes();
-        //counter for non binairy save
+        //counter for non-binary save
         if (nList.getLength()==2){temp = nList.item(1).getChildNodes();}
 
 

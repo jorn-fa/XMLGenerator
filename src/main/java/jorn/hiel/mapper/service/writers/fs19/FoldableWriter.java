@@ -29,6 +29,9 @@ public class FoldableWriter implements DocWriter {
                 foldingParts.setAttribute("turnOnFoldMinLimit","0");
                 foldingParts.setAttribute("turnOnFoldMaxLimit","0.5");
                 foldingParts.setAttribute("turnOnFoldDirection","1");
+                foldingParts.setAttribute("foldMiddleAnimTime","erase this if no pause is needed, else "+ configFileReader.getMappedItem("foldMiddleAnimTime").getValue());
+
+
 
                 String animName=configFileReader.getMappedItem("foldableAnimation").getValue();
                 String unknown = configFileReader.getMappedItem("UnknownEntry").getValue();

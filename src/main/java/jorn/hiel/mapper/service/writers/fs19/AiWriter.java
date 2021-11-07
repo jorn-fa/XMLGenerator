@@ -1,6 +1,7 @@
 package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
+import jorn.hiel.mapper.service.I3DMapper;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ import org.w3c.dom.Node;
 import java.util.List;
 @Component
 public class AiWriter implements DocWriter {
+
+    @Autowired
+    I3DMapper mapper;
 
     @Autowired
     NeedToWrite needToWrite;
@@ -33,16 +37,19 @@ public class AiWriter implements DocWriter {
                 turningRadiusLimitation.setAttribute("radius",configFileReader.getMappedItem("turningRadiusLimitation").getValue());
                 Element toolReverserDirectionNode = doc.createElement("toolReverserDirectionNode");
                 toolReverserDirectionNode.setAttribute("node",configFileReader.getMappedItem("toolReverserDirectionNode").getValue());
+                Element collisionTrigger = doc.createElement("collisionTrigger");
+                collisionTrigger.setAttribute("node",mapper.getMappedItem("aiCollisionTrigger").getValue());
+                ai.appendChild(collisionTrigger);
 
                 Element areaMarkers = doc.createElement("areaMarkers");
-                areaMarkers.setAttribute("leftNode",configFileReader.getMappedItem("areaMarkerLeftNode").getValue());
-                areaMarkers.setAttribute("rightNode",configFileReader.getMappedItem("areaMarkerRightNode").getValue());
-                areaMarkers.setAttribute("backNode",configFileReader.getMappedItem("areaMarkerBackNode").getValue());
+                areaMarkers.setAttribute("leftNode",mapper.getMappedItem("areaMarkerLeftNode").getValue());
+                areaMarkers.setAttribute("rightNode",mapper.getMappedItem("areaMarkerRightNode").getValue());
+                areaMarkers.setAttribute("backNode",mapper.getMappedItem("areaMarkerBackNode").getValue());
 
                 Element sizeMarkers = doc.createElement("sizeMarkers");
-                sizeMarkers.setAttribute("leftNode",configFileReader.getMappedItem("sizeMarkerLeftNode").getValue());
-                sizeMarkers.setAttribute("rightNode",configFileReader.getMappedItem("sizeMarkerRightNode").getValue());
-                sizeMarkers.setAttribute("backNode",configFileReader.getMappedItem("sizeMarkerBackNode").getValue());
+                sizeMarkers.setAttribute("leftNode",mapper.getMappedItem("sizeMarkerLeftNode").getValue());
+                sizeMarkers.setAttribute("rightNode",mapper.getMappedItem("sizeMarkerRightNode").getValue());
+                sizeMarkers.setAttribute("backNode",mapper.getMappedItem("sizeMarkerBackNode").getValue());
 
 
                 List<Element> elements = List.of(needsLowering,allowTurnBackward,turningRadiusLimitation,toolReverserDirectionNode,areaMarkers,sizeMarkers);

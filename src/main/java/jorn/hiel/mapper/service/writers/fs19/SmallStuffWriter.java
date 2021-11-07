@@ -94,6 +94,8 @@ public class SmallStuffWriter implements DocWriter {
                 rootElement.appendChild(powerConsumer);
             }
 
+
+
         }
     }
 

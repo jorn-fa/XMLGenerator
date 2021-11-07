@@ -34,7 +34,10 @@ public class ConfigFileReader {
     private ConfigRepo repo;
 
     @Getter
-    HashMap<String,String> animations = new HashMap<String, String>();
+    HashMap<String,String> animations = new HashMap<>();
+
+    @Getter
+    HashMap<String,String> speedRotatingParts = new HashMap<>();
 
 
     @SuppressWarnings("unchecked")
@@ -116,6 +119,10 @@ public class ConfigFileReader {
      */
     public void addAnimation(String animName, String itemName) {
         animations.put(animName, itemName);
+    }
+
+    public void addSpeedRotatingPart(String speedRotatingPart, String itemName) {
+        speedRotatingParts.put(speedRotatingPart, itemName);
     }
 
 

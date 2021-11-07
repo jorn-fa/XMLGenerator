@@ -38,10 +38,20 @@ public class WorkAreaWriter implements DocWriter {
                 workArea.setAttribute("functionName",configFileReader.getMappedItem("WorkAreaFunctionName").getValue());
                 workArea.setAttribute("disableBackwards","true");
                 workArea.setAttribute("requiresGroundContact",configFileReader.getMappedItem("WorkAreaGroundContact").getValue());
+                workArea.setAttribute("needsSetIsTurnedOn","false");
+
 
                 area.setAttribute("startNode",configFileReader.getMappedItem("workAreaStartNode").getValue());
                 area.setAttribute("widthNode",configFileReader.getMappedItem("workAreaWidthNode").getValue());
-                area.setAttribute("heightNode",configFileReader.getMappedItem("workAreaHeightNodee").getValue());
+                area.setAttribute("heightNode",configFileReader.getMappedItem("workAreaHeightNode").getValue());
+
+
+                Element folding = doc.createElement("folding");
+                folding.setAttribute("minLimit",configFileReader.getMappedItem("workAreaFoldingMinLimit").getValue());
+                folding.setAttribute("maxLimit",configFileReader.getMappedItem("workAreaFoldingMaxLimit").getValue());
+
+
+
 
 
                 workAreas.appendChild(workArea);

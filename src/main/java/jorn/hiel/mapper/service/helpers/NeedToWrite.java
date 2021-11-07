@@ -12,6 +12,8 @@ public class NeedToWrite {
      @Autowired
      ConfigFileReader configFileReader;
 
+     boolean hasWritten = false;
+
     public boolean needsToWrite(String filter){
 
 
@@ -30,6 +32,11 @@ public class NeedToWrite {
             if(filter.equals("enterable")) {
                 log.info("Adding mirror trough fullWrite");
                 configFileReader.addMirror();
+            }
+
+            if(hasWritten==false){
+                configFileReader.addSpeedRotatingPart("fullWrite","from fullWrite");
+                log.info("Adding 1 speedRotatingPart trough fullWrite");
             }
 
 
