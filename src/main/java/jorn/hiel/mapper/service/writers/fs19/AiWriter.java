@@ -55,7 +55,7 @@ public class AiWriter implements DocWriter {
                 List<Element> elements = List.of(needsLowering,allowTurnBackward,turningRadiusLimitation,toolReverserDirectionNode,areaMarkers,sizeMarkers);
 
                 rootElement.appendChild(ai);
-                elements.forEach(a-> ai.appendChild(a));
+                elements.forEach(ai::appendChild);
             }
         }
     }

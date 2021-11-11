@@ -2,10 +2,7 @@ package jorn.hiel.mapper.service.managers;
 
 import jorn.hiel.mapper.pojo.MappedItem;
 import jorn.hiel.mapper.pojo.TranslationItem;
-import jorn.hiel.mapper.service.ConfigFileReader;
-import jorn.hiel.mapper.service.I3DMapper;
-import jorn.hiel.mapper.service.TranslationFileReader;
-import jorn.hiel.mapper.service.VehicleBuilder;
+import jorn.hiel.mapper.service.*;
 import jorn.hiel.mapper.service.helpers.UnknownStringCounter;
 import jorn.hiel.mapper.service.writers.ModDescWriterDom;
 import lombok.Getter;
@@ -53,7 +50,12 @@ public class MapperManager extends BasicManager {
     ConfigFileReader configFileReader;
 
     @Autowired
+    VehicleSpecReader vehicleSpecReader;
+
+    @Autowired
     VehicleBuilder vehicleBuilder;
+
+
 
     private List<String> args = new ArrayList<>();
 
@@ -67,7 +69,7 @@ public class MapperManager extends BasicManager {
 
 
         if (!hasConfig()) {
-            log.info("no config or translation set");
+            log.info("no config or translation or vehicleSpec set");
         } else {
 
             results = new ArrayList<>();
@@ -81,6 +83,8 @@ public class MapperManager extends BasicManager {
 
                 translation.process();
                 configFileReader.process();
+                vehicleSpecReader.process();
+
 
 
                 mapper.repo.getItems().forEach(a -> {
@@ -144,8 +148,9 @@ public class MapperManager extends BasicManager {
 
         log.info(translation.getFile());
         log.info(configFileReader.getFile());
+        log.info(vehicleSpecReader.getFile());
 
-        return !translation.getFile().isEmpty() && !configFileReader.getFile().isEmpty();
+        return !translation.getFile().isEmpty() && !configFileReader.getFile().isEmpty() && !vehicleSpecReader.getFile().isEmpty();
 
     }
 
@@ -158,6 +163,7 @@ public class MapperManager extends BasicManager {
 
         translation.setFile(home.getDir()+ separator + "translations.json");
         configFileReader.setFile(home.getDir()+separator+"config.json");
+        vehicleSpecReader.setFile(home.getDir()+separator+"vehicleSpec.json");
 
 
         if (args.size() != 0) {
@@ -184,6 +190,14 @@ public class MapperManager extends BasicManager {
                     String sub = arg.substring(checkMe.length()).replace('\\', '/');
                     log.info(logEntry + "configuration file set to " + sub);
                     configFileReader.setFile(sub);
+
+                }
+
+                checkMe = "-VehicleSpecFile:";
+                if (arg.startsWith(checkMe)) {
+                    String sub = arg.substring(checkMe.length()).replace('\\', '/');
+                    log.info(logEntry + "vehicleSpec file set to " + sub);
+                    vehicleSpecReader.setFile(sub);
 
                 }
 

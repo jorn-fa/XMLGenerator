@@ -41,6 +41,6 @@ public class TranslationsRepo implements RepositoryInterface<TranslationItem> {
 
     @Override
     public void printList() {
-        itemList.forEach(a -> System.out.println(a));
+        itemList.forEach(System.out::println);
     }
 }
