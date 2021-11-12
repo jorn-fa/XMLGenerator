@@ -2,6 +2,7 @@ package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.I3DMapper;
+import jorn.hiel.mapper.service.enums.VehicleSpec;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class AiWriter implements DocWriter {
 
     @Override
     public void write(Document doc) {
-        if (needToWrite.needsToWrite("ai")) {
+        if (needToWrite.needsToWrite(VehicleSpec.AI)) {
             Node rootElement = doc.getElementsByTagName("Vehicle").item(0);
             {
                 Element ai = doc.createElement("ai");

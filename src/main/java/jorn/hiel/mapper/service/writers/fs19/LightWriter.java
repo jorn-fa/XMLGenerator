@@ -2,6 +2,7 @@ package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.I3DMapper;
+import jorn.hiel.mapper.service.enums.VehicleSpec;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class LightWriter implements DocWriter {
 
     @Override
     public void write(Document doc) {
-        if (needToWrite.needsToWrite("lights")) {
+        if (needToWrite.needsToWrite(VehicleSpec.LIGHTS)) {
             Node rootElement = doc.getElementsByTagName("Vehicle").item(0);
             {
 
@@ -48,7 +49,8 @@ public class LightWriter implements DocWriter {
                     Element state = doc.createElement("state");
                     //generate the sequential states ( ie   0 1 2 3 )
                     StringBuilder insert = new StringBuilder();
-                    for(int y=0;y<=x;y++){insert.append(" " + y);}
+                    for(int y=0;y<=x;y++){
+                        insert.append(" ").append(y);}
                     state.setAttribute("lightTypes", insert.toString().trim());
                     states.appendChild(state);
                 }

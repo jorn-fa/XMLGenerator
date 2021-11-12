@@ -2,6 +2,7 @@ package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.I3DMapper;
+import jorn.hiel.mapper.service.enums.VehicleSpec;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class BaleLoaderWriter implements DocWriter {
     @Override
     public void write(Document doc) {
 
-        if (needToWrite.needsToWrite("baleLoader")) {
+        if (needToWrite.needsToWrite(VehicleSpec.BALELOADER)) {
             Node rootElement = doc.getElementsByTagName("Vehicle").item(0);
             {
 

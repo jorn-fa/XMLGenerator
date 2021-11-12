@@ -1,6 +1,8 @@
 package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
+import jorn.hiel.mapper.service.enums.VehicleSpec;
+import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +16,12 @@ public class SpeedRotatingPartsWriter implements DocWriter {
     @Autowired
     ConfigFileReader configFileReader;
 
+    @Autowired
+    NeedToWrite needToWrite;
+
     public void write(Document doc) {
 
-        if (configFileReader.getSpeedRotatingParts().size() > 0) {
+        if (configFileReader.getSpeedRotatingParts().size() > 0 && needToWrite.needsToWrite(VehicleSpec.SPEEDROTATINGPARTS))  {
 
 
             Node rootElement = doc.getElementsByTagName("Vehicle").item(0);

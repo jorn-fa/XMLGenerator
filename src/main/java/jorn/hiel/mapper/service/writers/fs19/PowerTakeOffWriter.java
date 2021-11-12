@@ -1,7 +1,7 @@
 package jorn.hiel.mapper.service.writers.fs19;
 
-import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.I3DMapper;
+import jorn.hiel.mapper.service.enums.VehicleSpec;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +18,11 @@ public class PowerTakeOffWriter implements DocWriter {
     @Autowired
     NeedToWrite needToWrite;
 
-    @Autowired
-    ConfigFileReader configFileReader;
-
 
     @Override
     public void write(Document doc) {
 
-        if (needToWrite.needsToWrite("powerTakeOffs")) {
+        if (needToWrite.needsToWrite(VehicleSpec.POWERTAKEOFFS)) {
             Node rootElement = doc.getElementsByTagName("Vehicle").item(0);
             {
 

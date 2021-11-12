@@ -2,6 +2,7 @@ package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.I3DMapper;
+import jorn.hiel.mapper.service.enums.VehicleSpec;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class MaterialWriter implements DocWriter {
             material.appendChild(shaderParameter);
         }
 
-        if (needToWrite.needsToWrite("baseMaterialConfiguration")) {
+        if (needToWrite.needsToWrite(VehicleSpec.BASEMATERIALCONFIGURATION)) {
 
 
             Element baseMaterialConfigurations = doc.createElement("baseMaterialConfigurations");
@@ -55,10 +56,7 @@ public class MaterialWriter implements DocWriter {
             configMaterial.setAttribute("name", configFileReader.getMappedItem("ConfigMatName").getValue());
             configMaterial.setAttribute("shaderParameter", configFileReader.getMappedItem("UnknownItem").getValue());
             baseMaterialConfigurations.appendChild(configMaterial);
-        }
 
-
-        if (needToWrite.needsToWrite("designMaterialConfiguration")) {
 
 
         Element designMaterialConfigurations= doc.createElement("designMaterialConfigurations");

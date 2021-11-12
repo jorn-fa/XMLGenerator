@@ -37,7 +37,7 @@ public class I3dMapRepo implements RepositoryInterface<I3dMap> {
     }
 
     /**
-     * @param i3dMap
+     * @param i3dMap i3dMap
      * @return altered name due to existing equal
      */
     private I3dMap verify(I3dMap i3dMap) {
@@ -46,9 +46,9 @@ public class I3dMapRepo implements RepositoryInterface<I3dMap> {
         if (doesExist(i3dMap)) {
             if (i3dMap.getNode().contains(".")) {
                 String node = i3dMap.getNode();
-                int number = Integer.valueOf(node.substring(node.indexOf('.') + 1)) + 1;
+                int number = Integer.parseInt(node.substring(node.indexOf('.') + 1)) + 1;
 
-                passMe.setNode(node.substring(0, node.indexOf('.') + 1) + String.valueOf(number));
+                passMe.setNode(node.substring(0, node.indexOf('.') + 1) + number);
 
             } else {
 

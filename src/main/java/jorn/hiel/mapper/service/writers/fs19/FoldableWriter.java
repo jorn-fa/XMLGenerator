@@ -1,6 +1,7 @@
 package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
+import jorn.hiel.mapper.service.enums.VehicleSpec;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,11 @@ public class FoldableWriter implements DocWriter {
 
     @Override
     public void write(Document doc) {
-        if (needToWrite.needsToWrite("foldable")) {
+        if (needToWrite.needsToWrite(VehicleSpec.FOLDABLE)) {
             Node rootElement = doc.getElementsByTagName("Vehicle").item(0);
             {
-                Element foldable = doc.createElement("foldable");
-                rootElement.appendChild(foldable);
+                Element foldAble = doc.createElement("foldable");
+                rootElement.appendChild(foldAble);
                 Element foldingParts = doc.createElement("foldingParts");
                 foldingParts.setAttribute("startAnimTime","1");
                 foldingParts.setAttribute("turnOnFoldMinLimit","0");
@@ -47,7 +48,7 @@ public class FoldableWriter implements DocWriter {
 
                 configFileReader.addAnimation("foldableAnimation", configFileReader.getMappedItem("foldableAnimation").getValue());
 
-                foldable.appendChild(foldingParts);
+                foldAble.appendChild(foldingParts);
                 foldingParts.appendChild(foldingPart);
 
 

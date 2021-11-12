@@ -2,6 +2,7 @@ package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.I3DMapper;
+import jorn.hiel.mapper.service.enums.VehicleSpec;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class SmallStuffWriter implements DocWriter {
     ConfigFileReader configFileReader;
 
     public void write(Document doc){
-        if (needToWrite.needsToWrite("needsWipers")) {
+        if (needToWrite.needsToWrite(VehicleSpec.WIPERS)) {
 
 
             Node rootElement = doc.getElementsByTagName("Vehicle").item(0);
@@ -66,7 +67,7 @@ public class SmallStuffWriter implements DocWriter {
             rootElement.appendChild(supportsFillTriggers);
 
 
-            if (needToWrite.needsToWrite("turnOnVehicle")) {
+            if (needToWrite.needsToWrite(VehicleSpec.TURNONVEHICLE)) {
 
 
                 Element turnOnVehicle = doc.createElement("turnOnVehicle");
@@ -82,7 +83,7 @@ public class SmallStuffWriter implements DocWriter {
                 rootElement.appendChild(turnOnVehicle);
             }
 
-            if (needToWrite.needsToWrite("powerConsumer")) {
+            if (needToWrite.needsToWrite(VehicleSpec.POWERCONSUMER)) {
 
                 String item = "powerConsumer";
                 Element powerConsumer = doc.createElement(item);

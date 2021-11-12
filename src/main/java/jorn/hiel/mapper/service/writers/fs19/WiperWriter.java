@@ -1,6 +1,7 @@
 package jorn.hiel.mapper.service.writers.fs19;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
+import jorn.hiel.mapper.service.enums.VehicleSpec;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,7 @@ public class WiperWriter implements DocWriter {
 
     public void write(Document doc){
 
-        if (needToWrite.needsToWrite("needsWipers")) {
+        if (needToWrite.needsToWrite(VehicleSpec.WIPERS)) {
 
             String animName=configFileReader.getMappedItem("wiperAnimName").getValue();
             String unknown = configFileReader.getMappedItem("UnknownEntry").getValue();
