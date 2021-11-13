@@ -24,6 +24,7 @@ public class MaterialWriter implements DocWriter {
 
     @Override
     public void write(Document doc) {
+        if (needToWrite.needsToWrite(VehicleSpec.BASEMATERIAL)) {
 
         Node rootElement = doc.getElementsByTagName("Vehicle").item(0);
 
@@ -43,7 +44,7 @@ public class MaterialWriter implements DocWriter {
             material.appendChild(shaderParameter);
         }
 
-        if (needToWrite.needsToWrite(VehicleSpec.BASEMATERIALCONFIGURATION)) {
+
 
 
             Element baseMaterialConfigurations = doc.createElement("baseMaterialConfigurations");

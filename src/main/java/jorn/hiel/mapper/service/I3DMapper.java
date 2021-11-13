@@ -33,7 +33,7 @@ public class I3DMapper {
     @Autowired
     private DocBuildFactory dbFactory;
 
-    @Autowired
+    @Autowired @Getter
     private EntryRepo entryRepo;
 
     @Autowired
@@ -146,10 +146,13 @@ public class I3DMapper {
      */
     private void processName(String name) {
 
+        //todo catch me incase i mess up
+
         String[] splice = name.split(":");
+
         //QOL ->  brand to uppercase
         if(splice[1].equals("brand")){splice[2]=splice[2].toUpperCase(Locale.ROOT);}
-        entryRepo.add(new MappedItem().setKey(splice[1]).setValue(splice[2]));
+        addEntry(new MappedItem().setKey(splice[1]).setValue(splice[2]));
 
     }
 

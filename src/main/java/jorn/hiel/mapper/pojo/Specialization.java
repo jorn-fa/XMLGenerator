@@ -1,5 +1,6 @@
 package jorn.hiel.mapper.pojo;
 
+import jorn.hiel.mapper.service.enums.VehicleSpec;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,11 +15,14 @@ public class Specialization {
 
     private String name;
     private String version;
-    private List<String> specializations;
+    private List<VehicleSpec> specs;
 
-    public void addSpecialization(String item){
-        if(specializations==null){specializations=new ArrayList<>();
+
+
+    public void addSpecialization(VehicleSpec spec){
+        if(specs==null){specs=new ArrayList<>();
         }
-        specializations.add(item);
+        specs.add(spec);
+
     }
 }

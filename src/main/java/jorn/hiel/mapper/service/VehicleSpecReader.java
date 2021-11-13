@@ -1,6 +1,7 @@
 package jorn.hiel.mapper.service;
 
 import jorn.hiel.mapper.pojo.Specialization;
+import jorn.hiel.mapper.service.enums.VehicleSpec;
 import jorn.hiel.mapper.service.repo.VehicleSpecRepo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Locale;
 
 @Service
 @NoArgsConstructor
@@ -27,7 +29,7 @@ public class VehicleSpecReader {
     @Setter
     private String file="";
 
-    @Autowired
+    @Autowired @Getter
     VehicleSpecRepo repo;
 
     @SuppressWarnings("unchecked")
@@ -65,7 +67,9 @@ public class VehicleSpecReader {
 
 
         JSONArray jsonArray = (JSONArray) object.get("needs");
-        jsonArray.forEach(x -> specialization.addSpecialization((String) x));
+        jsonArray.forEach(x -> specialization.addSpecialization(VehicleSpec.valueOf(x.toString().toUpperCase(Locale.ROOT))));
+
+
 
         log.info("created specialization of -> "  + specialization);
 

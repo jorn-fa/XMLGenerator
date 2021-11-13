@@ -26,7 +26,7 @@ public class AiWriter implements DocWriter {
 
     @Override
     public void write(Document doc) {
-        if (needToWrite.needsToWrite(VehicleSpec.AI)) {
+        if (needToWrite.needsToWrite(VehicleSpec.AIVEHICLE)) {
             Node rootElement = doc.getElementsByTagName("Vehicle").item(0);
             {
                 Element ai = doc.createElement("ai");

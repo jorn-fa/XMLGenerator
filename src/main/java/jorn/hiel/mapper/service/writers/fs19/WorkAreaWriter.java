@@ -23,7 +23,7 @@ public class WorkAreaWriter implements DocWriter {
 
     public void write(Document doc) {
 
-        if (needToWrite.needsToWrite(VehicleSpec.WORKAREAS)) {
+        if (needToWrite.needsToWrite(VehicleSpec.WORKAREA)) {
             Node rootElement = doc.getElementsByTagName("Vehicle").item(0);
 
             Element workAreas = doc.createElement("workAreas");

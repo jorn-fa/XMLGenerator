@@ -30,33 +30,6 @@ public class SmallStuffWriter implements DocWriter {
 
             Node rootElement = doc.getElementsByTagName("Vehicle").item(0);
 
-            Element wear = doc.createElement("wearable");
-            Element wash = doc.createElement("wash");
-            Element bunkerSiloCompacter = doc.createElement("bunkerSiloCompacter");
-            Element honk = doc.createElement("honk");
-            Element foliage = doc.createElement("foliageBending");
-
-
-            List<String> wearList = List.of("fieldMultiplier", "wearDuration", "workMultiplier");
-            wearList.forEach(a -> wear.setAttribute(a, mapper.getMappedItem(a).getValue()));
-
-            List<String> washList = List.of("fieldMultiplier", "washDuration", "workMultiplier", "dirtDuration");
-            washList.forEach(a -> wash.setAttribute(a, mapper.getMappedItem(a).getValue()));
-
-            bunkerSiloCompacter.setAttribute("compactingScale", mapper.getMappedItem("bunkerSiloCompacter").getValue());
-
-            Element sound = doc.createElement("sound");
-            honk.appendChild(sound);
-            sound.setAttribute("template", mapper.getMappedItem("honk_template").getValue());
-            sound.setAttribute("linkNode", mapper.getMappedItem("honk_linknode").getValue());
-
-            Element bendingNode = doc.createElement("bendingNode");
-            List<String> sizeList = List.of("minX", "maxX", "minZ", "maxZ", "yOffset");
-            sizeList.forEach(a -> bendingNode.setAttribute(a, "0.0"));
-            foliage.appendChild(bendingNode);
-
-            List<Element> elements = List.of(wear, wash, bunkerSiloCompacter, honk, foliage);
-            elements.forEach(a -> rootElement.appendChild(a));
 
             Element fillFromAir = doc.createElement("allowFillFromAir");
             fillFromAir.setAttribute("value", "true");
@@ -65,6 +38,51 @@ public class SmallStuffWriter implements DocWriter {
 
             rootElement.appendChild(fillFromAir);
             rootElement.appendChild(supportsFillTriggers);
+
+            if (needToWrite.needsToWrite(VehicleSpec.HONK)) {
+                Element bunkerSiloCompacter = doc.createElement("bunkerSiloCompacter");
+                Element honk = doc.createElement("honk");
+                Element sound = doc.createElement("sound");
+                honk.appendChild(sound);
+                sound.setAttribute("template", mapper.getMappedItem("honk_template").getValue());
+                sound.setAttribute("linkNode", mapper.getMappedItem("honk_linknode").getValue());
+                rootElement.appendChild(bunkerSiloCompacter);
+
+            }
+
+            if (needToWrite.needsToWrite(VehicleSpec.BUNKERSILOCOMPACTER)) {
+                Element bunkerSiloCompacter = doc.createElement("bunkerSiloCompacter");
+                bunkerSiloCompacter.setAttribute("compactingScale", mapper.getMappedItem("bunkerSiloCompacter").getValue());
+                rootElement.appendChild(bunkerSiloCompacter);
+
+            }
+
+
+            if (needToWrite.needsToWrite(VehicleSpec.WASHABLE)) {
+                Element wash = doc.createElement("wash");
+                rootElement.appendChild(wash);
+                List<String> washList = List.of("fieldMultiplier", "washDuration", "workMultiplier", "dirtDuration");
+                washList.forEach(a -> wash.setAttribute(a, mapper.getMappedItem(a).getValue()));
+
+            }
+            if (needToWrite.needsToWrite(VehicleSpec.WEARABLE)) {
+                Element wear = doc.createElement("wearable");
+                rootElement.appendChild(wear);
+                List<String> wearList = List.of("fieldMultiplier", "wearDuration", "workMultiplier");
+                wearList.forEach(a -> wear.setAttribute(a, mapper.getMappedItem(a).getValue()));
+
+            }
+
+            if (needToWrite.needsToWrite(VehicleSpec.FOLIAGEBENDING)) {
+                Element foliage = doc.createElement("foliageBending");
+                rootElement.appendChild(foliage);
+                Element bendingNode = doc.createElement("bendingNode");
+                List<String> sizeList = List.of("minX", "maxX", "minZ", "maxZ", "yOffset");
+                sizeList.forEach(a -> bendingNode.setAttribute(a, "0.0"));
+                foliage.appendChild(bendingNode);
+
+            }
+
 
 
             if (needToWrite.needsToWrite(VehicleSpec.TURNONVEHICLE)) {
