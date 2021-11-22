@@ -4,6 +4,7 @@ import jorn.hiel.mapper.pojo.Specialization;
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.I3DMapper;
 import jorn.hiel.mapper.service.VehicleSpecReader;
+import jorn.hiel.mapper.service.enums.GameVersion;
 import jorn.hiel.mapper.service.enums.VehicleSpec;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,12 @@ public class NeedToWrite {
 
      Specialization currentSpec;
 
+     GameVersion gameVersion;
+
      public boolean needsToWrite(VehicleSpec filter) {
 
          setCurrentVehicleType();
+         setGameVersion();
 
 
          if (configFileReader.getMappedItem("writeAll").getValue().equals("true")) {
@@ -90,6 +94,34 @@ public class NeedToWrite {
                      .filter(a -> a.getName().equals(finalType))
                      .findAny()
                      .orElse(null);
+
+
+         }
+     }
+
+
+     private void setGameVersion(){
+
+         int version;
+
+         if (gameVersion==null){
+             //get type from configuration file
+
+             version = Integer.parseInt(configFileReader.getMappedItem("modDescVersion").getValue());
+
+             if (mapper.getEntryRepo().getItems().containsKey("modDescVersion")) {
+                 version = Integer.parseInt(mapper.getEntryRepo().getItems().get("modDescVersion"));
+                 log.info("Found game version "+version+" in I3D file");
+             }
+
+             if (version<=54) { gameVersion=GameVersion.FS19 ;}
+             if (version>=61) { gameVersion=GameVersion.FS22 ;}
+
+
+
+
+
+             log.info("Setting modDescVersion to -> " + gameVersion);
 
 
          }

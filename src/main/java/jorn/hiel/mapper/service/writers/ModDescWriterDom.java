@@ -56,7 +56,7 @@ public class ModDescWriterDom implements SingleXmlItem, SingleXmlItemWithAttribu
             doc.appendChild(rootElement);
 
             //descVersion
-            mappedItem=configFileReader.getMappedItem("descVersion");
+            mappedItem=configFileReader.getMappedItem("modDescVersion");
             rootElement.setAttribute(mappedItem.getKey(),mappedItem.getValue());
 
             addSingleXmlItem(doc, rootElement,configFileReader.getMappedItem("author"));

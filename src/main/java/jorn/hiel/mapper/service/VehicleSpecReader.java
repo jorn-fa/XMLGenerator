@@ -67,7 +67,9 @@ public class VehicleSpecReader {
 
 
         JSONArray jsonArray = (JSONArray) object.get("needs");
-        jsonArray.forEach(x -> specialization.addSpecialization(VehicleSpec.valueOf(x.toString().toUpperCase(Locale.ROOT))));
+
+
+            jsonArray.forEach(x -> specialization.addSpecialization(VehicleSpec.valueOf(x.toString().toUpperCase(Locale.ROOT))));
 
 
 

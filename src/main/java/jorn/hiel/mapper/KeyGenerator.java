@@ -12,7 +12,7 @@ public class KeyGenerator {
 
     public static void main(String[] args) throws IOException {
 
-        List<String> results  = new ArrayList<String>();
+        List<String> results  = new ArrayList<>();
 
 
         String where = System.getProperty("user.dir").replace('\\','/') +  "/src/main/java/jorn/hiel/mapper/service/writers";
@@ -23,28 +23,29 @@ public class KeyGenerator {
                 .filter(Files::isRegularFile)
                 .collect(Collectors.toList());
 
-        for (int i = 0; i < files.size();i++) {
+        for (Path file : files) {
 
 
-            Files.readAllLines(files.get(i)).stream()
+            Files.readAllLines(file).stream()
                     .filter(a -> a.contains(".getMappedItem("))
                     .filter(a -> !a.contains(".forEach"))
                     .filter(a -> !a.contains("Integer."))
                     .filter(a -> !a.contains("getValue().equals"))
 
                     .forEach(a -> {
-                        if(a.contains("getValue")){
-                        String cut = "Item(";
-                        int start = a.indexOf(cut) + cut.length() + 1;
-                        a = a.substring(start).trim();
-                        int end = a.indexOf(".getV");
-                        a=a.substring(0, end-2);
-                        results.add(a);}
+                        if (a.contains("getValue")) {
+                            String cut = "Item(";
+                            int start = a.indexOf(cut) + cut.length() + 1;
+                            a = a.substring(start).trim();
+                            int end = a.indexOf(".getV");
+                            a = a.substring(0, end - 2);
+                            results.add(a);
+                        }
                     });
         }
 
 
-        System.out.println("results:");
+        System.out.println("results: " + results.size());
         results.stream().distinct().forEach(System.out::println);
 
 
