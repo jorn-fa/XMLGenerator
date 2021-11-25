@@ -6,6 +6,7 @@ import jorn.hiel.mapper.service.I3DMapper;
 import jorn.hiel.mapper.service.VehicleSpecReader;
 import jorn.hiel.mapper.service.enums.GameVersion;
 import jorn.hiel.mapper.service.enums.VehicleSpec;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,15 +29,27 @@ public class NeedToWrite {
 
      Specialization currentSpec;
 
+     @Getter
      GameVersion gameVersion;
+
+     @Getter
+     private boolean fullWrite=false;
+
+     public void init(){
+         setCurrentVehicleType();
+         setGameVersion();
+         if(configFileReader.getMappedItem("writeAll").getValue().equals("true")){
+             fullWrite=true;
+         }
+     }
 
      public boolean needsToWrite(VehicleSpec filter) {
 
-         setCurrentVehicleType();
-         setGameVersion();
 
 
-         if (configFileReader.getMappedItem("writeAll").getValue().equals("true")) {
+         if ((fullWrite)) {
+
+             fullWrite=true;
 
              switch (filter) {
                  case FILLUNIT:
@@ -72,17 +85,18 @@ public class NeedToWrite {
 
          //todo
          //return configFileReader.getMappedItem(filter.toString()).equals("true");
-         return true;
+         return currentSpec.getSpecs().contains(filter);
+
 
      }
 
-     private void setCurrentVehicleType() {
+     public void setCurrentVehicleType() {
 
          if (currentSpec == null) {
 
              //get type from configuration file
              String type = configFileReader.getMappedItem("vehicleType").getValue();
-             log.info("Setting vehicle type to -> " + type);
+             log.info("Setting (configuration file) vehicle type to -> " + type);
 
              if (mapper.getEntryRepo().getItems().containsKey("vehicleType")) {
                  type = mapper.getEntryRepo().getItems().get("vehicleType");
@@ -100,7 +114,7 @@ public class NeedToWrite {
      }
 
 
-     private void setGameVersion(){
+     public void setGameVersion(){
 
          int version;
 
@@ -116,8 +130,6 @@ public class NeedToWrite {
 
              if (version<=54) { gameVersion=GameVersion.FS19 ;}
              if (version>=61) { gameVersion=GameVersion.FS22 ;}
-
-
 
 
 

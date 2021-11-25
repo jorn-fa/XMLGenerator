@@ -1,8 +1,9 @@
 package jorn.hiel.mapper.service;
 
+import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import jorn.hiel.mapper.service.interfaces.SingleXmlItem;
-import jorn.hiel.mapper.service.writers.fs19.*;
+import jorn.hiel.mapper.service.writers.specs.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ import java.util.stream.Stream;
 public class VehicleBuilder implements SingleXmlItem {
 
     private boolean canWrite;
+
+    @Autowired
+    NeedToWrite needToWrite;
 
     @Autowired
     XmlFileWriter xmlFileWriter;
@@ -129,6 +133,9 @@ public class VehicleBuilder implements SingleXmlItem {
     @Autowired
     CultivatorWriter cultivatorWriter;
 
+    @Autowired
+    LicenseWriter licenseWriter;
+
 
 
     private Document doc;
@@ -144,13 +151,15 @@ public class VehicleBuilder implements SingleXmlItem {
 
         if(canWrite) {
 
+            needToWrite.init();
+
 
 
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             doc = docBuilder.newDocument();
 
-            Element rootElement = doc.createElement("Vehicle");
+            Element rootElement = doc.createElement("vehicle");
             doc.appendChild(rootElement);
 
             rootElement.setAttribute("type",configFileReader.getMappedItem("vehicleType").getValue());
@@ -158,7 +167,7 @@ public class VehicleBuilder implements SingleXmlItem {
 
             List<DocWriter> eofWriters = List.of(speedRotatingPartsWriter, animationWriter,smallStuffWriter,materialWriter, i3DMapperWriter);
 
-            List<DocWriter> writers = List.of(storedataWriter,baseWriter, dynaLoadPartsWriter, wheelWriter, lightWriter, wiperWriter,enterableWriter, drivableWriter, dashboardWriter, fillUnitWriter,fillVolumeWriter ,
+            List<DocWriter> writers = List.of(storedataWriter,baseWriter, licenseWriter, dynaLoadPartsWriter, wheelWriter, lightWriter, wiperWriter,enterableWriter, drivableWriter, dashboardWriter, fillUnitWriter,fillVolumeWriter ,
                     foldableWriter, aiWriter,motorizedWriter,workAreaWriter, sprayerWriter,woodHarvesterWriter, trailerWriter,dischargebleWriter,cylindredWriter
                     ,attachbleWriter,powerTakeOffWriter,connectionHoseWriter,baleLoaderWriter, coverWriter,suspensionWriter,groundReferenceWriter,cultivatorWriter);
 
