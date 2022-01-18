@@ -63,7 +63,7 @@ public class I3DMapper {
         File test = new File(file);
         log.debug(test.getAbsolutePath());
         this.inputFile = test;
-        log.info("setting file with name ->" + file);
+        log.info("setting file with name -> " + file);
         this.fileName=test.getName();
 
     }

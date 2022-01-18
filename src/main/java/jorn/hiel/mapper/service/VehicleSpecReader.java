@@ -1,6 +1,7 @@
 package jorn.hiel.mapper.service;
 
 import jorn.hiel.mapper.pojo.Specialization;
+import jorn.hiel.mapper.service.enums.GameVersion;
 import jorn.hiel.mapper.service.enums.VehicleSpec;
 import jorn.hiel.mapper.service.repo.VehicleSpecRepo;
 import lombok.Getter;
@@ -63,7 +64,8 @@ public class VehicleSpecReader {
         Specialization specialization = new Specialization();
 
         specialization.setName((String)object.get("name"));
-        specialization.setVersion((String)object.get("version"));
+        specialization.setGameVersion(GameVersion.valueOf(object.get("version").toString().toUpperCase(Locale.ROOT)));
+
 
 
         JSONArray jsonArray = (JSONArray) object.get("needs");

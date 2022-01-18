@@ -1,5 +1,6 @@
 package jorn.hiel.mapper.pojo;
 
+import jorn.hiel.mapper.service.enums.GameVersion;
 import jorn.hiel.mapper.service.enums.VehicleSpec;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,8 @@ import java.util.List;
 public class Specialization {
 
     private String name;
-    private String version;
+    //private String version;
+    private GameVersion gameVersion;
     private List<VehicleSpec> specs;
 
 

@@ -59,6 +59,21 @@ public class AiWriter implements DocWriter {
 
                 if (needToWrite.isFullWrite() || needToWrite.getGameVersion().equals(GameVersion.FS22)) {
                     Element agent = doc.createElement("agent");
+                    agent.setAttribute("width",mapper.getMappedItem("AIagentWidht").getValue());
+                    agent.setAttribute("length",mapper.getMappedItem("AIagentLength").getValue());
+                    agent.setAttribute("lengthoffset",mapper.getMappedItem("AIagentLengthOffset").getValue());
+                    agent.setAttribute("height",mapper.getMappedItem("AIagentHeight").getValue());
+                    agent.setAttribute("frontOffset",mapper.getMappedItem("AIagentFrontOffset").getValue());
+                    ai.appendChild(agent);
+                    collisionTrigger.setAttribute("width",mapper.getMappedItem("AICollisionWidth").getValue());
+                    collisionTrigger.setAttribute("height",mapper.getMappedItem("AICollisionHeight").getValue());
+
+
+
+
+
+                    ai.setAttribute("supportsAIJob","true");
+
 
                 }
 

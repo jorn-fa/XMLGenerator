@@ -120,15 +120,20 @@ public class MapperManager extends BasicManager {
                 modDescWriterDom.setFileLocation(modDescName);
                 modDescWriterDom.writeModDesc();
 
+
+
                 String vehicleName = configFileReader.getMappedItem("vehicleFileName").getValue();
-                vehicleBuilder.setFileLocation("e:/temp/" + vehicleName);
+                String vehicleFileLocation = directory.getAbsolutePath() + "/" + vehicleName;
+
+                vehicleBuilder.setFileLocation(vehicleFileLocation);
                 vehicleBuilder.writeVehicle();
 
                 results.add("i3dMapped items = " + mapper.repo.getItems().size());
                 int howMany = unknownCounter.countEntries(Path.of(modDescName));
                 results.add("unknown items found in modDesc = " + howMany);
                 //todo pathname
-                howMany += unknownCounter.countEntries(Path.of("e:/temp/" + vehicleName));
+
+                howMany += unknownCounter.countEntries(Path.of(vehicleFileLocation));
                 results.add("unknown items found in vehicle = " + howMany);
                 log.info("number of unknown items found :  >"+howMany+"<");
                 //erase history to stop chain spam process button

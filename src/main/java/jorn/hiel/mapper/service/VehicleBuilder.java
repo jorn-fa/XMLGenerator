@@ -136,6 +136,12 @@ public class VehicleBuilder implements SingleXmlItem {
     @Autowired
     LicenseWriter licenseWriter;
 
+    @Autowired
+    CrabSteeringWriter crabSteeringWriter;
+
+    @Autowired
+    ArticulatedAxisWriter articulatedAxisWriter;
+
 
 
     private Document doc;
@@ -165,11 +171,12 @@ public class VehicleBuilder implements SingleXmlItem {
             rootElement.setAttribute("type",configFileReader.getMappedItem("vehicleType").getValue());
             addSingleXmlItem(doc,rootElement,configFileReader.getMappedItem("annotation"));
 
-            List<DocWriter> eofWriters = List.of(speedRotatingPartsWriter, animationWriter,smallStuffWriter,materialWriter, i3DMapperWriter);
+            List<DocWriter> eofWriters = List.of(speedRotatingPartsWriter, smallStuffWriter, animationWriter, materialWriter, i3DMapperWriter);
 
             List<DocWriter> writers = List.of(storedataWriter,baseWriter, licenseWriter, dynaLoadPartsWriter, wheelWriter, lightWriter, wiperWriter,enterableWriter, drivableWriter, dashboardWriter, fillUnitWriter,fillVolumeWriter ,
                     foldableWriter, aiWriter,motorizedWriter,workAreaWriter, sprayerWriter,woodHarvesterWriter, trailerWriter,dischargebleWriter,cylindredWriter
-                    ,attachbleWriter,powerTakeOffWriter,connectionHoseWriter,baleLoaderWriter, coverWriter,suspensionWriter,groundReferenceWriter,cultivatorWriter);
+                    ,attachbleWriter,powerTakeOffWriter,connectionHoseWriter,baleLoaderWriter, coverWriter,suspensionWriter,groundReferenceWriter,cultivatorWriter,
+                    crabSteeringWriter,articulatedAxisWriter);
 
 
 

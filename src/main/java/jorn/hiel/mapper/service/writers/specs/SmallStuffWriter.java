@@ -122,6 +122,31 @@ public class SmallStuffWriter implements DocWriter {
             }
 
 
+                //fs22 = ok
+                if (needToWrite.needsToWrite(VehicleSpec.HEADLANDANIMATION)) {
+                    Element headlandAnimation = doc.createElement("headlandAnimation");
+                    rootElement.appendChild(headlandAnimation);
+
+                    headlandAnimation.setAttribute("activationDelay",configFileReader.getMappedItem("headlandActivationDelay").getValue());
+                    headlandAnimation.setAttribute("deactivationDelay",configFileReader.getMappedItem("headlandDeactivationDelay").getValue());
+                    headlandAnimation.setAttribute("activationAngle",configFileReader.getMappedItem("headlandActivationAngle").getValue());
+                    headlandAnimation.setAttribute("deactivationAngle",configFileReader.getMappedItem("headlandDeactivationAngle").getValue());
+                    headlandAnimation.setAttribute("requiredGroundTypes",configFileReader.getMappedItem("headlandRequiredGroundTypes").getValue());
+
+
+
+                    Element animation = doc.createElement("animation");
+                    String animName=configFileReader.getMappedItem("headLandAnimation").getValue();
+                    String unknown = configFileReader.getMappedItem("UnknownEntry").getValue();
+                    headlandAnimation.appendChild(animation);
+                    if(animName.equals(unknown)){animName="headLandAnimation";}
+                    animation.setAttribute("name",animName);
+                    configFileReader.addAnimation("headLandAnimation", animName);
+
+
+                }
+
+
 
         }
     }

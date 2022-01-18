@@ -36,8 +36,8 @@ public class NeedToWrite {
      private boolean fullWrite=false;
 
      public void init(){
-         setCurrentVehicleType();
          setGameVersion();
+         setCurrentVehicleType();
          if(configFileReader.getMappedItem("writeAll").getValue().equals("true")){
              fullWrite=true;
          }
@@ -49,7 +49,7 @@ public class NeedToWrite {
 
          if ((fullWrite)) {
 
-             fullWrite=true;
+             //fullWrite=true;
 
              switch (filter) {
                  case FILLUNIT:
@@ -103,9 +103,12 @@ public class NeedToWrite {
                  log.info("Found vehicle type in I3D file -> Setting vehicle type to -> " + type);
              }
 
+
+
              String finalType = type;
              currentSpec = specReader.getRepo().getItems().stream()
                      .filter(a -> a.getName().equals(finalType))
+                     .filter(b -> b.getGameVersion().equals(gameVersion))
                      .findAny()
                      .orElse(null);
 

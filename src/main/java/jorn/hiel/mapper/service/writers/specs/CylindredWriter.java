@@ -38,10 +38,16 @@ public class CylindredWriter implements DocWriter {
                     cylindered.appendChild(movingTools);
                     Element movingTool = doc.createElement("movingTool");
                     movingTools.appendChild(movingTool);
+                    movingTool.setAttribute("node",mapper.getMappedItem("movingTool").getValue());
 
                     Element movingParts = doc.createElement("movingParts");
                     cylindered.appendChild(movingParts);
                     Element movingPart = doc.createElement("movingPart");
+                    movingPart.setAttribute("node",mapper.getMappedItem("movingPart").getValue());
+                    movingPart.setAttribute("referencePoint",mapper.getMappedItem("movingPart").getValue());
+                    movingPart.setAttribute("localReferencePoint",mapper.getMappedItem("movingPart").getValue());
+                    movingPart.setAttribute("bottomArmAttacher",mapper.getMappedItem("movingPart").getValue());
+
                     movingParts.appendChild(movingPart);
 
 

@@ -46,7 +46,7 @@ public class FoldableWriter implements DocWriter {
                 foldingPart.setAttribute("animationName",animName);
                 foldingPart.setAttribute("speedScale","1");
 
-                configFileReader.addAnimation("foldableAnimation", configFileReader.getMappedItem("foldableAnimation").getValue());
+                configFileReader.addAnimation("foldableAnimation", animName);
 
                 foldAble.appendChild(foldingParts);
                 foldingParts.appendChild(foldingPart);

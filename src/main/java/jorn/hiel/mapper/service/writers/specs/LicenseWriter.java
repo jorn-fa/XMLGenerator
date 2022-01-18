@@ -33,7 +33,7 @@ public class LicenseWriter implements DocWriter {
 
         if (needToWrite.needsToWrite(VehicleSpec.LICENSEPLATES)) {
             Node rootElement = doc.getElementsByTagName("vehicle").item(0);
-            {
+
 
                 Element licenseElement = doc.createElement("licensePlates");
                 rootElement.appendChild(licenseElement);
@@ -63,7 +63,7 @@ public class LicenseWriter implements DocWriter {
                 }
 
 
-            }
+
         }
     }
 
