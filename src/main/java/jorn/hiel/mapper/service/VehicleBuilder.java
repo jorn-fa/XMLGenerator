@@ -168,7 +168,10 @@ public class VehicleBuilder implements SingleXmlItem {
             Element rootElement = doc.createElement("vehicle");
             doc.appendChild(rootElement);
 
-            rootElement.setAttribute("type",configFileReader.getMappedItem("vehicleType").getValue());
+            //rootElement.setAttribute("type",configFileReader.getMappedItem("vehicleType").getValue());
+            rootElement.setAttribute("type",needToWrite.getCurrentSpec().getName());
+
+
             addSingleXmlItem(doc,rootElement,configFileReader.getMappedItem("annotation"));
 
             List<DocWriter> eofWriters = List.of(speedRotatingPartsWriter, smallStuffWriter, animationWriter, materialWriter, i3DMapperWriter);

@@ -27,6 +27,7 @@ public class NeedToWrite {
 
      boolean hasWritten = false;
 
+     @Getter
      Specialization currentSpec;
 
      @Getter
@@ -110,10 +111,21 @@ public class NeedToWrite {
                      .filter(a -> a.getName().equals(finalType))
                      .filter(b -> b.getGameVersion().equals(gameVersion))
                      .findAny()
-                     .orElse(null);
+                     .orElse(currentSpec = getTractor() );
+
+
 
 
          }
+     }
+
+     private Specialization getTractor(){
+         return specReader.getRepo().getItems().stream()
+                 .filter(a -> a.getName().equals("tractor"))
+                         .findFirst().get();
+
+
+
      }
 
 
