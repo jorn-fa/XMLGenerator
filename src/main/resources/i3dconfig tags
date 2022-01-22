@@ -1,0 +1,9 @@
+i3d config tags =
+
+XMLData:brand:xxx                       brand
+XMLData:modDescVersion:xxx              modDesc version
+XMLData:vehicleType:xxx                 vehicleType, default to tractor when not foundation
+XMLData:numberOfFillUnits:x             number of fillunits
+XMLData:fillUnitX:Y                     fillunit<number>:<type>
+XMLData:fillUnitCapacityX:Y             fillunit<number>:<capacity>
+XMLData:fillTriggerFillUnit:X           filltrigger goes to unit <number>

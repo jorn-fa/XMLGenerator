@@ -113,9 +113,7 @@ public class BaseWriter implements SingleXmlItem, DocWriter {
 
             }
 
-
             base.appendChild(components);
-
             rootElement.appendChild(base);
 
         }

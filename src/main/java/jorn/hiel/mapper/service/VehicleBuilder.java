@@ -142,6 +142,9 @@ public class VehicleBuilder implements SingleXmlItem {
     @Autowired
     ArticulatedAxisWriter articulatedAxisWriter;
 
+    @Autowired
+    FillTriggerWriter fillTriggerWriter;
+
 
 
     private Document doc;
@@ -176,10 +179,10 @@ public class VehicleBuilder implements SingleXmlItem {
 
             List<DocWriter> eofWriters = List.of(speedRotatingPartsWriter, smallStuffWriter, animationWriter, materialWriter, i3DMapperWriter);
 
-            List<DocWriter> writers = List.of(storedataWriter,baseWriter, licenseWriter, dynaLoadPartsWriter, wheelWriter, lightWriter, wiperWriter,enterableWriter, drivableWriter, dashboardWriter, fillUnitWriter,fillVolumeWriter ,
-                    foldableWriter, aiWriter,motorizedWriter,workAreaWriter, sprayerWriter,woodHarvesterWriter, trailerWriter,dischargebleWriter,cylindredWriter
-                    ,attachbleWriter,powerTakeOffWriter,connectionHoseWriter,baleLoaderWriter, coverWriter,suspensionWriter,groundReferenceWriter,cultivatorWriter,
-                    crabSteeringWriter,articulatedAxisWriter);
+            List<DocWriter> writers = List.of(storedataWriter,baseWriter, licenseWriter, dynaLoadPartsWriter, wheelWriter, lightWriter, wiperWriter,enterableWriter,
+                    drivableWriter, dashboardWriter, fillUnitWriter,fillVolumeWriter ,fillTriggerWriter, foldableWriter, aiWriter,motorizedWriter,workAreaWriter,
+                    sprayerWriter,woodHarvesterWriter, trailerWriter,dischargebleWriter,cylindredWriter, attachbleWriter,powerTakeOffWriter,connectionHoseWriter,
+                    baleLoaderWriter, coverWriter,suspensionWriter,groundReferenceWriter,cultivatorWriter,crabSteeringWriter,articulatedAxisWriter);
 
 
 
