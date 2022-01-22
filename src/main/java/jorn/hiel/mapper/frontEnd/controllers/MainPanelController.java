@@ -81,7 +81,7 @@ public class MainPanelController  {
      * appends result to the output of the resultpane's text
      */
     private void addResult(String result){
-        log.info(result);
+        log.info("adding to result -> " + result);
         panel.getResultPane().setText(panel.getResultPane().getText()+"\n"+result);
     }
 
@@ -101,8 +101,6 @@ public class MainPanelController  {
             addResult("wrong file format specified");
         }
 
-            System.out.println(manager.getFileName());
-
             if (manager.getFileName() != null)  {
                 addResult("source set = " + manager.getFileName().getName());
                 panel.getFileNameField().setText(manager.getFileName().toString());
@@ -117,10 +115,11 @@ public class MainPanelController  {
     private void getFinalResult(){
 
         if(manager.getResults()!=null)
-        {for(String result: manager.getResults()){
-            addResult(result);
-            log.info(result);
-        }}
+        {
+            for(String result: manager.getResults()){
+                addResult(result);
+                }
+        }
         else{
             addResult("Configuration files not set correct");
         }

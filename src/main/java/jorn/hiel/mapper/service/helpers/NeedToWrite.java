@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
  @Slf4j
 public class NeedToWrite {
@@ -91,17 +93,24 @@ public class NeedToWrite {
 
      }
 
+     public Map<String, String> getI3dSettings(){
+         return mapper.getEntryRepo().getItems();
+     }
+
      public void setCurrentVehicleType() {
 
          if (currentSpec == null) {
 
-             //get type from configuration file
              String type = configFileReader.getMappedItem("vehicleType").getValue();
-             log.info("Setting (configuration file) vehicle type to -> " + type);
 
              if (mapper.getEntryRepo().getItems().containsKey("vehicleType")) {
                  type = mapper.getEntryRepo().getItems().get("vehicleType");
                  log.info("Found vehicle type in I3D file -> Setting vehicle type to -> " + type);
+             }
+
+             else{
+                 //get type from configuration file
+                 log.info("Setting (configuration file) vehicle type to -> " + type);
              }
 
 
@@ -111,8 +120,9 @@ public class NeedToWrite {
                      .filter(a -> a.getName().equals(finalType))
                      .filter(b -> b.getGameVersion().equals(gameVersion))
                      .findAny()
-                     .orElse(currentSpec = getTractor() );
+                     .orElse(null );
 
+             if (currentSpec==null){currentSpec = getTractor();}
 
 
 

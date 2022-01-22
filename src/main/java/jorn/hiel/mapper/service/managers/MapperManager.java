@@ -136,9 +136,10 @@ public class MapperManager extends BasicManager {
                 howMany += unknownCounter.countEntries(Path.of(vehicleFileLocation));
                 results.add("unknown items found in vehicle = " + howMany);
                 log.info("number of unknown items found :  >"+howMany+"<");
+                //todo clear function
                 //erase history to stop chain spam process button
-                this.fileName = null;
-                this.directory = null;
+                //this.fileName = null;
+                //this.directory = null;
 
 
             } catch (ParserConfigurationException | TransformerException | IOException e) {
