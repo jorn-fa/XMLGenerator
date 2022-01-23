@@ -49,8 +49,6 @@ public class NeedToWrite {
 
      public boolean needsToWrite(VehicleSpec filter) {
 
-
-
          if ((fullWrite)) {
 
              //fullWrite=true;
@@ -87,8 +85,7 @@ public class NeedToWrite {
              return true;
          }
 
-         //todo
-         //return configFileReader.getMappedItem(filter.toString()).equals("true");
+
          return currentSpec.getSpecs().contains(filter);
 
 
@@ -134,9 +131,6 @@ public class NeedToWrite {
          return specReader.getRepo().getItems().stream()
                  .filter(a -> a.getName().equals("tractor"))
                          .findFirst().get();
-
-
-
      }
 
 
@@ -200,6 +194,12 @@ public class NeedToWrite {
             toAdd.setTextContent(mapper.getMappedItem(key).getValue());
         }
 
+    }
+//todo
+    public int getNumberOfWheels(){
+
+
+        return 0;
     }
 
 

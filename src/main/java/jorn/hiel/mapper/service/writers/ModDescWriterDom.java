@@ -4,6 +4,7 @@ package jorn.hiel.mapper.service.writers;
 import jorn.hiel.mapper.pojo.MappedItem;
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.enums.LocalLanguage;
+import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.SingleXmlItem;
 import jorn.hiel.mapper.service.interfaces.SingleXmlItemWithAttribute;
 import jorn.hiel.mapper.service.writers.specs.XmlFileWriter;
@@ -33,6 +34,9 @@ public class ModDescWriterDom implements SingleXmlItem, SingleXmlItemWithAttribu
     @Autowired
     XmlFileWriter xmlFileWriter;
 
+    @Autowired
+    NeedToWrite needToWrite;
+
     private boolean canWrite;
     private Document doc;
 
@@ -59,8 +63,13 @@ public class ModDescWriterDom implements SingleXmlItem, SingleXmlItemWithAttribu
             mappedItem=configFileReader.getMappedItem("modDescVersion");
             rootElement.setAttribute(mappedItem.getKey(),mappedItem.getValue());
 
+
+
+
             addSingleXmlItem(doc, rootElement,configFileReader.getMappedItem("author"));
             addSingleXmlItem(doc, rootElement,configFileReader.getMappedItem("version"));
+
+
 
             Element multiplayer = doc.createElement("multiplayer");
             multiplayer.setAttribute("supported",configFileReader.getMappedItem("multiplayer").getValue());

@@ -37,7 +37,13 @@ public class WheelWriter implements DocWriter {
                 Element wheelConfigurations = doc.createElement("wheelConfigurations");
                 wheels.appendChild(wheelConfigurations);
 
+
+
+
                 int needed = Integer.parseInt(configFileReader.getMappedItem("numberOfWheelConfigurations").getValue());
+                if (needToWrite.getNumberOfWheels()>needed){
+                    needed=needToWrite.getNumberOfWheels();
+                }
 
                 for (int x=0;x<needed;x++) {
                     Element wheelConfiguration = doc.createElement("wheelConfiguration");

@@ -115,12 +115,8 @@ public class MapperManager extends BasicManager {
             try {
 
                 String modDescName = directory.getAbsolutePath() + "/" + "modDesc.xml";
-
-
                 modDescWriterDom.setFileLocation(modDescName);
                 modDescWriterDom.writeModDesc();
-
-
 
                 String vehicleName = configFileReader.getMappedItem("vehicleFileName").getValue();
                 String vehicleFileLocation = directory.getAbsolutePath() + "/" + vehicleName;
@@ -128,18 +124,19 @@ public class MapperManager extends BasicManager {
                 vehicleBuilder.setFileLocation(vehicleFileLocation);
                 vehicleBuilder.writeVehicle();
 
+
+
+
                 results.add("i3dMapped items = " + mapper.repo.getItems().size());
+
                 int howMany = unknownCounter.countEntries(Path.of(modDescName));
-                results.add("unknown items found in modDesc = " + howMany);
+                results.add("Number of lines with unknown items found in modDesc = " + howMany);
                 //todo pathname
 
                 howMany += unknownCounter.countEntries(Path.of(vehicleFileLocation));
-                results.add("unknown items found in vehicle = " + howMany);
-                log.info("number of unknown items found :  >"+howMany+"<");
-                //todo clear function
-                //erase history to stop chain spam process button
-                //this.fileName = null;
-                //this.directory = null;
+                String result = "Number lines with unknown items found :  >"+howMany+"<";
+                results.add(result);
+                log.info(result);
 
 
             } catch (ParserConfigurationException | TransformerException | IOException e) {
