@@ -16,7 +16,6 @@ import org.w3c.dom.Node;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 @Slf4j
@@ -37,8 +36,8 @@ public class StoreDataWriter  implements SingleXmlItem, DocWriter {
 
         Node rootElement = doc.getElementsByTagName("vehicle").item(0);
 
-        List<String> names = List.of("name","lifetime", "image", "price","rotation",
-        "category","shopTranslationOffset","shopRotationOffset");
+        List<String> names = List.of("name","lifetime", "rotation",
+        "shopTranslationOffset","shopRotationOffset");
 
         List<String> specNames = Arrays.asList("power","maxSpeed","neededPower","workingWidth");
 
@@ -47,18 +46,26 @@ public class StoreDataWriter  implements SingleXmlItem, DocWriter {
 
 
 
-
         Element storeData = doc.createElement("storeData");
         names.forEach(a-> addSingleXmlItem(doc, storeData,mapper.getMappedItem(a)));
 
+        Element image = doc.createElement("image");
+        needToWrite.decideTextContent("image",image);
+        storeData.appendChild(image);
+
+        Element category = doc.createElement("category");
+        needToWrite.decideTextContent("category",category);
+        storeData.appendChild(category);
+
         Element brand = doc.createElement("brand");
+        needToWrite.decideTextContent("brand",brand);
         storeData.appendChild(brand);
-        brand.setTextContent(mapper.getMappedItem("brand").getValue());
-        if(mapper.getEntryRepo().getItems().containsKey("brand")) {
-            log.info("found brand in i3d file");
-            brand.setTextContent(mapper.getEntryRepo().getItems().get("brand").toUpperCase(Locale.ROOT));
-        }
-        //todo
+
+        Element price = doc.createElement("price");
+        needToWrite.decideTextContent("price",price);
+        storeData.appendChild(price);
+
+
 
 
         List<String> elements = List.of("canBeSold", "showInStore", "allowLeasing");

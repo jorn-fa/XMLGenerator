@@ -1,9 +1,40 @@
 i3d config tags =
 
-XMLData:brand:xxx                       brand
-XMLData:modDescVersion:xxx              modDesc version
-XMLData:vehicleType:xxx                 vehicleType, default to tractor when not foundation
-XMLData:numberOfFillUnits:x             number of fillunits
-XMLData:fillUnitX:Y                     fillunit<number>:<type>
-XMLData:fillUnitCapacityX:Y             fillunit<number>:<capacity>
-XMLData:fillTriggerFillUnit:X           filltrigger goes to unit <number>
+-moddesc-
+XMLData:modDescVersion:xxx                  modDesc version
+
+
+-storeData-
+XMLData:category:x                          category
+XMLData:brand:x                             brand
+XMLData:price:x                             price
+XMLData:image:x                             image
+
+-base-
+XMLData:speedLimit                          speedLimit
+XMLData:width                               width
+XMLData:length                              length
+XMLData:height                              height
+XMLData:lengthoffset                        lengthoffset
+XMLData:mapHotSpot                          mapHotSpot
+
+
+-fillunit-
+XMLData:vehicleType:xxx                     vehicleType, default to tractor when not foundation
+XMLData:numberOfFillUnits:x                 number of fillUnits
+XMLData:fillUnitX:Y                         fillunit<number>:<type>
+XMLData:fillUnitCapacityX:Y                 fillunit<number>:<capacity>
+
+
+-fillTrigger-
+XMLData:fillTriggerFillUnitIndex:X          fillTrigger goes to unit <number>
+XMLData:fillTriggerTriggerNode:X            fillTrigger trigger node
+XMLData:fillTriggerLitersPerSecond:X        fillTrigger liters per second
+
+-Drivable-
+XMLData:steeringWheelIndoorRotation:X       steeringwheel indoor rotation
+XMLData:steeringWheelOutdoorRotation:X      steeringwheel outdoor rotation
+
+-Discharge-
+XMLData:dischargeTrigger:X                  discharge trigger
+XMLData:dischargeSound:X                    discharge sound

@@ -35,9 +35,18 @@ public class DrivableWriter implements DocWriter {
 
             Node rootElement = doc.getElementsByTagName("vehicle").item(0);
 
+
+
             Element drivable = doc.createElement("drivable");
             Element sounds = doc.createElement("sounds");
             Element dashboards = doc.createElement("dashboards");
+
+            //steeringWheel
+            Element steeringWheel=doc.createElement("steeringWheel");
+            needToWrite.decide("steeringWheel",steeringWheel,"node");
+            needToWrite.decide("steeringWheelIndoorRotation",steeringWheel,"indoorRotation");
+            needToWrite.decide("steeringWheelOutdoorRotation",steeringWheel,"outdoorRotation");
+
 
             //sounds
             Element waterSplash = doc.createElement("waterSplash");
@@ -58,6 +67,8 @@ public class DrivableWriter implements DocWriter {
             rootElement.appendChild(drivable);
             drivable.appendChild(sounds);
             drivable.appendChild(dashboards);
+            drivable.appendChild(steeringWheel);
+
 
         }
     }
@@ -66,7 +77,9 @@ public class DrivableWriter implements DocWriter {
         Map<String,String> items = new HashMap<>();
         items.put("displayType","rot");
         items.put("valueType","accelerationAxis");
-        items.put("node",filter);
+
+
+
         items.put("minRot","0 0 0");
         items.put("maxRot","0 0 0");
         items.put("doInterpolation","true");
@@ -86,8 +99,10 @@ public class DrivableWriter implements DocWriter {
 
            }
 
+
            Element element = doc.createElement("dashboard");
            items.forEach((key, value) -> element.setAttribute(key, value));
+           needToWrite.decide(filter,element,"node");
            parent.appendChild(element);
        }
     }

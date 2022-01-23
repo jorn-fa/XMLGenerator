@@ -13,6 +13,8 @@ import org.w3c.dom.Node;
 @Component
 public class WheelWriter implements DocWriter {
 
+    //todo aanpassen naar inlezen etc
+
     @Autowired
     I3DMapper mapper;
 

@@ -1,6 +1,5 @@
 package jorn.hiel.mapper.service.writers.specs;
 
-import jorn.hiel.mapper.service.I3DMapper;
 import jorn.hiel.mapper.service.enums.VehicleSpec;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
@@ -20,9 +19,6 @@ public class FillTriggerWriter implements DocWriter {
     NeedToWrite needToWrite;
 
 
-    @Autowired
-    I3DMapper mapper;
-
     @Override
     public void write(Document doc) {
 
@@ -31,18 +27,10 @@ public class FillTriggerWriter implements DocWriter {
 
             Element fillTriggerVehicle = doc.createElement("fillTriggerVehicle");
 
-            String key = "fillTriggerFillUnit";
-            boolean foundI3Ditem = needToWrite.getI3dSettings().containsKey(key);
-            if(foundI3Ditem){
-                fillTriggerVehicle.setAttribute("triggerNode",needToWrite.getI3dSettings().get(key));
-                log.info("found "+key+ " in i3d");
-            }
-            else {
-                fillTriggerVehicle.setAttribute("triggerNode",mapper.getMappedItem("triggerNode").getValue());
-            }
+            needToWrite.decide("fillTriggerFillUnitIndex",fillTriggerVehicle,"fillUnitIndex");
+            needToWrite.decide("fillTriggerTriggerNode",fillTriggerVehicle,"triggerNode");
+            needToWrite.decide("fillTriggerLitersPerSecond",fillTriggerVehicle,"litersPerSecond");
 
-            fillTriggerVehicle.setAttribute("fillUnitIndex",mapper.getMappedItem("fillUnitIndex").getValue());
-            fillTriggerVehicle.setAttribute("litersPerSecond",mapper.getMappedItem("litersPerSecond").getValue());
             rootElement.appendChild(fillTriggerVehicle);
         }
     }

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Element;
 
 import java.util.Map;
 
@@ -163,6 +164,45 @@ public class NeedToWrite {
 
          }
      }
+
+    /**
+     * Check in i3d if item is overwritten versus configuration setting file.
+     *
+     * @param key   String to verify
+     * @param toAdd  Element that contains the item
+     * @param node   node name to add to element
+     */
+     public void decide(String key, Element toAdd, String node){
+        boolean foundI3dItem = getI3dSettings().containsKey(key);
+        if(foundI3dItem){
+            toAdd.setAttribute(node,getI3dSettings().get(key));
+            log.info("found "+key+ " in i3d");
+        }
+        else {
+            toAdd.setAttribute(node,mapper.getMappedItem(node).getValue());
+        }
+
+    }
+
+    /**
+     * Check in i3d if item is overwritten versus configuration setting file.
+     *
+     * @param key   String to verify
+     * @param toAdd Element to add the text content to
+     */
+    public void decideTextContent(String key, Element toAdd ){
+        boolean foundI3dItem = getI3dSettings().containsKey(key);
+        if(foundI3dItem){
+            toAdd.setTextContent(getI3dSettings().get(key));
+            log.info("found "+key+ " in i3d");
+        }
+        else {
+            toAdd.setTextContent(mapper.getMappedItem(key).getValue());
+        }
+
+    }
+
+
 
 
  }

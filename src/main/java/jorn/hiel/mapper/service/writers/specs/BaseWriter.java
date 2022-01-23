@@ -6,6 +6,7 @@ import jorn.hiel.mapper.service.enums.GameVersion;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
 import jorn.hiel.mapper.service.interfaces.SingleXmlItem;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
@@ -14,7 +15,7 @@ import org.w3c.dom.Node;
 
 import java.util.List;
 
-
+@Slf4j
 @Service
 public class BaseWriter implements SingleXmlItem, DocWriter {
 
@@ -39,13 +40,21 @@ public class BaseWriter implements SingleXmlItem, DocWriter {
 
             //size
             Element size = doc.createElement("size");
-            List<String> sizeList = List.of("width", "length", "lengthOffset");
+            List<String> sizeList = List.of("width", "length", "lengthOffset","height");
             sizeList.forEach(a -> size.setAttribute(a, mapper.getMappedItem(a).getValue()));
             base.appendChild(size);
 
+            needToWrite.decide("width",size,"width");
+            needToWrite.decide("length",size,"length");
+            needToWrite.decide("height",size,"height");
+            needToWrite.decide("lengthOffset",size,"lengthOffset");
+
+
+
+
 
             Element speedLimit = doc.createElement("speedLimit");
-            speedLimit.setAttribute("value", mapper.getMappedItem("speedLimit").getValue());
+            needToWrite.decide("speedLimit",speedLimit,"value");
             base.appendChild(speedLimit);
 
             //components
@@ -85,7 +94,15 @@ public class BaseWriter implements SingleXmlItem, DocWriter {
                 sounds.setAttribute("filename", mapper.getMappedItem("soundFileName").getValue());
                 base.appendChild(sounds);
                 Element mapHotSpot = doc.createElement("mapHotSpot");
-                mapHotSpot.setAttribute("type", mapper.getMappedItem("mapHotSpot").getValue());
+
+                needToWrite.decide("mapHotSpot",mapHotSpot,"type");
+
+
+
+
+
+
+
                 mapHotSpot.setAttribute("hasDirection", "true");
                 mapHotSpot.setAttribute("available", "true");
                 base.appendChild(mapHotSpot);

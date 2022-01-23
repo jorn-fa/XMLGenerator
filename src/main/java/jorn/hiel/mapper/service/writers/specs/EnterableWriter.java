@@ -92,7 +92,11 @@ public class EnterableWriter implements DocWriter {
             cameras.appendChild(indoorCamera);
             indoorCamera.setAttribute("node",mapper.getMappedItem("indoorCamera").getValue());
             indoorCamera.setAttribute("rotatable",mapper.getMappedItem("indoorRotatable").getValue());
-            names = List.of("limit","useWorldXZRotation", "rotMinX","rotMaxX","transMin","transMax","isInside");
+
+
+            indoorCamera.setAttribute("isInside","true");
+
+            names = List.of("limit","useWorldXZRotation", "rotMinX","rotMaxX","transMin","transMax");
             names.forEach(a-> indoorCamera.setAttribute(a,mapper.getMappedItem("UnknownEntry").getValue()));
             indoorCamera.setAttribute("shadowFocusBox",mapper.getMappedItem("shadowFocusBox").getValue());
 
@@ -112,12 +116,9 @@ public class EnterableWriter implements DocWriter {
             }
 
 
-
-
-            //add elements to parent
             toAdd.forEach(enterable::appendChild);
             rootElement.appendChild(enterable);
-            //add character xml
+
             characterWriter.write(doc);
 
         }

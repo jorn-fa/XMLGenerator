@@ -24,6 +24,11 @@ public class FoldableWriter implements DocWriter {
             Node rootElement = doc.getElementsByTagName("vehicle").item(0);
             {
                 Element foldAble = doc.createElement("foldable");
+                Element foldingConfigurations = doc.createElement("foldingConfigurations");
+                Element foldingConfiguration = doc.createElement("foldingConfiguration");
+                foldAble.appendChild(foldingConfigurations);
+                foldingConfigurations.appendChild(foldingConfiguration);
+
                 rootElement.appendChild(foldAble);
                 Element foldingParts = doc.createElement("foldingParts");
                 foldingParts.setAttribute("startAnimTime","1");
@@ -48,7 +53,7 @@ public class FoldableWriter implements DocWriter {
 
                 configFileReader.addAnimation("foldableAnimation", animName);
 
-                foldAble.appendChild(foldingParts);
+                foldingConfiguration.appendChild(foldingParts);
                 foldingParts.appendChild(foldingPart);
 
 

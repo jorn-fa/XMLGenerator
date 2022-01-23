@@ -76,6 +76,15 @@ public class DischargebleWriter implements DocWriter {
                     smoke.setAttribute("materialType","smoke");
                     smoke.setAttribute("materialTypeID","1");
 
+                    Element trigger = doc.createElement("trigger");
+                    dischargeNode.appendChild(trigger);
+                    needToWrite.decide("dischargeTrigger",trigger,"node");
+
+                    Element dischargeSound = doc.createElement("dischargeSound");
+                    needToWrite.decide("dischargeSound",dischargeSound,"template");
+                    dischargeNode.appendChild(dischargeSound);
+
+
                 }
 
 
