@@ -41,9 +41,8 @@ public class WheelWriter implements DocWriter {
 
 
                 int needed = Integer.parseInt(configFileReader.getMappedItem("numberOfWheelConfigurations").getValue());
-                if (needToWrite.getNumberOfWheels()>needed){
-                    needed=needToWrite.getNumberOfWheels();
-                }
+                int needToWriteNumber=needToWrite.getNumberOfWheels();
+                if (needToWriteNumber>needed){needed=needToWriteNumber;}
 
                 for (int x=0;x<needed;x++) {
                     Element wheelConfiguration = doc.createElement("wheelConfiguration");
@@ -56,23 +55,38 @@ public class WheelWriter implements DocWriter {
                     wheelConfiguration.appendChild(configWheels);
 
                     int wheelAmount = Integer.parseInt(configFileReader.getMappedItem("numberOfWheels").getValue());
+                    if (needToWriteNumber!=wheelAmount){wheelAmount=needToWriteNumber;}
+
 
                     for (int i = 0; i < wheelAmount; i++) {
                         Element wheel = doc.createElement("wheel");
-                        wheel.setAttribute("filename", configFileReader.getMappedItem("wheel"+i+"FileName").getValue());
-                        wheel.setAttribute("isLeft", configFileReader.getMappedItem("wheel"+i+"FileName").getValue());
-                        wheel.setAttribute("hasTireTracks", configFileReader.getMappedItem("wheel"+i+"FileName").getValue());
-                        wheel.setAttribute("hasParticles", configFileReader.getMappedItem("wheel"+i+"FileName").getValue());
+                        //wheel.setAttribute("filename", configFileReader.getMappedItem("wheel1FileName").getValue());
+                        needToWrite.decide("wheelFileName",wheel,"filename");
+
+                        wheel.setAttribute("hasTireTracks", configFileReader.getMappedItem("wheelTyreTracks").getValue());
+                        wheel.setAttribute("hasParticles", configFileReader.getMappedItem("wheelHasParticles").getValue());
 
                         Element physics = doc.createElement("physics");
-                        physics.setAttribute("rotSpeed", configFileReader.getMappedItem("wheel"+i+"rotSpeed").getValue());
-                        physics.setAttribute("restLoad", configFileReader.getMappedItem("wheel"+i+"restLoad").getValue());
-                        physics.setAttribute("repr", configFileReader.getMappedItem("wheel"+i+"repr").getValue());
-                        physics.setAttribute("driveNode", configFileReader.getMappedItem("wheel"+i+"driveNode").getValue());
-                        physics.setAttribute("suspTravel", configFileReader.getMappedItem("wheel"+i+"suspTravel").getValue());
-                        physics.setAttribute("spring", configFileReader.getMappedItem("wheel"+i+"spring").getValue());
-                        physics.setAttribute("damper", configFileReader.getMappedItem("wheel"+i+"damper").getValue());
-                        physics.setAttribute("frictionScale", configFileReader.getMappedItem("wheel"+i+"frictionScale").getValue());
+                        physics.setAttribute("rotSpeed", configFileReader.getMappedItem("wheelRotSpeed").getValue());
+                        physics.setAttribute("restLoad", configFileReader.getMappedItem("wheelRestLoad").getValue());
+
+                        if(needToWrite.getWheels().size()>0) {
+
+                            physics.setAttribute("repr", needToWrite.getWheels().get(i).getNode());
+                            physics.setAttribute("driveNode", needToWrite.getWheelsDrive().get(i).getNode());
+                            wheel.setAttribute("isLeft", needToWrite.getWheelsLeftRight().get(i));
+                        }
+
+                        else{
+                            physics.setAttribute("repr", configFileReader.getMappedItem("wheelRepr").getValue());
+                            physics.setAttribute("driveNode", configFileReader.getMappedItem("wheelDriveNode").getValue());
+                            wheel.setAttribute("isLeft", configFileReader.getMappedItem("wheelFileName").getValue());
+                        }
+
+                        physics.setAttribute("suspTravel", configFileReader.getMappedItem("wheelSuspTravel").getValue());
+                        physics.setAttribute("spring", configFileReader.getMappedItem("wheelSpring").getValue());
+                        physics.setAttribute("damper", configFileReader.getMappedItem("wheelDamper").getValue());
+                        physics.setAttribute("frictionScale", configFileReader.getMappedItem("wheelFrictionScale").getValue());
 
 
                         configWheels.appendChild(wheel);
