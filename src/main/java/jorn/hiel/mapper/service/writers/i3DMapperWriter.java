@@ -21,8 +21,9 @@ public class i3DMapperWriter implements DocWriter {
 
         for(I3dMap map:mapper.repo.getItems()){
             Element mapped = doc.createElement("i3dMapping");
-            mapped.setAttribute("id",map.getId());
-            mapped.setAttribute("node",map.getNode());
+            //inverted 
+            mapped.setAttribute("node",map.getId());
+            mapped.setAttribute("id",map.getNode());
             i3dMappings.appendChild(mapped);
         }
 

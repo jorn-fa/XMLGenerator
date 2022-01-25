@@ -102,6 +102,7 @@ public class I3DMapper {
 
                 I3dMap i3dMap = new I3dMap().setNode(name).setId(id);
 
+
                 repo.add(i3dMap);
                 counter++;
             }
