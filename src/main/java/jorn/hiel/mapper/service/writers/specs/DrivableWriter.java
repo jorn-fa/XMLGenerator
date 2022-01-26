@@ -1,6 +1,7 @@
 package jorn.hiel.mapper.service.writers.specs;
 
 import jorn.hiel.mapper.service.ConfigFileReader;
+import jorn.hiel.mapper.service.I3DMapper;
 import jorn.hiel.mapper.service.enums.VehicleSpec;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
@@ -22,6 +23,9 @@ public class DrivableWriter implements DocWriter {
 
     @Autowired
     NeedToWrite needToWrite;
+
+    @Autowired
+    I3DMapper mapper;
 
     Document doc;
 
@@ -51,7 +55,7 @@ public class DrivableWriter implements DocWriter {
             //sounds
             Element waterSplash = doc.createElement("waterSplash");
             waterSplash.setAttribute("template","WATER_SPLASH_01");
-            waterSplash.setAttribute("linkNode",configFileReader.getMappedItem("waterSplash").getValue());
+            waterSplash.setAttribute("linkNode",mapper.getMainNodeName());
             sounds.appendChild(waterSplash);
 
             //dashboards

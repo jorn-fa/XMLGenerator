@@ -41,13 +41,16 @@ public class LicenseWriter implements DocWriter {
                 Element licenceFront = doc.createElement("licensePlate");
                 licenceFront.setAttribute("node",mapper.getMappedItem("licensePlateFront").getValue());
                 licenceFront.setAttribute("position","FRONT");
-                licenceFront.setAttribute("preferedType",configFileReader.getMappedItem("preferedLicenceFront").getValue());
+                //licenceFront.setAttribute("preferedType",configFileReader.getMappedItem("preferedLicenceFront").getValue());
+                needToWrite.decide("preferedLicenceFront",licenceFront,"preferedLicenceFront");
                 licenceFront.setAttribute("placementArea",mapper.getMappedItem("Unknown").getValue());
 
                 Element licenceBack = doc.createElement("licensePlate");
+
                 licenceBack.setAttribute("node",mapper.getMappedItem("licensePlateBack").getValue());
                 licenceBack.setAttribute("position","BACK");
-                licenceBack.setAttribute("preferedType",configFileReader.getMappedItem("preferedLicenceBack").getValue());
+                needToWrite.decide("preferedLicenceBack",licenceBack,"preferedLicenceBack");
+                //licenceBack.setAttribute("preferedType",configFileReader.getMappedItem("preferedLicenceBack").getValue());
                 licenceBack.setAttribute("placementArea",mapper.getMappedItem("Unknown").getValue());
 
                 licenseElement.appendChild(licenceFront);

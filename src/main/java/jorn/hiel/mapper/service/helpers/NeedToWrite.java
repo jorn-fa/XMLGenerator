@@ -230,8 +230,8 @@ public class NeedToWrite {
             wheelsLeftRight.add("false");
         });
 
-        filterItems(createPattern(leftWheelDrive)).forEach(a-> wheelsDrive.add(a));
-        filterItems(createPattern(rightWheelDrive)).forEach(a-> wheelsDrive.add(a));
+        wheelsDrive.addAll(filterItems(createPattern(leftWheelDrive)));
+        wheelsDrive.addAll(filterItems(createPattern(rightWheelDrive)));
 
         log.info("counting wheels -> wheels found = " + wheels.size() );
 

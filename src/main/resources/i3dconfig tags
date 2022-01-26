@@ -38,3 +38,8 @@ XMLData:steeringWheelOutdoorRotation:X      steeringwheel outdoor rotation
 -Discharge-
 XMLData:dischargeTrigger:X                  discharge trigger
 XMLData:dischargeSound:X                    discharge sound
+
+-LicensePlate-
+XMLData:preferedLicenceFront:X              licenseplate type front
+XMLData:preferedLicenceBack:X               licenseplate type rear
+
