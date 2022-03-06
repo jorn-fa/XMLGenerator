@@ -62,9 +62,10 @@ public class WheelWriter implements DocWriter {
                     configWheels.setAttribute("autoRotateBackSpeed", configFileReader.getMappedItem("autoRotateBackSpeed").getValue());
                     wheelConfiguration.appendChild(configWheels);
 
-                    int numberOfWheels=needToWrite.getNumberOfWheels();
+
                     int wheelAmount = Integer.parseInt(configFileReader.getMappedItem("numberOfWheels").getValue());
-                    if (numberOfWheels!=wheelAmount){numberOfWheels=wheelAmount;}
+                    int numberOfWheels=needToWrite.getNumberOfWheels();
+                    if (numberOfWheels==0){numberOfWheels=wheelAmount;}
 
 
                     for (int i = 0; i < numberOfWheels; i++) {

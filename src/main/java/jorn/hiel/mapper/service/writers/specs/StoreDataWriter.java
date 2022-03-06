@@ -75,7 +75,7 @@ public class StoreDataWriter  implements SingleXmlItem, DocWriter {
             storeData.appendChild(addMe);
         }
 
-        Element specs = doc.createElement("spec");
+        Element specs = doc.createElement("specs");
         specNames.forEach(a-> addSingleXmlItem(doc, specs,mapper.getMappedItem(a)));
         storeData.appendChild(specs);
 
