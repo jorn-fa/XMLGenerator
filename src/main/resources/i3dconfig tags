@@ -20,7 +20,7 @@ XMLData:mapHotSpot                          mapHotSpot
 
 
 -fillunit-
-XMLData:vehicleType:xxx                     vehicleType, default to tractor when not foundation
+XMLData:vehicleType:xxx                     vehicleType, default to tractor when not found
 XMLData:numberOfFillUnits:x                 number of fillUnits
 XMLData:fillUnitX:Y                         fillunit<number>:<type>
 XMLData:fillUnitCapacityX:Y                 fillunit<number>:<capacity>
@@ -42,4 +42,8 @@ XMLData:dischargeSound:X                    discharge sound
 -LicensePlate-
 XMLData:preferedLicenceFront:X              licenseplate type front
 XMLData:preferedLicenceBack:X               licenseplate type rear
+
+
+-Wheels-
+XMLData:numberOfWheelConfigurations:X       number of vehicle configs to make
 

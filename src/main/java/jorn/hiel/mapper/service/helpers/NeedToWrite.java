@@ -190,6 +190,19 @@ public class NeedToWrite {
 
     }
 
+    public String decide(String key){
+        boolean foundI3dItem = getI3dSettings().containsKey(key);
+        if(foundI3dItem){
+            log.info("found "+key+ " in i3d");
+            return getI3dSettings().get(key);
+        }
+        else {
+            return mapper.getMappedItem(key).getValue();
+        }
+
+    }
+
+
     /**
      * Check in i3d if item is overwritten versus configuration setting file.
      *
@@ -212,8 +225,6 @@ public class NeedToWrite {
         wheels=new ArrayList<>();
         wheelsDrive= new ArrayList<>();
         wheelsLeftRight = new ArrayList<>();
-
-
 
         String leftWheel =  mapper.getMappedItem("wheel_left_1").getValue();
         String rightWheel =  mapper.getMappedItem("wheel_right_1").getValue();

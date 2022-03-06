@@ -5,12 +5,14 @@ import jorn.hiel.mapper.service.I3DMapper;
 import jorn.hiel.mapper.service.enums.VehicleSpec;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.DocWriter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 @Component
+@Slf4j
 public class WheelWriter implements DocWriter {
 
     //todo aanpassen naar inlezen etc
@@ -40,11 +42,17 @@ public class WheelWriter implements DocWriter {
 
 
 
-                int needed = Integer.parseInt(configFileReader.getMappedItem("numberOfWheelConfigurations").getValue());
-                int needToWriteNumber=needToWrite.getNumberOfWheels();
-                if (needToWriteNumber>needed){needed=needToWriteNumber;}
+                String key = "numberOfWheelConfigurations";
+                int configurations = Integer.parseInt(configFileReader.getMappedItem(key).getValue());
 
-                for (int x=0;x<needed;x++) {
+
+                if(needToWrite.getI3dSettings().containsKey(key)){
+                    log.info("found "+key+ " in i3d, priority over config file");
+                    configurations = Integer.parseInt(needToWrite.getI3dSettings().get(key));
+                }
+
+
+                for (int x=0;x<configurations;x++) {
                     Element wheelConfiguration = doc.createElement("wheelConfiguration");
                     wheelConfiguration.setAttribute("name", configFileReader.getMappedItem("wheelConfigurationDefaultName").getValue());
                     wheelConfiguration.setAttribute("price", configFileReader.getMappedItem("wheelConfigurationPrice").getValue());
@@ -54,13 +62,13 @@ public class WheelWriter implements DocWriter {
                     configWheels.setAttribute("autoRotateBackSpeed", configFileReader.getMappedItem("autoRotateBackSpeed").getValue());
                     wheelConfiguration.appendChild(configWheels);
 
+                    int numberOfWheels=needToWrite.getNumberOfWheels();
                     int wheelAmount = Integer.parseInt(configFileReader.getMappedItem("numberOfWheels").getValue());
-                    if (needToWriteNumber!=wheelAmount){wheelAmount=needToWriteNumber;}
+                    if (numberOfWheels!=wheelAmount){numberOfWheels=wheelAmount;}
 
 
-                    for (int i = 0; i < wheelAmount; i++) {
+                    for (int i = 0; i < numberOfWheels; i++) {
                         Element wheel = doc.createElement("wheel");
-                        //wheel.setAttribute("filename", configFileReader.getMappedItem("wheel1FileName").getValue());
                         needToWrite.decide("wheelFileName",wheel,"filename");
 
                         wheel.setAttribute("hasTireTracks", configFileReader.getMappedItem("wheelTyreTracks").getValue());
@@ -70,7 +78,7 @@ public class WheelWriter implements DocWriter {
                         physics.setAttribute("rotSpeed", configFileReader.getMappedItem("wheelRotSpeed").getValue());
                         physics.setAttribute("restLoad", configFileReader.getMappedItem("wheelRestLoad").getValue());
 
-                        if(needToWrite.getWheels().size()>0) {
+                        if(needToWrite.getWheels()!=null && needToWrite.getWheels().size()>0 ) {
 
                             physics.setAttribute("repr", needToWrite.getWheels().get(i).getNode());
                             physics.setAttribute("driveNode", needToWrite.getWheelsDrive().get(i).getNode());
@@ -80,7 +88,7 @@ public class WheelWriter implements DocWriter {
                         else{
                             physics.setAttribute("repr", configFileReader.getMappedItem("wheelRepr").getValue());
                             physics.setAttribute("driveNode", configFileReader.getMappedItem("wheelDriveNode").getValue());
-                            wheel.setAttribute("isLeft", configFileReader.getMappedItem("wheelFileName").getValue());
+                            wheel.setAttribute("isLeft", configFileReader.getMappedItem("isLeft").getValue());
                         }
 
                         physics.setAttribute("suspTravel", configFileReader.getMappedItem("wheelSuspTravel").getValue());
@@ -108,8 +116,8 @@ public class WheelWriter implements DocWriter {
                 hubs.appendChild(color1);
                 color1.setTextContent(mapper.getMappedItem("HubColor1").getValue());
 
-                needed = Integer.parseInt(configFileReader.getMappedItem("numberOfHubs").getValue());
-                for (int x=0;x<needed;x++) {
+                int hubsneeded = Integer.parseInt(configFileReader.getMappedItem("numberOfHubs").getValue());
+                for (int x=0;x<hubsneeded;x++) {
                     String item="hub";
                     Element hub = doc.createElement(item);
                     hubs.appendChild(hub);
