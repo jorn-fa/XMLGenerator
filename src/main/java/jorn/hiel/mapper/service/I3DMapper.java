@@ -125,8 +125,10 @@ public class I3DMapper {
                 //if(name.toLowerCase(Locale.ROOT).contains("xmlgenerator")){break;}
 
                 else {
-                    I3dMap i3dMap = new I3dMap().setNode(name).setId(id);
-                    repo.add(i3dMap);
+                    if(!name.toLowerCase(Locale.ROOT).contains("xmlgenerator")) {
+                        I3dMap i3dMap = new I3dMap().setNode(name).setId(id);
+                        repo.add(i3dMap);
+                    }
                 }
 
                 if (nodeList.item(a).hasChildNodes()) {

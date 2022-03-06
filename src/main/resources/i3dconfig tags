@@ -5,6 +5,7 @@ XMLData:modDescVersion:xxx                  modDesc version
 
 
 -storeData-
+XMLData:name:x                              name
 XMLData:category:x                          category
 XMLData:brand:x                             brand
 XMLData:price:x                             price

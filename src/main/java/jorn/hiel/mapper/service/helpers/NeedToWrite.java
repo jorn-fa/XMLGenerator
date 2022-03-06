@@ -140,9 +140,10 @@ public class NeedToWrite {
      }
 
      private Specialization getTractor(){
-         return specReader.getRepo().getItems().stream()
+         Specialization tractor = specReader.getRepo().getItems().stream()
                  .filter(a -> a.getName().equals("tractor"))
-                         .findFirst().get();
+                 .findFirst().get();
+         return tractor;
      }
 
 
@@ -190,17 +191,7 @@ public class NeedToWrite {
 
     }
 
-    public String decide(String key){
-        boolean foundI3dItem = getI3dSettings().containsKey(key);
-        if(foundI3dItem){
-            log.info("found "+key+ " in i3d");
-            return getI3dSettings().get(key);
-        }
-        else {
-            return mapper.getMappedItem(key).getValue();
-        }
-
-    }
+    
 
 
     /**

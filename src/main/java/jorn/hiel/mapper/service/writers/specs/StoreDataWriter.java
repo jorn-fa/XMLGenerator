@@ -36,7 +36,7 @@ public class StoreDataWriter  implements SingleXmlItem, DocWriter {
 
         Node rootElement = doc.getElementsByTagName("vehicle").item(0);
 
-        List<String> names = List.of("name","lifetime", "rotation",
+        List<String> names = List.of("lifetime", "rotation",
         "shopTranslationOffset","shopRotationOffset");
 
         List<String> specNames = Arrays.asList("power","maxSpeed","neededPower","workingWidth");
@@ -47,7 +47,11 @@ public class StoreDataWriter  implements SingleXmlItem, DocWriter {
 
 
         Element storeData = doc.createElement("storeData");
-        names.forEach(a-> addSingleXmlItem(doc, storeData,mapper.getMappedItem(a)));
+
+
+        Element name = doc.createElement("name");
+        needToWrite.decideTextContent("name",name);
+        storeData.appendChild(name);
 
         Element image = doc.createElement("image");
         needToWrite.decideTextContent("image",image);
@@ -64,6 +68,8 @@ public class StoreDataWriter  implements SingleXmlItem, DocWriter {
         Element price = doc.createElement("price");
         needToWrite.decideTextContent("price",price);
         storeData.appendChild(price);
+
+
 
 
 
@@ -109,6 +115,8 @@ public class StoreDataWriter  implements SingleXmlItem, DocWriter {
 
 
         }
+
+        names.forEach(a-> addSingleXmlItem(doc, storeData,mapper.getMappedItem(a)));
 
 
         rootElement.appendChild(storeData);
