@@ -124,10 +124,16 @@ public class MotorizedWriter implements DocWriter {
 
             needed = Integer.parseInt(configFileReader.getMappedItem("numberOfExhaust").getValue());
 
-            for (int x=0;x<needed;x++) {
+            for (int x=1;x<=needed;x++) {
                 Element exhaustEffect = doc.createElement("exhaustEffect");
                 exhaustEffects.appendChild(exhaustEffect);
-                exhaustEffect.setAttribute("node", configFileReader.getMappedItem("exhaust"+x).getValue());
+
+                //exhaustEffect.setAttribute("node", configFileReader.getMappedItem("exhaust"+x).getValue());
+
+                needToWrite.decideAttribute("exhaust"+x,exhaustEffect,"node");
+
+
+
                 exhaustEffect.setAttribute("filename", configFileReader.getMappedItem("exhaustFile").getValue());
                 exhaustEffect.setAttribute("minRpmColor", configFileReader.getMappedItem("exhaustMinRpmColor").getValue());
                 exhaustEffect.setAttribute("maxRpmColor", configFileReader.getMappedItem("exhaustMaxRpmColor").getValue());

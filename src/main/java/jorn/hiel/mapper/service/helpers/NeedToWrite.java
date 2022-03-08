@@ -211,7 +211,26 @@ public class NeedToWrite {
         }
 
     }
-//todo
+
+    /**
+     * Check in i3d if item is overwritten versus configuration setting file.
+     *
+     * @param key   String to verify
+     * @param toAdd Element to add the text content to
+     * @param attribute attribute to add the text content to
+     */
+    public void decideAttribute(String key, Element toAdd , String attribute){
+        boolean foundI3dItem = getI3dSettings().containsKey(key);
+        if(foundI3dItem){
+            toAdd.setAttribute(attribute, getI3dSettings().get(key));
+            log.info("found "+key+ " in i3d");
+        }
+        else {
+            toAdd.setAttribute(attribute,mapper.getMappedItem(key).getValue());
+        }
+
+    }
+
     public int getNumberOfWheels(){
         wheels=new ArrayList<>();
         wheelsDrive= new ArrayList<>();
