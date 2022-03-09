@@ -114,15 +114,17 @@ public class MapperManager extends BasicManager {
 
             try {
 
-                String modDescName = directory.getAbsolutePath() + "/" + "modDesc.xml";
-                modDescWriterDom.setFileLocation(modDescName);
-                modDescWriterDom.writeModDesc();
+
 
                 String vehicleName = configFileReader.getMappedItem("vehicleFileName").getValue();
                 String vehicleFileLocation = directory.getAbsolutePath() + "/" + vehicleName;
 
                 vehicleBuilder.setFileLocation(vehicleFileLocation);
                 vehicleBuilder.writeVehicle();
+
+                String modDescName = directory.getAbsolutePath() + "/" + "modDesc.xml";
+                modDescWriterDom.setFileLocation(modDescName);
+                modDescWriterDom.writeModDesc();
 
 
 

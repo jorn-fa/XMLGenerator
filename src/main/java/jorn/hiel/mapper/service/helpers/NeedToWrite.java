@@ -132,7 +132,11 @@ public class NeedToWrite {
                      .findAny()
                      .orElse(null );
 
+
+
              if (currentSpec==null){currentSpec = getTractor();}
+
+
 
 
 

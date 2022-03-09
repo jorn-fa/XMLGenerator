@@ -15,9 +15,10 @@ import java.util.List;
 public class Specialization {
 
     private String name;
-    //private String version;
     private GameVersion gameVersion;
     private List<VehicleSpec> specs;
+    private boolean isCustom;
+    private String parent;
 
 
 

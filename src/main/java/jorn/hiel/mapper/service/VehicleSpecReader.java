@@ -65,6 +65,9 @@ public class VehicleSpecReader {
 
         specialization.setName((String)object.get("name"));
         specialization.setGameVersion(GameVersion.valueOf(object.get("version").toString().toUpperCase(Locale.ROOT)));
+        specialization.setCustom(Boolean.parseBoolean(object.get("custom").toString()));
+        specialization.setParent((String)object.get("parent"));
+
 
 
 

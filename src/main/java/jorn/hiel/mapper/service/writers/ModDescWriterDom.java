@@ -4,6 +4,7 @@ package jorn.hiel.mapper.service.writers;
 import jorn.hiel.mapper.pojo.MappedItem;
 import jorn.hiel.mapper.service.ConfigFileReader;
 import jorn.hiel.mapper.service.enums.LocalLanguage;
+import jorn.hiel.mapper.service.enums.VehicleSpec;
 import jorn.hiel.mapper.service.helpers.NeedToWrite;
 import jorn.hiel.mapper.service.interfaces.SingleXmlItem;
 import jorn.hiel.mapper.service.interfaces.SingleXmlItemWithAttribute;
@@ -86,6 +87,31 @@ public class ModDescWriterDom implements SingleXmlItem, SingleXmlItemWithAttribu
 
             rootElement.appendChild(storeItems);
 
+
+
+            if (needToWrite.isFullWrite()||needToWrite.getCurrentSpec().isCustom()) {
+                Element vehicleTypes = doc.createElement("vehicleTypes");
+                Element type  = doc.createElement("type");
+                vehicleTypes.appendChild(type);
+                type.setAttribute("name",needToWrite.getCurrentSpec().getName());
+                type.setAttribute("className","Vehicle");
+                type.setAttribute("filename","$dataS/scripts/vehicles/Vehicle.lua");
+
+                if (!needToWrite.getCurrentSpec().getParent().equals("none")){
+                    type.setAttribute("parent",needToWrite.getCurrentSpec().getParent());
+                }
+
+                for(VehicleSpec vehicleSpec:needToWrite.getCurrentSpec().getSpecs()){
+                    Element spec = doc.createElement("specialization");
+                    spec.setAttribute("name",vehicleSpec.name().toLowerCase(Locale.ROOT));
+                    type.appendChild(spec);
+                }
+
+
+                rootElement.appendChild(vehicleTypes);
+
+            }
+
             xmlFileWriter.writeXml(doc);
 
         }
@@ -106,7 +132,7 @@ public class ModDescWriterDom implements SingleXmlItem, SingleXmlItemWithAttribu
         for (LocalLanguage local:LocalLanguage.values()){foundLanguages.add(local.toString().toLowerCase(Locale.ROOT)+"Title");}
 
         for (String foundLanguage : foundLanguages) {
-            log.info("looking for " + foundLanguage + " in config file");
+            //log.info("looking for " + foundLanguage + " in config file");
             if (configFileReader.getMappedItem(foundLanguage).getValue().equals("true")){
                 languages.add(foundLanguage.substring(0,2));
                 log.info("adding "  + foundLanguage);
