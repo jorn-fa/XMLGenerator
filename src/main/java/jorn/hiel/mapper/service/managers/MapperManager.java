@@ -17,6 +17,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -55,6 +56,9 @@ public class MapperManager extends BasicManager {
     @Autowired
     VehicleBuilder vehicleBuilder;
 
+    @Autowired
+    ConfigFileCreator configFileCreator;
+
 
 
     private List<String> args = new ArrayList<>();
@@ -68,25 +72,18 @@ public class MapperManager extends BasicManager {
     public void runMe() {
 
 
-        if (!hasConfig()) {
-            log.info("no config or translation or vehicleSpec set");
+        if (!hasConfigFilesSet()) {
+            log.info("no config/translation/vehicleSpec files set");
         } else {
 
             results = new ArrayList<>();
-
             mapper.setFile(fileName.getAbsolutePath());
             mapper.clearRepo();
 
             try {
+                checkConfigFiles();
 
                 mapper.process();
-
-                translation.process();
-                configFileReader.process();
-                vehicleSpecReader.process();
-
-
-
                 mapper.repo.getItems().forEach(a -> {
                     for (TranslationItem item : translation.getTranslations()) {
                         if (item.getTranslationItems().contains(a.getNode())) {
@@ -148,8 +145,9 @@ public class MapperManager extends BasicManager {
 
     }
 
-    private boolean hasConfig() {
-        log.info("checking config files");
+
+    private boolean hasConfigFilesSet() {
+        log.info("checking location of config files");
 
         log.info(translation.getFile());
         log.info(configFileReader.getFile());
@@ -159,16 +157,35 @@ public class MapperManager extends BasicManager {
 
     }
 
+    private void checkConfigFiles() throws FileNotFoundException, ParseException {
+        try {
+
+
+            configFileReader.process();
+            translation.process();
+            vehicleSpecReader.process();
+        } catch (FileNotFoundException e) {
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
     private void checkCommandLine() {
 
         ApplicationHome home = new ApplicationHome(MapperManager.class);
 
-        String separator = System.getProperty("file.separator");
 
-        translation.setFile(home.getDir()+ separator + "translations.json");
-        configFileReader.setFile(home.getDir()+separator+"config.json");
-        vehicleSpecReader.setFile(home.getDir()+separator+"vehicleSpec.json");
+        String separator = System.getProperty("file.separator");
+        String LOCATION = System.getProperty("user.home") +separator+ "XMLGenerator"+separator;
+        //todo this is not correct
+
+        translation.setFile(LOCATION+ "translations.json");
+        configFileReader.setFile(LOCATION+"config.json");
+        vehicleSpecReader.setFile(LOCATION+"vehicleSpec.json");
 
 
         if (args.size() != 0) {

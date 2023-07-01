@@ -31,7 +31,7 @@ public class UnknownStringCounter {
      */
     public int countEntries(Path path) throws IOException {
         Stream<String> lines = Files.lines(path);
-
+        
 
         return  (int) lines.filter(a -> a.contains(repo.getItems().get("UnknownEntry"))).count();
 

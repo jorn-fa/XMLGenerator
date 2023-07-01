@@ -144,10 +144,9 @@ public class NeedToWrite {
      }
 
      private Specialization getTractor(){
-         Specialization tractor = specReader.getRepo().getItems().stream()
+         return specReader.getRepo().getItems().stream()
                  .filter(a -> a.getName().equals("tractor"))
                  .findFirst().get();
-         return tractor;
      }
 
 

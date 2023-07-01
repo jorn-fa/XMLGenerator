@@ -1,21 +1,19 @@
 package jorn.hiel.mapper.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jorn.hiel.mapper.pojo.MappedItem;
 import jorn.hiel.mapper.service.repo.implementations.ConfigRepo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +22,9 @@ import java.util.Map;
 @NoArgsConstructor
 @Slf4j
 public class ConfigFileReader {
+
+    @Autowired
+    ConfigFileCreator configFileCreator;
 
 
 
@@ -40,20 +41,22 @@ public class ConfigFileReader {
     HashMap<String,String> speedRotatingParts = new HashMap<>();
 
 
-    @SuppressWarnings("unchecked")
+
+
     public void process() throws FileNotFoundException,ParseException {
+        configFileCreator.runMe();
         log.info("reading file with name -> " + file);
-        File sourceFile=new File(file);
-        if (sourceFile.exists()) {
 
-            JSONParser parser = new JSONParser();
-            try (FileReader reader = new FileReader(file)) {
-                //Read JSON file
-                Object obj = parser.parse(reader);
-                JSONArray configurations = (JSONArray) obj;
-                //iterate over each entry and parse it
-                configurations.forEach( a -> parseConfiguration((JSONObject) a)) ;
+        if (new File(file).exists()) {
 
+            try  {
+
+                ObjectMapper mapper = new ObjectMapper();
+                TypeReference<HashMap<String, String>> typeRef= new TypeReference<>() {
+                };
+                Map<String,String>configuration=mapper.readValue(new File(file),typeRef);
+                log.info("found item count -> "+configuration.size());
+                configuration.forEach(this::parseConfiguration);
 
 
             } catch (IOException e) {
@@ -65,16 +68,13 @@ public class ConfigFileReader {
 
     }
 
-    @SuppressWarnings("unchecked")
-    private void parseConfiguration(JSONObject jsonObject){
-        JSONObject object = (JSONObject) jsonObject.get("config");
-
+    private void parseConfiguration(String key,String value){
 
         MappedItem mappedItem = new MappedItem();
-        mappedItem.setKey((String)object.get("key"));
-        mappedItem.setValue((String)object.get("user"));
+        mappedItem.setKey(key);
+        mappedItem.setValue(value);
 
-        log.info("created translation of -> "  + mappedItem);
+        log.info("created configuration of -> "  + mappedItem);
         repo.add(mappedItem);
 
 
